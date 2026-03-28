@@ -1,5 +1,227 @@
 /* ==========================================================================
-   DeviceHub — Archive Page (Shop / Category)
+   DeviceHub — Archive Page Layout
    Path: assets/css/archive/devhub-archive.css
-   Depends on: style.css
+   Depends on: style.css, product-card.css
    ========================================================================== */
+
+/* ==========================================================================
+   1. Page wrapper
+   ========================================================================== */
+
+.devhub-archive {
+  padding: 32px 0 64px;
+  background: var(--devhub-bg);
+  min-height: 60vh;
+}
+
+/* ==========================================================================
+   2. Page header (title + breadcrumb)
+   ========================================================================== */
+
+.devhub-archive__header {
+  margin-bottom: 24px;
+}
+
+.devhub-archive__title {
+  font-size: var(--devhub-text-2xl);
+  font-weight: 700;
+  color: var(--devhub-black);
+  margin-bottom: 6px;
+}
+
+/* WooCommerce breadcrumb override */
+.devhub-archive .woocommerce-breadcrumb {
+  font-size: var(--devhub-text-sm);
+  color: var(--devhub-mid);
+  background: none;
+  padding: 0;
+  margin: 0;
+}
+
+.devhub-archive .woocommerce-breadcrumb a {
+  color: var(--devhub-mid);
+  text-decoration: none;
+}
+
+.devhub-archive .woocommerce-breadcrumb a:hover {
+  color: var(--devhub-primary);
+}
+
+/* ==========================================================================
+   3. Two-column layout
+   ========================================================================== */
+
+.devhub-archive__layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+/* ==========================================================================
+   4. Sidebar
+   ========================================================================== */
+
+.devhub-archive__sidebar {
+  position: sticky;
+  top: 100px; /* below sticky header */
+}
+
+.devhub-archive__filters {
+  background: var(--devhub-white);
+  border: 1px solid var(--devhub-border);
+  border-radius: var(--devhub-radius-md);
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   5. Toolbar (result count + sort)
+   ========================================================================== */
+
+.devhub-archive__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* WooCommerce result count */
+.devhub-archive__toolbar .woocommerce-result-count {
+  font-size: var(--devhub-text-sm);
+  color: var(--devhub-mid);
+  margin: 0;
+}
+
+/* WooCommerce ordering dropdown */
+.devhub-archive__toolbar .woocommerce-ordering {
+  margin: 0;
+}
+
+.devhub-archive__toolbar .woocommerce-ordering select,
+.devhub-archive__toolbar .orderby {
+  font-size: var(--devhub-text-sm);
+  color: var(--devhub-dark);
+  border: 1px solid var(--devhub-border);
+  border-radius: var(--devhub-radius-full);
+  padding: 7px 32px 7px 14px;
+  background: var(--devhub-white);
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b6b6b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  transition: border-color var(--devhub-transition);
+}
+
+.devhub-archive__toolbar .woocommerce-ordering select:focus,
+.devhub-archive__toolbar .orderby:focus {
+  outline: none;
+  border-color: var(--devhub-primary);
+}
+
+/* ==========================================================================
+   6. Product grid
+   ========================================================================== */
+
+.devhub-archive__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+/* ==========================================================================
+   7. Pagination
+   ========================================================================== */
+
+.devhub-archive__pagination {
+  margin-top: 32px;
+  display: flex;
+  justify-content: center;
+}
+
+/* WooCommerce pagination */
+.devhub-archive__pagination .woocommerce-pagination ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.devhub-archive__pagination .woocommerce-pagination .page-numbers {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--devhub-border);
+  border-radius: var(--devhub-radius-sm);
+  background: var(--devhub-white);
+  font-size: var(--devhub-text-sm);
+  color: var(--devhub-dark);
+  text-decoration: none;
+  transition:
+    background var(--devhub-transition),
+    border-color var(--devhub-transition),
+    color var(--devhub-transition);
+}
+
+.devhub-archive__pagination .woocommerce-pagination .page-numbers:hover {
+  border-color: var(--devhub-primary);
+  color: var(--devhub-primary);
+}
+
+.devhub-archive__pagination .woocommerce-pagination .page-numbers.current {
+  background: var(--devhub-primary);
+  border-color: var(--devhub-primary);
+  color: var(--devhub-white);
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   8. Empty state
+   ========================================================================== */
+
+.devhub-archive__main .woocommerce-info {
+  background: var(--devhub-white);
+  border: 1px solid var(--devhub-border);
+  border-left: 4px solid var(--devhub-primary);
+  border-radius: var(--devhub-radius-md);
+  padding: 16px 20px;
+  font-size: var(--devhub-text-sm);
+  color: var(--devhub-mid);
+}
+
+/* ==========================================================================
+   9. Responsive
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+  .devhub-archive__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .devhub-archive__layout {
+    grid-template-columns: 1fr;
+  }
+
+  .devhub-archive__sidebar {
+    position: static;
+  }
+
+  .devhub-archive__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .devhub-archive__grid {
+    grid-template-columns: 1fr;
+  }
+}

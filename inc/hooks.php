@@ -80,6 +80,34 @@ function devhub_render_orders_icon(): void
 add_filter('loop_shop_per_page', fn() => 9, 20);
 
 
+// ── WooCommerce — brand filter via URL param ?filter_brand=slug1,slug2 ────────
+// pwb-brand is a custom taxonomy (PWB Brands plugin), not a pa_* attribute,
+// so WooCommerce's built-in layered nav doesn't handle it — we do it here.
+
+add_action('pre_get_posts', 'devhub_filter_archive_by_brand');
+
+function devhub_filter_archive_by_brand(WP_Query $query): void
+{
+    if (is_admin() || ! $query->is_main_query()) return;
+    if (! is_shop() && ! is_product_category() && ! is_product_tag()) return;
+
+    $raw = sanitize_text_field(wp_unslash($_GET['filter_brand'] ?? ''));
+    if ($raw === '') return;
+
+    $slugs = array_values(array_filter(array_map('sanitize_title', explode(',', $raw))));
+    if (empty($slugs)) return;
+
+    $tax_query   = (array) $query->get('tax_query');
+    $tax_query[] = [
+        'taxonomy' => 'pwb-brand',
+        'field'    => 'slug',
+        'terms'    => $slugs,
+        'operator' => 'IN',
+    ];
+    $query->set('tax_query', $tax_query);
+}
+
+
 // ── WooCommerce — force our archive-product template ─────────────────────────
 
 add_filter('woocommerce_locate_template', 'devhub_locate_template', 10, 3);

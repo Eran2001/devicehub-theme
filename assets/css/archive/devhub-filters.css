@@ -1,0 +1,147 @@
+/* ==========================================================================
+   DeviceHub — Archive Sidebar Filters
+   Path: assets/css/archive/devhub-filters.css
+   Depends on: style.css
+   ========================================================================== */
+
+
+/* ==========================================================================
+   1. Filter group (accordion unit)
+   ========================================================================== */
+
+.devhub-filter-group {
+  border-bottom: 1px solid var(--devhub-border);
+}
+
+.devhub-filter-group:last-child {
+  border-bottom: none;
+}
+
+
+/* ==========================================================================
+   2. Toggle button
+   ========================================================================== */
+
+.devhub-filter-group__toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: var(--devhub-text-sm);
+  font-weight: 600;
+  color: var(--devhub-black);
+  text-align: left;
+  transition: color var(--devhub-transition);
+}
+
+.devhub-filter-group__toggle:hover {
+  color: var(--devhub-primary);
+}
+
+.devhub-filter-group__toggle .fas {
+  font-size: 11px;
+  color: var(--devhub-mid);
+  transition: transform var(--devhub-transition);
+  flex-shrink: 0;
+}
+
+
+/* ==========================================================================
+   3. Collapsible list
+   ========================================================================== */
+
+.devhub-filter-group__list {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 8px;
+  max-height: 600px;
+  overflow: hidden;
+  transition: max-height 0.28s ease, padding 0.28s ease;
+}
+
+.devhub-filter-group__list--collapsed {
+  max-height: 0;
+  padding-bottom: 0;
+}
+
+
+/* ==========================================================================
+   4. Filter option (link row)
+   ========================================================================== */
+
+.devhub-filter-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 16px;
+  text-decoration: none;
+  transition: background var(--devhub-transition);
+}
+
+.devhub-filter-option:hover {
+  background: var(--devhub-bg);
+}
+
+.devhub-filter-option--active {
+  background: #fff4ee;
+}
+
+.devhub-filter-option--active:hover {
+  background: #ffe8d6;
+}
+
+
+/* ==========================================================================
+   5. Custom checkbox
+   ========================================================================== */
+
+.devhub-filter-option__check {
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid var(--devhub-border);
+  border-radius: var(--devhub-radius-sm);
+  background: var(--devhub-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition:
+    border-color var(--devhub-transition),
+    background var(--devhub-transition);
+}
+
+.devhub-filter-option--active .devhub-filter-option__check {
+  background: var(--devhub-primary);
+  border-color: var(--devhub-primary);
+}
+
+.devhub-filter-option__check .fas {
+  font-size: 9px;
+  color: var(--devhub-white);
+}
+
+
+/* ==========================================================================
+   6. Option name + count
+   ========================================================================== */
+
+.devhub-filter-option__name {
+  flex: 1;
+  font-size: var(--devhub-text-sm);
+  color: var(--devhub-dark);
+  line-height: 1.3;
+}
+
+.devhub-filter-option--active .devhub-filter-option__name {
+  color: var(--devhub-primary);
+  font-weight: 500;
+}
+
+.devhub-filter-option__count {
+  font-size: var(--devhub-text-xs);
+  color: var(--devhub-light);
+}

@@ -1,27 +1,25 @@
 <?php
 /**
- * The template for displaying all single posts.
+ * WooCommerce page template — DeviceHub override
  *
- * @link https://developer.wordpress.org/themes/basics/template-hierarchy/#single-post
+ * Replaces the Shopire woocommerce_content() call so we can use
+ * our own archive layout (sidebar + grid) and single product template.
  *
- * @package Shopire
+ * @package DeviceHub
  */
 
 get_header();
-?>
-<section class="woo-products wf-py-default">
-	<div class="wf-container">
-		<div class="wf-row wf-g-5">
-			<?php if (  !is_active_sidebar( 'shopire-woocommerce-sidebar' ) ): ?>
-				<div class="wf-col-lg-12 wf-col-md-12 wf-col-12 wow fadeInUp">
-			<?php else: ?>
-				<div id="wf-main" class="wf-col-lg-8 wf-col-md-12 wf-col-12 wow fadeInUp">
-			<?php endif; ?>
-				<?php woocommerce_content();  // WooCommerce Content ?>
-			</div>
-			<?php get_sidebar('woocommerce'); ?>
-		</div>
-	</div>
-</section>
-<?php get_footer(); ?>
 
+if (is_singular('product')) {
+    // Single product — WooCommerce handles this; our override comes later
+    while (have_posts()) {
+        the_post();
+        wc_get_template_part('content', 'single-product');
+    }
+} else {
+    // Archive / shop / category — our custom layout
+    // woocommerce/archive-product.php owns its own .wf-container
+    get_template_part('woocommerce/archive-product');
+}
+
+get_footer();

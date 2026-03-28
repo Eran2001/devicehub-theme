@@ -88,6 +88,19 @@ function devhub_product_has_bundle(int $product_id): bool
 }
 
 
+/**
+ * Return the local placeholder SVG URL for a product.
+ * Broadband-category products get the router image; everything else gets the phone image.
+ */
+function devhub_get_product_placeholder_img(WC_Product $product): string
+{
+    if (has_term('broadband', 'product_cat', $product->get_id())) {
+        return DEVHUB_URI . '/assets/images/Original-Router-Img.svg';
+    }
+    return DEVHUB_URI . '/assets/images/Original-Img.svg';
+}
+
+
 // ── Template renderer ─────────────────────────────────────────────────────────
 
 /**
@@ -106,9 +119,9 @@ function devhub_product_has_bundle(int $product_id): bool
  *
  * @param WC_Product $product
  */
-function devhub_render_product_card(WC_Product $product): void
+function devhub_render_product_card(WC_Product $product, string $img_override = ''): void
 {
-    $img_url = wp_get_attachment_image_url($product->get_image_id(), 'devhub-card');
+    $img_url = $img_override !== '' ? $img_override : wp_get_attachment_image_url($product->get_image_id(), 'devhub-card');
     $discount = devhub_get_discount_percent($product);
     $in_stock = $product->is_in_stock();
     $has_bundle = devhub_product_has_bundle($product->get_id());
@@ -127,8 +140,7 @@ function devhub_render_product_card(WC_Product $product): void
 
         <a href="<?php echo esc_url($permalink); ?>" class="devhub-product-card__img-wrap">
             <?php if ($img_url): ?>
-                <img src="<?php echo esc_url($img_url); ?>" alt="<?php echo esc_attr($name); ?>" loading="lazy" width="400"
-                    height="400">
+                <img src="<?php echo esc_url($img_url); ?>" alt="<?php echo esc_attr($name); ?>" loading="lazy">
             <?php else: ?>
                 <div class="devhub-product-card__img-placeholder" aria-hidden="true"></div>
             <?php endif; ?>
