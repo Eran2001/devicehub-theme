@@ -1,0 +1,137 @@
+/* ==========================================================================
+   DeviceHub — Products Section (Home)
+   Path: assets/css/home/devhub-products-section.css
+   Depends on: style.css, components/product-card.css
+   ========================================================================== */
+
+/* ==========================================================================
+   1. Section header
+   ========================================================================== */
+
+.devhub-products__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid var(--devhub-border);
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.devhub-products__title {
+  font-size: var(--devhub-text-2xl);
+  font-weight: 700;
+  color: var(--devhub-black);
+  position: relative;
+  padding-left: 14px;
+}
+
+.devhub-products__title::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 22px;
+  background: var(--devhub-primary);
+  border-radius: 2px;
+}
+
+/* ==========================================================================
+   2. Brand filter tabs — boxed style: active = orange border + tint bg
+   ========================================================================== */
+
+.devhub-products__brands {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.devhub-brand-tab {
+  padding: 5px 14px;
+  border-radius: var(--devhub-radius-sm);
+  font-size: var(--devhub-text-md);
+  font-weight: 500;
+  border: 1.5px solid transparent;
+  background: none;
+  color: var(--devhub-mid);
+  transition:
+    color var(--devhub-transition),
+    border-color var(--devhub-transition),
+    background var(--devhub-transition);
+}
+
+.devhub-brand-tab:hover {
+  color: var(--devhub-dark);
+  border-color: var(--devhub-border);
+}
+
+.devhub-brand-tab--active {
+  color: var(--devhub-primary);
+  font-weight: 600;
+  border-color: var(--devhub-primary);
+  background: #fff5f0;
+}
+
+/* ==========================================================================
+   3. Product grid
+   ========================================================================== */
+
+.devhub-products__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+/* ==========================================================================
+   4. View all footer
+   ========================================================================== */
+
+.devhub-products__footer {
+  text-align: center;
+  margin-top: 24px;
+}
+
+.devhub-products__view-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--devhub-text-md);
+  font-weight: 600;
+  color: var(--devhub-primary);
+  border: 1.5px solid var(--devhub-primary);
+  border-radius: var(--devhub-radius-sm);
+  padding: 8px 24px;
+  transition:
+    background var(--devhub-transition),
+    color var(--devhub-transition);
+}
+
+.devhub-products__view-all:hover {
+  background: var(--devhub-primary);
+  color: var(--devhub-white);
+}
+
+/* ==========================================================================
+   5. Responsive
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+  .devhub-products__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .devhub-products__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .devhub-products__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

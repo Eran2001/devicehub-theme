@@ -1,0 +1,172 @@
+/* ==========================================================================
+   DeviceHub — Header Component
+   Path: assets/css/components/header.css
+   Depends on: style.css (tokens)
+
+   Targets Shopire's header classes — we override, not rewrite.
+   All spacing/color overrides scoped to DeviceHub's design.
+   ========================================================================== */
+
+/* ==========================================================================
+   1. Navbar wrapper — vertical padding
+   ========================================================================== */
+
+#wf_header .wf_navbar-wrapper {
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+/* Sticky state keeps same padding */
+#wf_header .wf_navbar-wrapper.is--sticky {
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+#wf_header .wf_header-navwrapperinner {
+  min-height: 0 !important;
+}
+
+/* ==========================================================================
+   2. Logo
+   ========================================================================== */
+
+.devhub-logo {
+  display: inline-flex;
+  align-items: center;
+}
+
+.devhub-logo img {
+  height: 36px;
+  width: auto;
+  display: block;
+}
+
+/* ==========================================================================
+   3. Search bar
+   ========================================================================== */
+
+.wf_hdr_search .wf_hdr_search-form {
+  border: 1px solid var(--devhub-border);
+  border-radius: var(--devhub-radius-sm);
+  overflow: hidden;
+}
+
+.wf_hdr_search .wf_hdr_search-form input[type="search"] {
+  font-family: var(--devhub-font);
+  font-size: var(--devhub-text-sm);
+  color: var(--devhub-primary);
+  padding: 10px 16px;
+}
+
+.wf_hdr_search .wf_hdr_search-form button {
+  background-color: var(--devhub-primary);
+  color: var(--devhub-white);
+  padding: 10px 16px;
+  transition: background-color var(--devhub-transition);
+}
+
+.wf_hdr_search .wf_hdr_search-form button:hover {
+  background-color: var(--devhub-primary-dark);
+}
+
+/* ==========================================================================
+   4. Right icons (cart, account, orders)
+   ========================================================================== */
+
+.wf_navbar-list-right {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  justify-content: flex-end;
+}
+
+.wf_navbar-cart-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--devhub-radius-sm);
+  color: var(--devhub-primary);
+  transition:
+    color var(--devhub-transition),
+    background-color var(--devhub-transition);
+  position: relative;
+}
+
+.wf_navbar-cart-icon:hover {
+  color: var(--devhub-primary-dark);
+  background-color: var(--devhub-bg);
+}
+
+.wf_navbar-cart-icon .cart_icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+/* Cart count badge */
+.wf_navbar-cart-icon .wf_cart-count,
+.wf_navbar-cart-icon .count {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background: var(--devhub-primary);
+  color: var(--devhub-white);
+  font-size: 10px;
+  font-weight: 700;
+  min-width: 16px;
+  height: 16px;
+  border-radius: var(--devhub-radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  padding: 0 3px;
+}
+
+/* ==========================================================================
+   5. Mobile navbar
+   ========================================================================== */
+
+.wf_mobilenav {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: var(--devhub-white);
+  border-bottom: 1px solid var(--devhub-border);
+}
+
+.wf_mobilenav.is--sticky {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+/* ==========================================================================
+   6. Header border bottom
+   ========================================================================== */
+
+#wf_header .wf_navbar-wrapper {
+  border-bottom: 1px solid var(--devhub-border);
+  background-color: var(--devhub-white);
+}
+
+/* ==========================================================================
+   7. Hamburger + account icon — orange to match brand
+   ========================================================================== */
+
+#wf_header .hamburger span {
+  background-color: var(--devhub-primary);
+}
+
+#wf_header .wf_navbar-list-right a {
+  color: var(--devhub-primary);
+}
+
+#wf_header .wf_navbar-list-right a:hover {
+  color: var(--devhub-primary-dark);
+}
+
+/* Hamburger toggle button */
+#wf_header .wf_mobilenav-mainmenu-toggle span {
+  background-color: var(--devhub-primary);
+}

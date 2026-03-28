@@ -1,0 +1,450 @@
+/*
+Theme Name: DeviceHub Theme
+Text Domain: devicehub-theme
+Version:            1.0.70
+Tested up to:       6.9
+Requires at least:  4.7
+Requires PHP:       5.6
+Author:             WPFable
+Author URI:         https://wpfable.com/
+Theme URI:          https://wpfable.com/themes/shopire-free/
+Description: Custom DeviceHub WooCommerce Theme built for internal use.
+Tags:               one-column, two-columns, right-sidebar, flexible-header, custom-background, custom-header, custom-menu, editor-style, featured-images, footer-widgets, post-formats, theme-options, threaded-comments, translation-ready, full-width-template, custom-logo, blog, e-commerce, portfolio
+License: GPLv3 or later
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
+*/
+
+/* ==========================================================================
+   1. DeviceHub Design Tokens
+   Single source of truth for all CSS custom properties.
+   Every devhub CSS file reads from these — never hardcodes values.
+   ========================================================================== */
+
+:root {
+  /* Brand */
+  --devhub-primary: #ff6600;
+  --devhub-primary-dark: #e55a00;
+  --devhub-primary-light: #ff8533;
+
+  /* Neutrals */
+  --devhub-black: #1a1a1a;
+  --devhub-dark: #2d2d2d;
+  --devhub-mid: #6b6b6b;
+  --devhub-light: #a0a0a0;
+  --devhub-border: #e5e5e5;
+  --devhub-bg: #f5f5f5;
+  --devhub-white: #ffffff;
+
+  /* Status */
+  --devhub-success: #28a745;
+  --devhub-danger: #dc3545;
+  --devhub-warning: #ffc107;
+
+  /* Flash sale card colors */
+  --devhub-flash-green: #1aba1a;
+  --devhub-flash-yellow: #ffbb41;
+
+  /* Typography */
+  --devhub-font:
+    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  /* Type scale */
+  --devhub-text-xs: 0.75rem; /* 12px */
+  --devhub-text-sm: 0.875rem; /* 14px */
+  --devhub-text-md: 1rem; /* 16px */
+  --devhub-text-lg: 1.125rem; /* 18px */
+  --devhub-text-xl: 1.25rem; /* 20px */
+  --devhub-text-2xl: 1.5rem; /* 24px */
+  --devhub-text-3xl: 1.875rem; /* 30px */
+  --devhub-text-4xl: 2.25rem; /* 36px */
+
+  /* Layout */
+  --devhub-container: 1280px;
+
+  /* Border radii */
+  --devhub-radius-sm: 4px;
+  --devhub-radius-md: 8px;
+  --devhub-radius-lg: 12px;
+  --devhub-radius-xl: 16px;
+  --devhub-radius-full: 9999px;
+
+  /* Shadows */
+  --devhub-shadow-card: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --devhub-shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.14);
+
+  /* Transitions */
+  --devhub-transition: 0.2s ease;
+}
+
+/* ==========================================================================
+   2. Reset / Base
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  overflow-x: hidden;
+}
+
+body {
+  font-family: var(--devhub-font);
+  color: var(--devhub-dark);
+  background-color: var(--devhub-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--devhub-transition);
+}
+
+button {
+  cursor: pointer;
+  font-family: var(--devhub-font);
+  border: none;
+  background: none;
+  padding: 0;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--devhub-font);
+  color: var(--devhub-black);
+  line-height: 1.2;
+  margin: 0;
+}
+
+p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   3. Shared Utility Classes
+   Only classes used across 2+ components belong here.
+   ========================================================================== */
+
+.wf-container {
+  max-width: var(--devhub-container);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.devhub-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.devhub-stock {
+  font-size: var(--devhub-text-sm);
+  font-weight: 500;
+}
+
+.devhub-stock--in {
+  color: var(--devhub-success);
+}
+.devhub-stock--out {
+  color: var(--devhub-danger);
+}
+
+.devhub-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: var(--devhub-radius-sm);
+  font-size: var(--devhub-text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  background-color: var(--devhub-primary);
+  color: var(--devhub-white);
+}
+
+/* Consistent vertical rhythm for all home sections */
+.devhub-hero,
+.devhub-flash,
+.devhub-products,
+.devhub-categories,
+.devhub-preorder,
+.devhub-broadbands {
+  padding-top: 0px;
+  padding-bottom: 48px;
+}
+
+@media (max-width: 768px) {
+  .devhub-hero,
+  .devhub-flash,
+  .devhub-products,
+  .devhub-categories,
+  .devhub-preorder,
+  .devhub-broadbands {
+    padding-top: 0px;
+    padding-bottom: 32px;
+  }
+}
+
+/* ==========================================================================
+   4. Shopire Base Overrides
+   Only rules that fix conflicts with the Shopire parent theme.
+   Do not add DeviceHub component styles here.
+   ========================================================================== */
+
+.iconbox:hover a {
+  color: #fff;
+}
+.iconbox a {
+  text-decoration: none;
+  color: var(--wf-secondary-color);
+}
+
+.wp-block-details summary {
+  font-weight: 600;
+  padding: 10px;
+}
+
+.wp-block-latest-comments__comment a {
+  text-decoration: none;
+}
+.wp-block-verse {
+  padding: 10px;
+}
+.wp-block-archives-list a {
+  text-decoration: none;
+}
+
+.header--two .wf_mobilenav.is--sticky {
+  background-color: var(--wf-secondary-color);
+}
+
+.header--two + #content > .wf_slider_banner {
+  margin-top: 0;
+  padding-top: 2.4rem;
+}
+
+.woocommerce form .show-password-input,
+.woocommerce-page form .show-password-input {
+  top: 50%;
+}
+
+.woocommerce-Address-title h2 {
+  font-size: 2.4rem;
+}
+
+.has-background.wp-block-read-more,
+.has-background.post-navigation-link-next,
+.has-background.post-navigation-link-previous {
+  padding: 0.25em 1.375em;
+}
+
+.wp-block-woocommerce-customer-account
+  a
+  .wc-block-customer-account__account-icon {
+  height: 2rem !important;
+  width: 2rem !important;
+}
+
+.wp-block-avatar img {
+  border-radius: 50%;
+}
+.wp-block-avatar:hover img {
+  transform: scale(1.07);
+}
+
+.post-navigation-link-next a,
+.post-navigation-link-previous a {
+  text-decoration: none;
+}
+
+.wp-block-woocommerce-single-product .wp-block-post-title a {
+  text-decoration: none;
+}
+
+.wc-block-grid__product-add-to-cart.wp-block-button
+  .wp-block-button__link:hover,
+.wc-block-grid__product-add-to-cart.wp-block-button
+  .wp-block-button__link:focus {
+  color: #fff;
+}
+
+.wp-block-page-list {
+  list-style: none;
+  padding: 0;
+}
+
+.wc-block-grid__products .wc-block-components-product-button__button {
+  border-radius: 0;
+  text-decoration: none;
+}
+
+.wp-block-page-list a {
+  color: var(--wf-secondary-color);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.wc-block-components-product-title a.wc-block-components-product-name:hover,
+.wc-block-components-product-title a.wc-block-components-product-name:focus,
+.wp-block-page-list a:hover,
+.wp-block-page-list a:focus {
+  color: var(--wf-main-color);
+}
+
+.wp-block-list {
+  padding: 0;
+}
+
+.wc-block-components-product-name {
+  color: var(--wf-secondary-color);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.wp-block-list.has-background,
+.wp-block-details.has-background,
+.wp-block-verse.has-background {
+  padding: 1.25em 2.375em;
+}
+
+.wp-block-preformatted.has-background {
+  padding: 1em;
+}
+
+.wp-block-archives {
+  list-style: none;
+  padding: 0;
+}
+
+.wp-block-archives-list a {
+  font-weight: 600;
+  color: var(--wf-secondary-color);
+}
+
+.wp-block-archives-list a:hover,
+.wp-block-archives-list a:focus {
+  color: var(--wf-main-color);
+}
+
+.wp-block-page-list.has-background {
+  padding: 1rem;
+}
+
+a.wp-block-button__link:hover,
+a.wp-block-button__link:focus {
+  color: #fff;
+  text-decoration: none;
+}
+
+.wp-block-button.is-style-outline a.wp-block-button__link {
+  color: var(--wf-main-color);
+  border-color: inherit;
+  background: transparent;
+}
+
+.wp-block-latest-comments {
+  padding-left: 0;
+}
+.wp-block-latest-comments li a:not(:hover, :focus) {
+  color: var(--wf-secondary-color);
+}
+.wp-block-latest-comments li a {
+  text-decoration: none;
+}
+
+.wf_footer ul.product_list_widget li .woocommerce-Price-amount {
+  color: var(--wf-main-color);
+}
+.wf_footer ul.product_list_widget li {
+  border-bottom: none;
+}
+
+.wf_footer
+  .widget_shopping_cart
+  .button:not(.checkout):not(.add_to_cart_button) {
+  background-color: var(--wf-secondary-color);
+}
+
+.wf_footer
+  .widget_shopping_cart
+  .button:not(.checkout):not(.add_to_cart_button):hover,
+.wf_footer
+  .widget_shopping_cart
+  .button:not(.checkout):not(.add_to_cart_button):focus {
+  background-color: var(--wf-secondary-color) !important;
+}
+
+.wf_footer .widget_shopping_cart a.checkout:hover,
+.wf_footer .widget_shopping_cart a.checkout:focus {
+  background-color: var(--wf-main-color) !important;
+}
+
+.wf_footer .widget_shopping_cart span.amount {
+  color: var(--wf-main-color);
+}
+.wf_footer .widget_shopping_cart li img {
+  object-fit: contain !important;
+  padding-right: 10px;
+}
+
+.wc-block-mini-cart__footer .wc-block-components-button {
+  text-decoration: none;
+}
+
+.wf_footer .widget .wc-block-cart-link {
+  color: #fff;
+  background: var(--wf-main-color);
+}
+
+.wf_footer .widget .wc-block-cart-link:hover,
+.wf_footer .widget .wc-block-cart-link:focus {
+  text-decoration: none;
+}
+
+.woocommerce-account .woocommerce-Address-title h2 {
+  font-size: 4rem;
+}
+
+.wp-block-categories-list.has-background,
+.wp-block-latest-comments.has-background,
+.wp-block-page-list.has-background {
+  padding: 1rem;
+}
+
+.wp-block-file a {
+  text-decoration: none;
+}
+.wp-block-file.has-background {
+  padding: 1rem;
+}
+
+.wc-block-components-product-name {
+  color: var(--wf-secondary-color);
+}

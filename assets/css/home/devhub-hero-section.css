@@ -1,0 +1,252 @@
+/* ==========================================================================
+   DeviceHub — Hero Section
+   Path: assets/css/home/devhub-hero-section.css
+   Depends on: style.css (tokens)
+   ========================================================================== */
+
+/* ==========================================================================
+   1. Layout
+   ========================================================================== */
+
+/* Stick hero flush to header — no top/bottom section padding */
+.devhub-hero {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.devhub-hero__inner {
+  display: flex;
+  align-items: stretch;
+  min-height: 300px;
+}
+
+/* Categories sidebar */
+.devhub-hero__categories {
+  width: 300px;
+  min-width: 300px;
+  flex-shrink: 0;
+}
+
+.devhub-hero__cat-header {
+  background: var(--devhub-primary);
+  color: var(--devhub-white);
+  padding: 16px 20px;
+  font-size: var(--devhub-text-xl);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.devhub-hero__cat-toggle {
+  margin-left: auto;
+  font-size: var(--devhub-text-xl);
+  transition: transform var(--devhub-transition);
+}
+
+.devhub-hero__categories.is-collapsed .devhub-hero__cat-toggle {
+  transform: rotate(180deg);
+}
+
+.devhub-hero__categories.is-collapsed .devhub-hero__cat-list {
+  display: none;
+}
+
+.devhub-hero__cat-list {
+  margin: 0;
+  padding: 0;
+  background: var(--devhub-white);
+  border: 1px solid var(--devhub-border);
+  border-top: none;
+}
+
+.devhub-hero__cat-item {
+  position: relative;
+}
+
+.devhub-hero__cat-item > a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 20px;
+  font-size: var(--devhub-text-xl);
+  font-weight: 600;
+  color: var(--devhub-dark);
+  border-bottom: 1px solid var(--devhub-border);
+  transition:
+    background var(--devhub-transition),
+    color var(--devhub-transition);
+}
+
+.devhub-hero__cat-item > a i {
+  font-size: 11px;
+  color: var(--devhub-mid);
+}
+
+.devhub-hero__cat-item > a:hover {
+  background: var(--devhub-bg);
+  color: var(--devhub-primary);
+}
+
+.devhub-hero__cat-item > a:hover i {
+  color: var(--devhub-primary);
+}
+
+/* Subcategory flyout */
+.devhub-hero__cat-sub {
+  display: none;
+  position: absolute;
+  left: 100%;
+  top: 0;
+  min-width: 180px;
+  background: var(--devhub-white);
+  border: 1px solid var(--devhub-border);
+  box-shadow: var(--devhub-shadow-hover);
+  z-index: 100;
+  padding: 0;
+  margin: 0;
+}
+
+.devhub-hero__cat-item:hover .devhub-hero__cat-sub,
+.devhub-hero__cat-item:focus-within .devhub-hero__cat-sub {
+  display: block;
+}
+
+.devhub-hero__cat-sub li a {
+  display: block;
+  padding: 12px 16px;
+  font-size: var(--devhub-text-lg);
+  font-weight: 600;
+  color: var(--devhub-dark);
+  border-bottom: 1px solid var(--devhub-border);
+  transition:
+    color var(--devhub-transition),
+    background var(--devhub-transition);
+}
+
+.devhub-hero__cat-sub li a:hover {
+  color: var(--devhub-primary);
+  background: var(--devhub-bg);
+}
+
+/* Banner */
+.devhub-hero__banner {
+  flex: 1;
+  position: relative;
+  padding: 48px;
+  display: flex;
+  align-items: center;
+  overflow: visible;
+  background: var(--devhub-bg);
+  min-width: 0;
+}
+
+.devhub-hero__banner-content {
+  position: relative;
+  z-index: 2;
+  max-width: 450px;
+  margin-left: 60px;
+}
+
+/* Right device image */
+.devhub-hero__right-img {
+  width: 320px;
+  min-width: 320px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.devhub-hero__right-img img {
+  height: 420px;
+  width: auto;
+  object-fit: contain;
+}
+
+/* ==========================================================================
+   2. Typography
+   ========================================================================== */
+
+.devhub-hero__eyebrow {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--devhub-mid);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 12px;
+}
+
+.devhub-hero__title {
+  font-size: 56px;
+  font-weight: 800;
+  color: var(--devhub-black);
+  line-height: 1.15;
+  margin-bottom: 16px;
+  white-space: nowrap;
+}
+
+.devhub-hero__subtitle {
+  font-size: var(--devhub-text-lg);
+  color: var(--devhub-mid);
+  line-height: 1.6;
+}
+
+/* Center ghost image */
+.devhub-hero__center-img {
+  position: absolute;
+  left: 45%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.75;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.devhub-hero__center-img img {
+  height: 440px;
+  width: auto;
+}
+
+/* ==========================================================================
+   3. Responsive
+   ========================================================================== */
+
+@media (max-width: 991px) {
+  .devhub-hero__categories {
+    display: none;
+  }
+
+  .devhub-hero__banner-content {
+    margin-left: 0;
+  }
+
+  .devhub-hero__center-img {
+    left: 50%;
+  }
+
+  .devhub-hero__center-img img {
+    height: auto;
+    width: 600px;
+  }
+
+  .devhub-hero__right-img {
+    display: none;
+  }
+
+  .devhub-hero__title {
+    white-space: normal;
+    font-size: 32px;
+  }
+
+  .devhub-hero__eyebrow {
+    font-size: var(--devhub-text-md);
+  }
+
+  .devhub-hero__subtitle {
+    font-size: var(--devhub-text-md);
+  }
+}

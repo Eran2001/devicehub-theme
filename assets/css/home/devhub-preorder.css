@@ -1,0 +1,12 @@
+/* ==========================================================================
+   DeviceHub — Pre-order Section
+   Path: assets/css/home/devhub-preorder.css
+   Depends on: style.css (tokens)
+   ========================================================================== */
+
+.devhub-preorder__img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: var(--devhub-radius-md);
+}

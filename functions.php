@@ -1,0 +1,51 @@
+<?php
+/**
+ * DeviceHub Theme — functions.php
+ *
+ * This file is an orchestrator only.
+ * No logic lives here. All logic lives in inc/.
+ *
+ * @package DeviceHub
+ */
+
+defined('ABSPATH') || exit;
+
+// ── Constants ────────────────────────────────────────────────────────────────
+
+define('DEVHUB_VERSION', wp_get_theme()->get('Version'));
+define('DEVHUB_DIR', get_template_directory());
+define('DEVHUB_URI', get_template_directory_uri());
+define('DEVHUB_INC_DIR', DEVHUB_DIR . '/inc');
+define('DEVHUB_INC_URI', DEVHUB_URI . '/inc');
+
+// Shopire legacy constants — required by inc/customizer/ files which reference
+// SHOPIRE_THEME_INC_DIR directly. Do not remove until those files are rewritten.
+define('SHOPIRE_THEME_VERSION', DEVHUB_VERSION);
+define('SHOPIRE_THEME_DIR', DEVHUB_DIR);
+define('SHOPIRE_THEME_URI', DEVHUB_URI);
+define('SHOPIRE_THEME_INC_DIR', DEVHUB_INC_DIR);
+define('SHOPIRE_THEME_INC_URI', DEVHUB_INC_URI);
+
+// ── Core (load order matters) ────────────────────────────────────────────────
+
+require_once DEVHUB_INC_DIR . '/setup.php';       // Theme supports, nav menus, image sizes
+require_once DEVHUB_INC_DIR . '/widgets.php';     // register_sidebar calls
+require_once DEVHUB_INC_DIR . '/enqueue.php';     // All wp_enqueue_style / wp_enqueue_script
+require_once DEVHUB_INC_DIR . '/helpers.php';     // Reusable utility functions (no output)
+require_once DEVHUB_INC_DIR . '/hooks.php';       // All add_action / remove_action overrides
+
+// ── Parent theme integrations (keep from Shopire base) ──────────────────────
+
+require_once DEVHUB_INC_DIR . '/customizer/shopire-customizer.php';
+require_once DEVHUB_INC_DIR . '/customizer/controls/code/customizer-repeater/inc/customizer.php';
+require_once DEVHUB_INC_DIR . '/customizer/controls/code/control-function/style-functions.php';
+require_once DEVHUB_INC_DIR . '/class-wp-bootstrap-navwalker.php';
+require_once DEVHUB_INC_DIR . '/custom-header.php';
+require_once DEVHUB_INC_DIR . '/template-tags.php';
+require_once DEVHUB_INC_DIR . '/admin/getting-started.php';
+
+// ── Page section hooks ───────────────────────────────────────────────────────
+
+require_once DEVHUB_DIR . '/hooks/home.php';
+require_once DEVHUB_DIR . '/hooks/flash.php';
+require_once DEVHUB_DIR . '/hooks/products.php';

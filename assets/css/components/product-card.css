@@ -1,0 +1,162 @@
+/* ==========================================================================
+   DeviceHub — Product Card Component
+   Path: assets/css/components/product-card.css
+   Depends on: global.css
+
+   This is the shared card used on: home sections, archive, search results.
+   Do NOT put grid layout here — that belongs in the page-level CSS.
+   ========================================================================== */
+
+/* ==========================================================================
+   1. Card shell
+   ========================================================================== */
+
+.devhub-product-card {
+  background: var(--devhub-white);
+  border: 1px solid var(--devhub-border);
+  border-radius: var(--devhub-radius-md);
+  padding: 12px;
+  position: relative;
+  transition:
+    box-shadow var(--devhub-transition),
+    transform var(--devhub-transition);
+}
+
+.devhub-product-card:hover {
+  box-shadow: var(--devhub-shadow-hover);
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   2. Badge
+   ========================================================================== */
+
+.devhub-product-card__badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: var(--devhub-primary);
+  color: var(--devhub-white);
+  font-size: var(--devhub-text-xs);
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: var(--devhub-radius-sm);
+  z-index: 1;
+}
+
+/* ==========================================================================
+   3. Image
+   ========================================================================== */
+
+.devhub-product-card__img-wrap {
+  display: block;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  border-radius: var(--devhub-radius-sm);
+  background: #fafafa;
+  margin-bottom: 10px;
+}
+
+.devhub-product-card__img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 8px;
+  transition: transform var(--devhub-transition);
+}
+
+.devhub-product-card:hover .devhub-product-card__img-wrap img {
+  transform: scale(1.04);
+}
+
+.devhub-product-card__img-placeholder {
+  width: 100%;
+  height: 100%;
+  background: var(--devhub-bg);
+}
+
+/* ==========================================================================
+   4. Body
+   ========================================================================== */
+
+.devhub-product-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.devhub-product-card__name {
+  font-size: var(--devhub-text-sm);
+  font-weight: 600;
+  color: var(--devhub-dark);
+  line-height: 1.4;
+  /* Clamp to 2 lines */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-decoration: none;
+}
+
+.devhub-product-card__name:hover {
+  color: var(--devhub-primary);
+}
+
+.devhub-product-card__bundle {
+  display: inline-block;
+  background: #fff3eb;
+  color: var(--devhub-primary);
+  font-size: var(--devhub-text-xs);
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: var(--devhub-radius-sm);
+  border: 1px solid #ffd4b3;
+  width: fit-content;
+}
+
+.devhub-product-card__price {
+  font-size: var(--devhub-text-sm);
+  font-weight: 700;
+  color: var(--devhub-black);
+}
+
+.devhub-product-card__price del {
+  font-size: var(--devhub-text-xs);
+  color: var(--devhub-light);
+  font-weight: 400;
+  margin-right: 4px;
+}
+
+.devhub-product-card__price ins {
+  text-decoration: none;
+}
+
+/* ==========================================================================
+   5. Stock status
+   ========================================================================== */
+
+.devhub-product-card__stock {
+  font-size: var(--devhub-text-xs);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Dot indicator */
+.devhub-product-card__stock::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+.devhub-product-card__stock--in {
+  color: var(--devhub-success);
+}
+.devhub-product-card__stock--out {
+  color: var(--devhub-danger);
+}

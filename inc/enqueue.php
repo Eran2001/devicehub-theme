@@ -1,0 +1,207 @@
+<?php
+/**
+ * DeviceHub — Enqueue
+ *
+ * All wp_enqueue_style and wp_enqueue_script calls live here.
+ * Nothing else.
+ *
+ * CSS naming rules:
+ *  - components/   → no prefix  (footer.css, product-card.css)
+ *  - everything else → devhub-  (devhub-hero-section.css, devhub-cart.css)
+ *
+ * Loading strategy:
+ *  - style.css     → always (WP requirement + tokens + Shopire overrides)
+ *  - components/   → always (header/footer on every page, product-card when needed)
+ *  - page-specific → only on that page type
+ *  - JS modules    → only on the page that needs them, in footer
+ *
+ * devhub_style() and devhub_script() silently skip missing files —
+ * no fatal errors if a file hasn't been created yet during development.
+ *
+ * @package DeviceHub
+ */
+
+defined('ABSPATH') || exit;
+
+
+// ── Styles ───────────────────────────────────────────────────────────────────
+
+add_action('wp_enqueue_scripts', 'devhub_enqueue_styles', 20);
+
+function devhub_enqueue_styles(): void
+{
+
+    // ── Vendor ────────────────────────────────────────────────────────────────
+    wp_enqueue_style('owl-carousel-min', DEVHUB_URI . '/assets/vendors/css/owl.carousel.min.css');
+    wp_enqueue_style('font-awesome', DEVHUB_URI . '/assets/vendors/css/all.min.css');
+    wp_enqueue_style('animate', DEVHUB_URI . '/assets/vendors/css/animate.css');
+    wp_enqueue_style('fancybox', DEVHUB_URI . '/assets/vendors/css/jquery.fancybox.min.css');
+
+    // ── Shopire base (keep as separate files — do not merge) ──────────────────
+    wp_enqueue_style('shopire-core', DEVHUB_URI . '/assets/css/core.css');
+    wp_enqueue_style('shopire-theme', DEVHUB_URI . '/assets/css/themes.css');
+    wp_enqueue_style('shopire-woocommerce', DEVHUB_URI . '/assets/css/woo-styles.css');
+
+    // ── style.css — always loaded ─────────────────────────────────────────────
+    // Contains: design tokens + reset + shared utilities + Shopire overrides.
+    // All devhub component CSS depends on the tokens defined here.
+    wp_enqueue_style('devhub-style', get_stylesheet_uri(), [], DEVHUB_VERSION);
+
+    // ── Components — always loaded ────────────────────────────────────────────
+    devhub_style('devhub-header', '/components/header.css', ['devhub-style']);
+    devhub_style('devhub-footer', '/components/footer.css', ['devhub-style']);
+    devhub_style('devhub-product-card', '/components/product-card.css', ['devhub-style']);
+
+    // ── Home page ─────────────────────────────────────────────────────────────
+    if (is_front_page()) {
+        devhub_style('devhub-hero', '/home/devhub-hero-section.css', ['devhub-style']);
+        devhub_style('devhub-flash', '/home/devhub-flash-section.css', ['devhub-style']);
+        devhub_style('devhub-products', '/home/devhub-products-section.css', ['devhub-style', 'devhub-product-card']);
+        devhub_style('devhub-categories', '/home/devhub-categories.css', ['devhub-style']);
+        devhub_style('devhub-preorder', '/home/devhub-preorder.css', ['devhub-style']);
+        devhub_style('devhub-broadbands', '/home/devhub-broadbands.css', ['devhub-style', 'devhub-product-card']);
+        devhub_script('devhub-hero-categories', '/modules/hero-categories.js', [], true);
+    }
+
+    // ── Shop / Archive ────────────────────────────────────────────────────────
+    if (is_shop() || is_product_category()) {
+        devhub_style('devhub-archive', '/archive/devhub-archive.css', ['devhub-style', 'devhub-product-card']);
+        devhub_style('devhub-filters', '/archive/devhub-filters.css', ['devhub-style']);
+    }
+
+    // ── Single product ────────────────────────────────────────────────────────
+    if (is_product()) {
+        devhub_style('devhub-single', '/single/devhub-single.css', ['devhub-style']);
+    }
+
+    // ── Cart ──────────────────────────────────────────────────────────────────
+    if (is_cart()) {
+        devhub_style('devhub-cart', '/cart/devhub-cart.css', ['devhub-style']);
+    }
+
+    // ── Checkout ──────────────────────────────────────────────────────────────
+    if (is_checkout()) {
+        devhub_style('devhub-checkout', '/checkout/devhub-checkout.css', ['devhub-style']);
+    }
+
+    // ── My Account ────────────────────────────────────────────────────────────
+    if (is_account_page()) {
+        devhub_style('devhub-account', '/account/devhub-account.css', ['devhub-style']);
+    }
+}
+
+
+// ── Scripts ───────────────────────────────────────────────────────────────────
+
+add_action('wp_enqueue_scripts', 'devhub_enqueue_scripts', 20);
+
+function devhub_enqueue_scripts(): void
+{
+
+    // ── Vendor / Shopire base ─────────────────────────────────────────────────
+    wp_enqueue_script('jquery');
+    wp_enqueue_script('imagesloaded');
+    wp_enqueue_script('owl-carousel', DEVHUB_URI . '/assets/vendors/js/owl.carousel.js', ['jquery'], null, true);
+    wp_enqueue_script('wow', DEVHUB_URI . '/assets/vendors/js/wow.min.js', ['jquery'], null, true);
+    wp_enqueue_script('fancybox', DEVHUB_URI . '/assets/vendors/js/jquery.fancybox.js', ['jquery'], null, true);
+    wp_enqueue_script('shopire-theme', DEVHUB_URI . '/assets/js/theme.js', ['jquery'], null, true);
+    wp_enqueue_script('shopire-custom', DEVHUB_URI . '/assets/js/custom.js', ['jquery'], null, true);
+
+    // ── DeviceHub API utility — always loaded ─────────────────────────────────
+    // Exposes devhubConfig to all JS modules: nonce, restUrl, cartUrl, isLoggedIn
+    devhub_script('devhub-utils', '/utils/api.js', [], true);
+    wp_localize_script('devhub-utils', 'devhubConfig', [
+        'ajaxUrl' => admin_url('admin-ajax.php'),
+        'restUrl' => esc_url_raw(rest_url('wc/v3/')),
+        'nonce' => wp_create_nonce('wp_rest'),
+        'cartUrl' => wc_get_cart_url(),
+        'isLoggedIn' => is_user_logged_in(),
+    ]);
+
+    // ── Home ──────────────────────────────────────────────────────────────────
+    if (is_front_page()) {
+        devhub_script('devhub-flash-countdown', '/modules/flash-countdown.js', ['devhub-utils'], true);
+        devhub_script('devhub-brand-filter', '/modules/brand-filter.js', [], true);
+    }
+
+    // ── Archive ───────────────────────────────────────────────────────────────
+    if (is_shop() || is_product_category()) {
+        devhub_script('devhub-filters', '/modules/filters.js', ['devhub-utils'], true);
+    }
+
+    // ── Single product ────────────────────────────────────────────────────────
+    if (is_product()) {
+        devhub_script('devhub-product', '/modules/product.js', ['devhub-utils'], true);
+    }
+
+    // ── Cart ──────────────────────────────────────────────────────────────────
+    if (is_cart()) {
+        devhub_script('devhub-cart', '/modules/cart.js', ['devhub-utils'], true);
+    }
+
+    // ── Checkout ──────────────────────────────────────────────────────────────
+    if (is_checkout()) {
+        devhub_script('devhub-checkout', '/modules/checkout.js', ['devhub-utils'], true);
+    }
+
+    if (is_singular() && comments_open() && get_option('thread_comments')) {
+        wp_enqueue_script('comment-reply');
+    }
+}
+
+
+// ── Admin ─────────────────────────────────────────────────────────────────────
+
+add_action('admin_enqueue_scripts', 'devhub_admin_enqueue_scripts');
+
+function devhub_admin_enqueue_scripts(): void
+{
+    wp_enqueue_style('devhub-admin', DEVHUB_URI . '/inc/admin/assets/css/admin.css');
+    wp_enqueue_script('devhub-admin', DEVHUB_URI . '/inc/admin/assets/js/shopire-admin-script.js', ['jquery'], null, true);
+    wp_localize_script('devhub-admin', 'devhubAdmin', [
+        'ajaxUrl' => admin_url('admin-ajax.php'),
+        'nonce' => wp_create_nonce('devhub_nonce'),
+    ]);
+}
+
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+
+/**
+ * Enqueue a DeviceHub stylesheet with automatic cache-busting.
+ * Path is relative to assets/css/.
+ * Silently skips missing files — safe to call before the file is created.
+ */
+function devhub_style(string $handle, string $path, array $deps = []): void
+{
+    $full_path = DEVHUB_DIR . '/assets/css' . $path;
+    if (!file_exists($full_path))
+        return;
+
+    wp_enqueue_style(
+        $handle,
+        DEVHUB_URI . '/assets/css' . $path,
+        $deps,
+        filemtime($full_path)
+    );
+}
+
+/**
+ * Enqueue a DeviceHub script with automatic cache-busting.
+ * Path is relative to assets/js/.
+ * Silently skips missing files.
+ */
+function devhub_script(string $handle, string $path, array $deps = [], bool $in_footer = true): void
+{
+    $full_path = DEVHUB_DIR . '/assets/js' . $path;
+    if (!file_exists($full_path))
+        return;
+
+    wp_enqueue_script(
+        $handle,
+        DEVHUB_URI . '/assets/js' . $path,
+        $deps,
+        filemtime($full_path),
+        $in_footer
+    );
+}

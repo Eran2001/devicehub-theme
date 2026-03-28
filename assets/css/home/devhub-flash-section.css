@@ -1,0 +1,249 @@
+/* ==========================================================================
+   DeviceHub — Flash Sale Section
+   Path: assets/css/home/devhub-flash-section.css
+   Depends on: style.css (tokens)
+   ========================================================================== */
+
+/* ==========================================================================
+   1. Grid
+   ========================================================================== */
+
+.devhub-flash__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* ==========================================================================
+   2. Card
+   ========================================================================== */
+
+.devhub-flash__card {
+  border-radius: var(--devhub-radius-lg);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+  min-height: 220px;
+  padding-left: 80px;
+}
+
+.devhub-flash__card--green {
+  background-color: var(--devhub-flash-green);
+}
+.devhub-flash__card--yellow {
+  background-color: var(--devhub-flash-yellow);
+}
+.devhub-flash__card--default {
+  background-color: var(--devhub-primary);
+}
+
+/* ==========================================================================
+   3. Image — circle crops on left, extends into card
+   ========================================================================== */
+
+.devhub-flash__img-wrap {
+  flex-shrink: 0;
+  width: 200px;
+  height: 200px;
+  position: relative;
+  margin-left: -40px; /* crops left side of circle off-card */
+}
+
+.devhub-flash__img-circle {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.devhub-flash__img-circle img {
+  width: 160px;
+  height: 160px;
+  object-fit: contain;
+}
+
+/* ==========================================================================
+   4. Body — fills all remaining space, no gap on right
+   ========================================================================== */
+
+.devhub-flash__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+  padding: 32px 36px 32px 20px;
+}
+
+/* ==========================================================================
+   5. Timer
+   ========================================================================== */
+
+.devhub-flash__timer-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.devhub-flash__timer-labels {
+  display: flex;
+  align-items: center;
+}
+
+.devhub-flash__timer-labels span {
+  font-size: var(--devhub-text-lg);
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+  width: 52px;
+  text-align: center;
+  margin-right: 14px;
+}
+
+.devhub-flash__timer-labels span:last-child {
+  margin-right: 0;
+}
+
+.devhub-flash__timer {
+  display: flex;
+  align-items: center;
+}
+
+.devhub-flash__time-part {
+  font-size: 40px;
+  font-weight: 800;
+  color: var(--devhub-white);
+  width: 52px;
+  text-align: center;
+  display: inline-block;
+  line-height: 1;
+}
+
+.devhub-flash__sep {
+  font-size: 34px;
+  font-weight: 800;
+  color: var(--devhub-white);
+  width: 14px;
+  text-align: center;
+  line-height: 1;
+  margin: 0 0 3px;
+}
+
+/* ==========================================================================
+   6. Product info
+   ========================================================================== */
+
+.devhub-flash__name {
+  font-size: var(--devhub-text-xl);
+  font-weight: 500;
+  color: var(--devhub-white);
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+
+.devhub-flash__price {
+  font-size: var(--devhub-text-4xl);
+  font-weight: 800;
+  color: var(--devhub-white);
+  line-height: 1;
+}
+
+.devhub-flash__price .woocommerce-Price-amount,
+.devhub-flash__price .woocommerce-Price-amount bdi {
+  color: var(--devhub-white) !important;
+}
+
+.devhub-flash__price del .woocommerce-Price-amount,
+.devhub-flash__price del .woocommerce-Price-amount bdi {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.devhub-flash__price del {
+  font-size: var(--devhub-text-md);
+  margin-right: 8px;
+}
+
+/* ==========================================================================
+   7. Responsive
+   ========================================================================== */
+
+@media (max-width: 1200px) {
+  .devhub-flash__card {
+    padding-left: 40px;
+  }
+
+  .devhub-flash__time-part {
+    font-size: 32px;
+    width: 44px;
+  }
+  .devhub-flash__sep {
+    font-size: 26px;
+    width: 12px;
+  }
+  .devhub-flash__timer-labels span {
+    width: 44px;
+  }
+  .devhub-flash__price {
+    font-size: var(--devhub-text-3xl);
+  }
+}
+
+@media (max-width: 991px) {
+  .devhub-flash__card {
+    padding-left: 40px;
+  }
+
+  .devhub-flash__img-wrap,
+  .devhub-flash__img-circle {
+    width: 160px;
+    height: 160px;
+  }
+  .devhub-flash__img-circle img {
+    width: 120px;
+    height: 120px;
+  }
+  .devhub-flash__img-wrap {
+    margin-left: -30px;
+  }
+
+  .devhub-flash__time-part {
+    font-size: 24px;
+    width: 34px;
+  }
+  .devhub-flash__sep {
+    font-size: 20px;
+    width: 10px;
+  }
+  .devhub-flash__timer-labels span {
+    width: 40px;
+    margin-right: 2px;
+    font-size: var(--devhub-text-lg);
+  }
+  .devhub-flash__name {
+    font-size: var(--devhub-text-md);
+  }
+  .devhub-flash__price {
+    font-size: var(--devhub-text-2xl);
+  }
+  .devhub-flash__body {
+    padding: 16px 16px 16px 12px;
+  }
+}
+
+@media (max-width: 767px) {
+  .devhub-flash__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .devhub-flash__card {
+    min-height: 180px;
+    padding-left: 2px;
+  }
+}
