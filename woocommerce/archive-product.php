@@ -24,16 +24,16 @@ defined('ABSPATH') || exit;
 function devhub_archive_filter_group(string $label, string $taxonomy, string $url_param): void
 {
     $terms = get_terms([
-        'taxonomy'   => $taxonomy,
+        'taxonomy' => $taxonomy,
         'hide_empty' => true,
-        'orderby'    => 'name',
+        'orderby' => 'name',
     ]);
 
     if (empty($terms) || is_wp_error($terms)) {
         return;
     }
 
-    $raw    = sanitize_text_field(wp_unslash($_GET[$url_param] ?? ''));
+    $raw = sanitize_text_field(wp_unslash($_GET[$url_param] ?? ''));
     $active = $raw !== '' ? array_filter(array_map('sanitize_title', explode(',', $raw))) : [];
     ?>
     <div class="devhub-filter-group">
@@ -42,26 +42,26 @@ function devhub_archive_filter_group(string $label, string $taxonomy, string $ur
             <i class="fas fa-chevron-up" aria-hidden="true"></i>
         </button>
         <ul class="devhub-filter-group__list">
-            <?php foreach ($terms as $term) :
+            <?php foreach ($terms as $term):
                 $is_active = in_array($term->slug, $active, true);
-                $new_vals  = $is_active
+                $new_vals = $is_active
                     ? array_values(array_diff($active, [$term->slug]))
                     : array_merge($active, [$term->slug]);
-                $base      = remove_query_arg('paged');
-                $href      = $new_vals
+                $base = remove_query_arg('paged');
+                $href = $new_vals
                     ? add_query_arg($url_param, implode(',', $new_vals), $base)
                     : remove_query_arg($url_param, $base);
-            ?>
-            <li>
-                <a href="<?php echo esc_url($href); ?>"
-                   class="devhub-filter-option<?php echo $is_active ? ' devhub-filter-option--active' : ''; ?>">
-                    <span class="devhub-filter-option__check" aria-hidden="true">
-                        <?php if ($is_active) : ?><i class="fas fa-check"></i><?php endif; ?>
-                    </span>
-                    <span class="devhub-filter-option__name"><?php echo esc_html($term->name); ?></span>
-                    <span class="devhub-filter-option__count"><?php echo esc_html($term->count); ?></span>
-                </a>
-            </li>
+                ?>
+                <li>
+                    <a href="<?php echo esc_url($href); ?>"
+                        class="devhub-filter-option<?php echo $is_active ? ' devhub-filter-option--active' : ''; ?>">
+                        <span class="devhub-filter-option__check" aria-hidden="true">
+                            <?php if ($is_active): ?><i class="fas fa-check"></i><?php endif; ?>
+                        </span>
+                        <span class="devhub-filter-option__name"><?php echo esc_html($term->name); ?></span>
+                        <span class="devhub-filter-option__count"><?php echo esc_html($term->count); ?></span>
+                    </a>
+                </li>
             <?php endforeach; ?>
         </ul>
     </div>
@@ -72,7 +72,7 @@ function devhub_archive_filter_group(string $label, string $taxonomy, string $ur
 <div class="devhub-archive">
     <div class="wf-container">
 
-        <?php if (apply_filters('woocommerce_show_page_title', true)) : ?>
+        <?php if (apply_filters('woocommerce_show_page_title', true)): ?>
             <div class="devhub-archive__header">
                 <h1 class="devhub-archive__title"><?php woocommerce_page_title(); ?></h1>
                 <?php woocommerce_breadcrumb(); ?>
@@ -91,7 +91,7 @@ function devhub_archive_filter_group(string $label, string $taxonomy, string $ur
                     <!-- WooCommerce product attribute filters (pa_* — handled natively by WC) -->
                     <?php
                     $wc_attrs = wc_get_attribute_taxonomies();
-                    foreach ($wc_attrs as $attr) :
+                    foreach ($wc_attrs as $attr):
                         devhub_archive_filter_group(
                             $attr->attribute_label,
                             'pa_' . $attr->attribute_name,
@@ -111,11 +111,11 @@ function devhub_archive_filter_group(string $label, string $taxonomy, string $ur
                     <?php woocommerce_catalog_ordering(); ?>
                 </div>
 
-                <?php if (woocommerce_product_loop()) : ?>
+                <?php if (woocommerce_product_loop()): ?>
 
                     <div class="devhub-archive__grid">
                         <?php
-                        while (have_posts()) :
+                        while (have_posts()):
                             the_post();
                             $product = wc_get_product(get_the_ID());
                             if ($product) {
@@ -131,7 +131,7 @@ function devhub_archive_filter_group(string $label, string $taxonomy, string $ur
                         <?php woocommerce_pagination(); ?>
                     </div>
 
-                <?php else : ?>
+                <?php else: ?>
                     <?php do_action('woocommerce_no_products_found'); ?>
                 <?php endif; ?>
 

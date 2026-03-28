@@ -126,7 +126,7 @@ function devhub_enqueue_scripts(): void
 
     // ── Archive ───────────────────────────────────────────────────────────────
     if (is_shop() || is_product_category()) {
-        devhub_script('devhub-filters', '/modules/filters.js', ['devhub-utils'], true);
+        devhub_script('devhub-filters', '/modules/filters.js', [], true);
     }
 
     // ── Single product ────────────────────────────────────────────────────────

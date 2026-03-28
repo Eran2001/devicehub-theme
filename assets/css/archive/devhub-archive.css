@@ -92,11 +92,16 @@
   font-size: var(--devhub-text-sm);
   color: var(--devhub-mid);
   margin: 0;
+  padding: 0;
+  border: none; /* override Shopire border if applied */
+  background: none; /* override Shopire background if applied */
 }
 
 /* WooCommerce ordering dropdown */
 .devhub-archive__toolbar .woocommerce-ordering {
   margin: 0;
+  display: flex;
+  align-items: center;
 }
 
 .devhub-archive__toolbar .woocommerce-ordering select,
@@ -105,7 +110,7 @@
   color: var(--devhub-dark);
   border: 1px solid var(--devhub-border);
   border-radius: var(--devhub-radius-full);
-  padding: 7px 32px 7px 14px;
+  padding: 3px 28px 3px 10px;
   background: var(--devhub-white);
   cursor: pointer;
   appearance: none;
