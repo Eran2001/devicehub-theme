@@ -109,13 +109,16 @@ function devhub_filter_archive_by_brand(WP_Query $query): void
 
 
 // ── WooCommerce — force our archive-product template ─────────────────────────
+// woocommerce_locate_template fires via wc_get_template() — used by archive.
+// Single product uses wc_get_template_part() which calls locate_template()
+// directly, so content-single-product.php is picked up from the theme
+// woocommerce/ folder automatically — no filter needed for it.
 
 add_filter('woocommerce_locate_template', 'devhub_locate_template', 10, 3);
 
 function devhub_locate_template(string $template, string $template_name, string $template_path): string
 {
-    if ($template_name !== 'archive-product.php')
-        return $template;
+    if ($template_name !== 'archive-product.php') return $template;
 
     $custom = DEVHUB_DIR . '/woocommerce/archive-product.php';
     return file_exists($custom) ? $custom : $template;
@@ -137,6 +140,21 @@ function devhub_debug_template_comment(): void
     // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
     echo '<!-- DEVHUB TEMPLATE: ' . esc_html($template) . ' -->' . PHP_EOL;
 }
+
+// ── WooCommerce — Buy Now redirect to checkout ────────────────────────────────
+// product.js adds devhub_buy_now=1 to the cart form before submitting.
+// We catch it here and redirect to checkout instead of back to the product page.
+
+add_filter('woocommerce_add_to_cart_redirect', 'devhub_buy_now_redirect');
+
+function devhub_buy_now_redirect(string $url): string
+{
+    if (! empty($_POST['devhub_buy_now'])) {
+        return wc_get_checkout_url();
+    }
+    return $url;
+}
+
 
 // Override LKR currency symbol to display as 'LKR' instead of රු
 add_filter('woocommerce_currency_symbol', function (string $symbol, string $currency): string {

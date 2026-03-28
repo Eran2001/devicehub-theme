@@ -131,7 +131,7 @@ function devhub_enqueue_scripts(): void
 
     // ── Single product ────────────────────────────────────────────────────────
     if (is_product()) {
-        devhub_script('devhub-product', '/modules/product.js', ['devhub-utils'], true);
+        devhub_script('devhub-product', '/modules/product.js', [], true);
     }
 
     // ── Cart ──────────────────────────────────────────────────────────────────
