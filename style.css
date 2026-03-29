@@ -26,6 +26,10 @@ License URI: https://www.gnu.org/licenses/gpl-3.0.html
   --devhub-primary-dark: #e55a00;
   --devhub-primary-light: #ff8533;
 
+  /* Override Shopire's --wf-main-color so all parent theme elements use our orange */
+  --wf-main-color: #ff6600;
+  --wf-main-rgb: 255, 102, 0;
+
   /* Neutrals */
   --devhub-black: #1a1a1a;
   --devhub-dark: #2d2d2d;

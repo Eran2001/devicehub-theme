@@ -59,14 +59,14 @@
 }
 
 .wf_hdr_search .wf_hdr_search-form button {
-  background-color: var(--devhub-primary);
+  background-color: var(--devhub-primary) !important;
   color: var(--devhub-white);
   padding: 10px 16px;
   transition: background-color var(--devhub-transition);
 }
 
 .wf_hdr_search .wf_hdr_search-form button:hover {
-  background-color: var(--devhub-primary-dark);
+  background-color: var(--devhub-primary-dark) !important;
 }
 
 /* ==========================================================================

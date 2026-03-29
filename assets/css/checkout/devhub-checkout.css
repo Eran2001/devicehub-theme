@@ -2,6 +2,11 @@
    Checkout Page — DeviceHub
    ========================================================================== */
 
+/* Order summary sidebar — remove left padding gap */
+.wc-block-checkout__sidebar {
+  padding-left: 0 !important;
+}
+
 /* Place Order button */
 .wc-block-components-checkout-place-order-button.wc-block-components-button {
   background-color: var(--devhub-primary) !important;

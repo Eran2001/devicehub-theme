@@ -266,6 +266,7 @@
   flex: 1;
   min-width: 0;
   overflow: hidden;
+  padding-bottom: 2px;
 }
 
 .devhub-single__bundles-track {
@@ -416,7 +417,7 @@
 .devhub-single__btn {
   flex: 1;
   padding: 13px 20px;
-  border-radius: var(--devhub-radius-md);
+  border-radius: 0 !important;
   font-size: var(--devhub-text-md);
   font-weight: 600;
   text-align: center;
@@ -439,7 +440,8 @@
 .woocommerce-page .devhub-single__btn--cart {
   background: var(--devhub-black) !important;
   color: var(--devhub-white) !important;
-  border-radius: var(--devhub-radius-md) !important;
+  border: none !important;
+  border-radius: 0 !important;
   padding: 13px 20px !important;
   font-weight: 600 !important;
   width: auto !important;
@@ -447,6 +449,7 @@
   line-height: normal !important;
   box-shadow: none !important;
   text-transform: none !important;
+  outline: none !important;
 }
 
 .devhub-single .devhub-single__btn--buy,
@@ -454,7 +457,7 @@
 .woocommerce-page .devhub-single__btn--buy {
   background: var(--devhub-primary) !important;
   color: var(--devhub-white) !important;
-  border-radius: var(--devhub-radius-md) !important;
+  border-radius: 0 !important;
   padding: 13px 20px !important;
   font-weight: 600 !important;
   width: auto !important;
@@ -462,6 +465,7 @@
   line-height: normal !important;
   box-shadow: none !important;
   text-transform: none !important;
+  outline: none !important;
 }
 
 /* Tabs */
@@ -472,33 +476,39 @@
 
 .devhub-single__tab-nav {
   display: flex;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: wrap;
   border-bottom: 1px solid var(--devhub-border);
   margin-bottom: 32px;
+  padding: 16px 0;
 }
 
 .devhub-single__tab-btn {
-  padding: 16px 24px;
+  padding: 5px 14px;
   font-size: var(--devhub-text-md);
-  font-weight: 400;
+  font-weight: 500;
   color: var(--devhub-mid);
   background: none;
-  border: none;
-  border-bottom: 2px solid transparent;
-  margin-bottom: -1px;
+  border: 1.5px solid transparent;
+  border-radius: var(--devhub-radius-sm);
   cursor: pointer;
   transition:
     color var(--devhub-transition),
-    border-color var(--devhub-transition);
+    border-color var(--devhub-transition),
+    background var(--devhub-transition);
 }
 
 .devhub-single__tab-btn:hover {
   color: var(--devhub-dark);
+  border-color: var(--devhub-border);
 }
 
 .devhub-single__tab-btn--active {
-  color: var(--devhub-black);
+  color: var(--devhub-primary);
   font-weight: 600;
-  border-bottom-color: var(--devhub-black);
+  border-color: var(--devhub-primary);
+  background: #fff5f0;
 }
 
 .devhub-single__tab-panel {

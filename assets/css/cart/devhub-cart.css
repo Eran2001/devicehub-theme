@@ -2,6 +2,11 @@
    Cart Page — DeviceHub
    ========================================================================== */
 
+/* Cart totals sidebar — remove left padding gap */
+.wc-block-cart__sidebar {
+  padding-left: 0 !important;
+}
+
 /* Proceed to Checkout button — WooCommerce Cart Block */
 .wc-block-cart__submit-button.wc-block-components-button {
   background-color: var(--devhub-primary) !important;
