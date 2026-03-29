@@ -144,6 +144,11 @@ function devhub_enqueue_scripts(): void
         devhub_script('devhub-checkout', '/modules/checkout.js', ['devhub-utils'], true);
     }
 
+    // ── My Account ────────────────────────────────────────────────────────────
+    if (is_account_page()) {
+        devhub_script('devhub-login', '/modules/login.js', [], true);
+    }
+
     if (is_singular() && comments_open() && get_option('thread_comments')) {
         wp_enqueue_script('comment-reply');
     }
