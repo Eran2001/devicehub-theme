@@ -11,10 +11,15 @@
 
 .devhub-single__layout {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 48px;
+  grid-template-columns: 40% 1fr;
+  gap: 0px;
   align-items: start;
   margin-bottom: 48px;
+}
+
+.devhub-single__gallery,
+.devhub-single__info {
+  min-width: 0;
 }
 
 /* Gallery */
@@ -25,6 +30,7 @@
   align-items: center;
   justify-content: center;
   aspect-ratio: 1 / 1;
+  max-height: 420px;
   overflow: hidden;
 }
 
@@ -82,8 +88,8 @@
 .devhub-single__payment-icons {
   display: flex;
   align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
+  gap: 8px;
+  flex-wrap: nowrap;
 }
 
 .devhub-single__payment-icon {
@@ -91,6 +97,32 @@
   width: auto;
   display: block;
   object-fit: contain;
+}
+
+.devhub-single__payment-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  padding: 0 10px;
+  border: 1.5px solid var(--devhub-border);
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--devhub-dark);
+  white-space: nowrap;
+  flex-shrink: 0;
+  background: var(--devhub-white);
+}
+
+.devhub-single__payment-badge--koko {
+  color: #ff6b9d;
+  border-color: #ff6b9d;
+}
+
+.devhub-single__payment-badge--webx {
+  color: var(--devhub-dark);
+  font-size: 10px;
 }
 
 /* Info */
@@ -359,7 +391,7 @@
 }
 
 .devhub-single__bundle-arrow--prev {
-  visibility: hidden;
+  visibility: hidden; /* JS overrides this based on position */
 }
 .devhub-single__bundle-arrow:hover {
   border-color: var(--devhub-primary);

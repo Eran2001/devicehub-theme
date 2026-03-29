@@ -217,6 +217,11 @@ $placeholder_img = DEVHUB_URI . '/assets/images/Original-Img.svg';
                 <div class="devhub-single__bundles">
                     <p class="devhub-single__option-label"><?php esc_html_e('Optional Bundle Packages', 'devicehub-theme'); ?></p>
                     <div class="devhub-single__bundles-slider">
+                        <button class="devhub-single__bundle-arrow devhub-single__bundle-arrow--prev" id="devhubBundlePrev"
+                                type="button"
+                                aria-label="<?php esc_attr_e('Previous bundle', 'devicehub-theme'); ?>">
+                            <i class="fas fa-chevron-left" aria-hidden="true"></i>
+                        </button>
                         <div class="devhub-single__bundles-viewport">
                             <div class="devhub-single__bundles-track" id="devhubBundlesTrack">
                                 <?php foreach ($bundles as $idx => $bundle) : ?>
@@ -252,13 +257,11 @@ $placeholder_img = DEVHUB_URI . '/assets/images/Original-Img.svg';
                                 <?php endforeach; ?>
                             </div>
                         </div>
-                        <?php if (count($bundles) > 3) : ?>
                         <button class="devhub-single__bundle-arrow" id="devhubBundleNext"
                                 type="button"
                                 aria-label="<?php esc_attr_e('Next bundle', 'devicehub-theme'); ?>">
                             <i class="fas fa-chevron-right" aria-hidden="true"></i>
                         </button>
-                        <?php endif; ?>
                     </div>
                 </div>
                 <?php endif; ?>

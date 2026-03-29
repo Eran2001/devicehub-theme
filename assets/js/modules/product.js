@@ -143,7 +143,7 @@
     if (!track || !viewport) return;
 
     var cards = track.querySelectorAll(".devhub-single__bundle-card");
-    var VISIBLE = 3;
+    var VISIBLE = 4;
     var GAP = 12;
     var current = 0;
     var total = cards.length;

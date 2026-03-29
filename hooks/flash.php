@@ -2,9 +2,9 @@
 /**
  * DeviceHub — Flash Sale Section
  *
- * Static dummy UI — wire WooCommerce data later.
- * Image: assets/images/Original-Img.svg
- * Countdown: flash-countdown.js reads data-countdown attribute.
+ * Queries WooCommerce products that have an active sale price
+ * with a future sale end date. Countdown reads data-countdown.
+ * Image: always the dummy SVG (build phase).
  *
  * @package DeviceHub
  */
@@ -15,32 +15,55 @@ add_action('devhub_flash_section', 'devhub_render_flash_section');
 
 function devhub_render_flash_section(): void
 {
-    $img = DEVHUB_URI . '/assets/images/Original-Img.svg';
-    $end_ts = time() + 3 * DAY_IN_SECONDS;
-    $end_date = gmdate('Y-m-d\TH:i:s', $end_ts);
+    $img       = DEVHUB_URI . '/assets/images/Original-Img.svg';
+    $modifiers = ['green', 'yellow'];
 
-    $cards = [
-        [
-            'modifier' => 'green',
-            'name' => 'Apple iPhone 16 Pro 512GB Pink (MQ233)',
-            'price' => 'Rs.500,000',
+    $query = new WP_Query([
+        'post_type'      => 'product',
+        'post_status'    => 'publish',
+        'posts_per_page' => 2,
+        'meta_query'     => [
+            'relation' => 'AND',
+            [
+                'key'     => '_sale_price',
+                'value'   => '',
+                'compare' => '!=',
+            ],
+            [
+                'key'     => '_sale_price_dates_to',
+                'value'   => time(),
+                'compare' => '>=',
+                'type'    => 'NUMERIC',
+            ],
         ],
-        [
-            'modifier' => 'yellow',
-            'name' => 'Apple iPhone 16 Pro 512GB Pink (MQ233)',
-            'price' => 'Rs.500,000',
-        ],
-    ];
+    ]);
+
+    if (! $query->have_posts()) {
+        return;
+    }
     ?>
     <section class="devhub-flash" aria-label="<?php esc_attr_e('Flash sale', 'devicehub-theme'); ?>">
         <div class="wf-container">
             <div class="devhub-flash__grid">
-                <?php foreach ($cards as $card): ?>
-                    <div class="devhub-flash__card devhub-flash__card--<?php echo esc_attr($card['modifier']); ?>">
+                <?php
+                $idx = 0;
+                while ($query->have_posts()) :
+                    $query->the_post();
+                    $product = wc_get_product(get_the_ID());
+                    if (! $product) {
+                        $idx++;
+                        continue;
+                    }
+
+                    $sale_to  = $product->get_date_on_sale_to();
+                    $end_date = $sale_to ? gmdate('Y-m-d\TH:i:s\Z', $sale_to->getTimestamp()) : '';
+                    $modifier = $modifiers[ $idx % count($modifiers) ];
+                    ?>
+                    <div class="devhub-flash__card devhub-flash__card--<?php echo esc_attr($modifier); ?>">
 
                         <div class="devhub-flash__img-wrap">
                             <div class="devhub-flash__img-circle">
-                                <img src="<?php echo esc_url($img); ?>" alt="<?php echo esc_attr($card['name']); ?>">
+                                <img src="<?php echo esc_url($img); ?>" alt="<?php echo esc_attr($product->get_name()); ?>">
                             </div>
                         </div>
 
@@ -65,13 +88,17 @@ function devhub_render_flash_section(): void
                             </div>
 
                             <div class="devhub-flash__info">
-                                <p class="devhub-flash__name"><?php echo esc_html($card['name']); ?></p>
-                                <p class="devhub-flash__price"><?php echo esc_html($card['price']); ?></p>
+                                <p class="devhub-flash__name"><?php echo esc_html($product->get_name()); ?></p>
+                                <p class="devhub-flash__price"><?php echo $product->get_price_html(); // phpcs:ignore WordPress.Security.EscapeOutput ?></p>
                             </div>
                         </div>
 
                     </div>
-                <?php endforeach; ?>
+                    <?php
+                    $idx++;
+                endwhile;
+                wp_reset_postdata();
+                ?>
             </div>
         </div>
     </section>

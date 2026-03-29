@@ -124,6 +124,31 @@
   padding: 0 3px;
 }
 
+/* Cart dropdown buttons */
+.widget_shopping_cart .button:not(.checkout) {
+  background-color: var(--devhub-black) !important;
+  border-color: var(--devhub-black) !important;
+  color: var(--devhub-white) !important;
+}
+
+.widget_shopping_cart .button:not(.checkout):hover {
+  background-color: var(--devhub-dark) !important;
+  border-color: var(--devhub-dark) !important;
+  color: var(--devhub-white) !important;
+}
+
+.widget_shopping_cart .button.checkout {
+  background-color: var(--devhub-primary) !important;
+  border-color: var(--devhub-primary) !important;
+  color: var(--devhub-white) !important;
+}
+
+.widget_shopping_cart .button.checkout:hover {
+  background-color: var(--devhub-primary-dark) !important;
+  border-color: var(--devhub-primary-dark) !important;
+  color: var(--devhub-white) !important;
+}
+
 /* ==========================================================================
    5. Mobile navbar
    ========================================================================== */
