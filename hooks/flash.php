@@ -56,7 +56,7 @@ function devhub_render_flash_section(): void
                     }
 
                     $sale_to  = $product->get_date_on_sale_to();
-                    $end_date = $sale_to ? gmdate('Y-m-d\TH:i:s\Z', $sale_to->getTimestamp()) : '';
+                    $end_date = $sale_to ? gmdate('Y-m-d', $sale_to->getTimestamp()) . 'T23:59:59Z' : '';
                     $modifier = $modifiers[ $idx % count($modifiers) ];
                     ?>
                     <div class="devhub-flash__card devhub-flash__card--<?php echo esc_attr($modifier); ?>">

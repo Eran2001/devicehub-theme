@@ -68,6 +68,11 @@
         devhubResolveVariation();
       });
     });
+
+    // Auto-select if only one option
+    if (swatches.length === 1) {
+      swatches[0].click();
+    }
   }
 
   // ── Storage options ───────────────────────────────────────────────────────
@@ -89,6 +94,11 @@
         devhubResolveVariation();
       });
     });
+
+    // Auto-select if only one option
+    if (btns.length === 1) {
+      btns[0].click();
+    }
   }
 
   // ── Variation resolver ────────────────────────────────────────────────────
