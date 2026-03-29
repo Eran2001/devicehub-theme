@@ -1,1 +1,25 @@
-/* placeholder */
+/* ==========================================================================
+   Cart Page — DeviceHub
+   ========================================================================== */
+
+/* Proceed to Checkout button — WooCommerce Cart Block */
+.wc-block-cart__submit-button.wc-block-components-button {
+  background-color: var(--devhub-primary) !important;
+  color: #fff !important;
+  /* border-radius: var(--devhub-radius-md) !important; */
+  font-weight: 600 !important;
+  text-decoration: none !important;
+  transition: background-color 0.2s ease !important;
+}
+
+.wc-block-cart__submit-button.wc-block-components-button:hover {
+  background-color: var(--devhub-primary-dark) !important;
+  color: #fff !important;
+}
+
+.wc-block-cart__submit-button.wc-block-components-button:focus,
+.wc-block-cart__submit-button.wc-block-components-button:focus-visible,
+.wc-block-cart__submit-button.wc-block-components-button:active {
+  outline: none !important;
+  box-shadow: none !important;
+}

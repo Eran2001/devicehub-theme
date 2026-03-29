@@ -162,3 +162,12 @@ add_filter('woocommerce_currency_symbol', function (string $symbol, string $curr
         return 'LKR';
     return $symbol;
 }, 10, 2);
+
+
+// ── Cart / Checkout / Account — force no sidebar (full container width) ────────
+add_filter('theme_mod_shopire_default_pg_sidebar_option', function (string $value): string {
+    if (is_cart() || is_checkout() || is_account_page()) {
+        return 'no_sidebar';
+    }
+    return $value;
+});
