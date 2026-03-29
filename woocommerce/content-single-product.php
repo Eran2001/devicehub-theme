@@ -281,18 +281,18 @@ $placeholder_img = DEVHUB_URI . '/assets/images/Original-Img.svg';
                                     <?php endforeach; ?>
                                 </div>
                             </div>
-                            <?php if (count($bundles) > 3): ?>
-                                <button class="devhub-single__bundle-arrow devhub-single__bundle-arrow--prev"
-                                    id="devhubBundlePrev" type="button"
-                                    aria-label="<?php esc_attr_e('Previous bundle', 'devicehub-theme'); ?>">
-                                    <i class="fas fa-chevron-left" aria-hidden="true"></i>
-                                </button>
-                                <button class="devhub-single__bundle-arrow devhub-single__bundle-arrow--next"
-                                    id="devhubBundleNext" type="button"
-                                    aria-label="<?php esc_attr_e('Next bundle', 'devicehub-theme'); ?>">
-                                    <i class="fas fa-chevron-right" aria-hidden="true"></i>
-                                </button>
-                            <?php endif; ?>
+                            <!-- <?php if (count($bundles) > 3): ?>
+                        <button class="devhub-single__bundle-arrow devhub-single__bundle-arrow--prev"
+                            id="devhubBundlePrev" type="button"
+                            aria-label="<?php esc_attr_e('Previous bundle', 'devicehub-theme'); ?>">
+                            <i class="fas fa-chevron-left" aria-hidden="true"></i>
+                        </button>
+                        <button class="devhub-single__bundle-arrow devhub-single__bundle-arrow--next"
+                            id="devhubBundleNext" type="button"
+                            aria-label="<?php esc_attr_e('Next bundle', 'devicehub-theme'); ?>">
+                            <i class="fas fa-chevron-right" aria-hidden="true"></i>
+                        </button>
+                        <?php endif; ?> -->
                         </div>
                     </div>
                 <?php endif; ?>
