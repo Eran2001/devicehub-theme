@@ -10,7 +10,7 @@
 
 .devhub-archive {
   padding: 32px 0 64px;
-  background: var(--devhub-bg);
+  background: var(--devhub-white);
   min-height: 60vh;
 }
 

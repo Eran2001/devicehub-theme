@@ -139,7 +139,7 @@
   display: flex;
   align-items: center;
   overflow: visible;
-  background: var(--devhub-bg);
+  background: var(--devhub-white);
   min-width: 0;
 }
 

@@ -4,18 +4,10 @@
    Depends on: style.css
    ========================================================================== */
 
-/* ==========================================================================
-   1. Page wrapper
-   ========================================================================== */
-
 .devhub-single {
   padding: 32px 0 64px;
   background: var(--devhub-white);
 }
-
-/* ==========================================================================
-   2. Two-column layout
-   ========================================================================== */
 
 .devhub-single__layout {
   display: grid;
@@ -25,18 +17,15 @@
   margin-bottom: 48px;
 }
 
-/* ==========================================================================
-   3. Gallery (left column)
-   ========================================================================== */
-
+/* Gallery */
 .devhub-single__main-image {
   background: var(--devhub-bg);
   border-radius: var(--devhub-radius-lg);
-  padding: 0px;
   display: flex;
   align-items: center;
   justify-content: center;
   aspect-ratio: 1 / 1;
+  overflow: hidden;
 }
 
 .devhub-single__main-image img {
@@ -74,6 +63,7 @@
   object-fit: contain;
 }
 
+/* Safe checkout */
 .devhub-single__safe-checkout {
   margin-top: 20px;
   padding-top: 16px;
@@ -86,44 +76,24 @@
   gap: 6px;
   font-size: var(--devhub-text-sm);
   color: var(--devhub-mid);
-  margin-bottom: 10px;
-}
-
-.devhub-single__safe-checkout-label .fas {
-  font-size: 13px;
+  margin-bottom: 12px;
 }
 
 .devhub-single__payment-icons {
   display: flex;
   align-items: center;
-  gap: 8px;
-  flex-wrap: nowrap;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
-.devhub-single__payment-badge {
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--devhub-dark);
-  border: 1px solid var(--devhub-border);
-  border-radius: var(--devhub-radius-sm);
-  padding: 4px 8px;
-  letter-spacing: 0.03em;
-  background: var(--devhub-white);
+.devhub-single__payment-icon {
+  height: 28px;
+  width: auto;
+  display: block;
+  object-fit: contain;
 }
 
-.devhub-single__payment-badge--koko {
-  color: #e91e63;
-  border-color: #e91e63;
-}
-.devhub-single__payment-badge--webx {
-  color: #1565c0;
-  border-color: #1565c0;
-}
-
-/* ==========================================================================
-   4. Product info (right column)
-   ========================================================================== */
-
+/* Info */
 .devhub-single__title {
   font-size: var(--devhub-text-2xl);
   font-weight: 700;
@@ -156,7 +126,7 @@
 }
 
 .devhub-single__stock--in {
-  color: #16a34a;
+  color: var(--devhub-success);
 }
 .devhub-single__stock--out {
   color: var(--devhub-mid);
@@ -167,24 +137,14 @@
   height: 8px;
   border-radius: 50%;
   flex-shrink: 0;
+  background: currentColor;
 }
 
-.devhub-single__stock--in .devhub-single__stock-dot {
-  background: #16a34a;
-}
-.devhub-single__stock--out .devhub-single__stock-dot {
-  background: var(--devhub-mid);
-}
-
-/* ==========================================================================
-   5. Option groups
-   ========================================================================== */
-
+/* Option groups */
 .devhub-single__option-group {
   margin-bottom: 20px;
 }
 
-/* Override Shopire paragraph styles inside .woocommerce context */
 .devhub-single__option-label {
   font-size: var(--devhub-text-sm) !important;
   color: var(--devhub-mid) !important;
@@ -198,10 +158,7 @@
   line-height: normal !important;
 }
 
-/* ==========================================================================
-   6. Color swatches
-   ========================================================================== */
-
+/* Color swatches */
 .devhub-single__color-swatches {
   display: flex;
   gap: 10px;
@@ -232,15 +189,11 @@
 .devhub-single__color-swatch--active {
   outline-color: var(--devhub-dark);
 }
-
 .devhub-single__color-swatch--active .fas {
   color: var(--devhub-white);
 }
 
-/* ==========================================================================
-   7. Storage options
-   ========================================================================== */
-
+/* Storage */
 .devhub-single__storage-options {
   display: flex;
   gap: 8px;
@@ -266,15 +219,11 @@
   color: var(--devhub-primary);
 }
 
-/* ==========================================================================
-   8. Bundle carousel
-   ========================================================================== */
-
+/* Bundle carousel */
 .devhub-single__bundles {
   margin-bottom: 24px;
 }
 
-/* Slider: inline flex so arrows never cause layout shifts */
 .devhub-single__bundles-slider {
   display: flex;
   align-items: center;
@@ -296,9 +245,6 @@
 
 .devhub-single__bundle-card {
   flex-shrink: 0;
-  /* JS sets exact px width; CSS fallback for 3-up layout */
-  width: calc((100% - 24px) / 3);
-  min-width: 0;
   border: 1.5px solid var(--devhub-border);
   border-radius: var(--devhub-radius-md);
   padding: 14px;
@@ -358,12 +304,10 @@
 .devhub-single__bundle-row:last-child {
   margin-bottom: 0;
 }
-
 .devhub-single__bundle-meta-key {
   font-size: var(--devhub-text-xs);
   color: var(--devhub-mid);
 }
-
 .devhub-single__bundle-meta-val {
   font-size: var(--devhub-text-xs);
   font-weight: 500;
@@ -382,25 +326,21 @@
   color: var(--devhub-mid);
   margin-bottom: 2px;
 }
-
 .devhub-single__bundle-price {
   font-size: var(--devhub-text-lg);
   font-weight: 700;
   color: var(--devhub-black);
 }
-
 .devhub-single__bundle-link {
   font-size: var(--devhub-text-xs);
   color: var(--devhub-primary);
   white-space: nowrap;
   flex-shrink: 0;
 }
-
 .devhub-single__bundle-link:hover {
   text-decoration: underline;
 }
 
-/* Arrows — inline flex siblings of viewport, never affect grid width */
 .devhub-single__bundle-arrow {
   flex-shrink: 0;
   width: 32px;
@@ -415,29 +355,22 @@
   cursor: pointer;
   transition:
     border-color var(--devhub-transition),
-    box-shadow var(--devhub-transition),
-    visibility var(--devhub-transition);
+    box-shadow var(--devhub-transition);
 }
 
-/* prev starts invisible but still occupies space — no layout shift */
 .devhub-single__bundle-arrow--prev {
   visibility: hidden;
 }
-
 .devhub-single__bundle-arrow:hover {
   border-color: var(--devhub-primary);
   box-shadow: var(--devhub-shadow-hover);
 }
-
 .devhub-single__bundle-arrow .fas {
   font-size: 11px;
   color: var(--devhub-dark);
 }
 
-/* ==========================================================================
-   9. Add to cart actions
-   ========================================================================== */
-
+/* Cart actions */
 .devhub-single__cart-form {
   margin: 0;
 }
@@ -452,7 +385,7 @@
   flex: 1;
   padding: 13px 20px;
   border-radius: var(--devhub-radius-md);
-  font-size: var(--devhub-text-base);
+  font-size: var(--devhub-text-md);
   font-weight: 600;
   text-align: center;
   cursor: pointer;
@@ -469,7 +402,6 @@
   transform: scale(0.98);
 }
 
-/* Override Shopire: .woocommerce button.button, .woocommerce-page button.button */
 .devhub-single .devhub-single__btn--cart,
 .woocommerce .devhub-single__btn--cart,
 .woocommerce-page .devhub-single__btn--cart {
@@ -477,14 +409,12 @@
   color: var(--devhub-white) !important;
   border-radius: var(--devhub-radius-md) !important;
   padding: 13px 20px !important;
-  font-size: var(--devhub-text-base) !important;
   font-weight: 600 !important;
   width: auto !important;
   height: auto !important;
   line-height: normal !important;
   box-shadow: none !important;
   text-transform: none !important;
-  letter-spacing: normal !important;
 }
 
 .devhub-single .devhub-single__btn--buy,
@@ -494,20 +424,15 @@
   color: var(--devhub-white) !important;
   border-radius: var(--devhub-radius-md) !important;
   padding: 13px 20px !important;
-  font-size: var(--devhub-text-base) !important;
   font-weight: 600 !important;
   width: auto !important;
   height: auto !important;
   line-height: normal !important;
   box-shadow: none !important;
   text-transform: none !important;
-  letter-spacing: normal !important;
 }
 
-/* ==========================================================================
-   10. Tabs
-   ========================================================================== */
-
+/* Tabs */
 .devhub-single__tabs {
   border-top: 1px solid var(--devhub-border);
   margin-top: 8px;
@@ -521,7 +446,7 @@
 
 .devhub-single__tab-btn {
   padding: 16px 24px;
-  font-size: var(--devhub-text-base);
+  font-size: var(--devhub-text-md);
   font-weight: 400;
   color: var(--devhub-mid);
   background: none;
@@ -551,10 +476,7 @@
   display: block;
 }
 
-/* ==========================================================================
-   11. Features tab
-   ========================================================================== */
-
+/* Features */
 .devhub-single__features-content {
   font-size: var(--devhub-text-sm);
   color: var(--devhub-dark);
@@ -565,10 +487,7 @@
   margin-top: 10px;
 }
 
-/* ==========================================================================
-   12. Quick stats
-   ========================================================================== */
-
+/* Quick stats */
 .devhub-single__quick-stats {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -589,61 +508,51 @@
   font-size: 18px;
   color: var(--devhub-mid);
 }
-
 .devhub-single__quick-stat-label {
   font-size: var(--devhub-text-xs);
   color: var(--devhub-mid);
 }
-
 .devhub-single__quick-stat-value {
   font-size: var(--devhub-text-sm);
   font-weight: 600;
   color: var(--devhub-black);
 }
 
-/* ==========================================================================
-   13. Specs table
-   ========================================================================== */
-
+/* Specs table — alternating rows */
 .devhub-single__specs-table {
   width: 100%;
   border-collapse: collapse;
 }
 
-.devhub-single__specs-table tr {
-  border-bottom: 1px solid var(--devhub-border);
+.devhub-single__specs-table tr:nth-child(odd) {
+  background-color: var(--devhub-bg);
 }
-
-.devhub-single__specs-table tr:first-child {
-  border-top: 1px solid var(--devhub-border);
+.devhub-single__specs-table tr:nth-child(even) {
+  background-color: var(--devhub-white);
 }
 
 .devhub-single__spec-label,
 .devhub-single__spec-value {
-  padding: 14px 0;
+  padding: 14px 20px;
   font-size: var(--devhub-text-sm);
   vertical-align: top;
 }
 
 .devhub-single__spec-label {
-  width: 220px;
+  width: 240px;
   color: var(--devhub-mid);
-  padding-right: 24px;
+  font-weight: 500;
 }
 
 .devhub-single__spec-value {
   color: var(--devhub-dark);
 }
 
-/* ==========================================================================
-   14. Responsive
-   ========================================================================== */
-
+/* Responsive */
 @media (max-width: 1024px) {
   .devhub-single__layout {
     gap: 32px;
   }
-
   .devhub-single__quick-stats {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -654,13 +563,14 @@
     grid-template-columns: 1fr;
     gap: 24px;
   }
-
   .devhub-single__actions {
     flex-direction: column;
   }
-
   .devhub-single__tab-btn {
     padding: 12px 16px;
     font-size: var(--devhub-text-sm);
+  }
+  .devhub-single__spec-label {
+    width: 140px;
   }
 }

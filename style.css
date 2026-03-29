@@ -94,7 +94,7 @@ body {
 body {
   font-family: var(--devhub-font);
   color: var(--devhub-dark);
-  background-color: var(--devhub-bg);
+  background-color: var(--devhub-white);
   -webkit-font-smoothing: antialiased;
 }
 
