@@ -2,6 +2,27 @@
    My Account Page — DeviceHub
    ========================================================================== */
 
+/* Remove Shopire's woocommerce.php section/container/col spacing on account page */
+.woocommerce-account .woo-products {
+  padding: 0 !important;
+}
+
+.woocommerce-account .woo-products > .wf-container {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.woocommerce-account .woo-products .wf-row {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.woocommerce-account .woo-products [class*="wf-col"] {
+  margin-top: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
 /* Active / hover nav item — override Shopire's --wf-main-color (red) */
 .woocommerce-account .woocommerce-MyAccount-navigation > ul li.is-active a,
 .woocommerce-account .woocommerce-MyAccount-navigation > ul li a:focus,

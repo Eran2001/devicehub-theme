@@ -9,6 +9,7 @@
 
   document.addEventListener("DOMContentLoaded", function () {
     devhubInitTabs();
+    devhubInitGallery();
     devhubInitColorSwatches();
     devhubInitStorageOptions();
     devhubInitBundleCarousel();
@@ -45,6 +46,26 @@
           panel.classList.add("devhub-single__tab-panel--active");
           panel.removeAttribute("hidden");
         }
+      });
+    });
+  }
+
+  // ── Gallery thumbnails ────────────────────────────────────────────────────
+
+  function devhubInitGallery() {
+    var thumbs = document.querySelectorAll(".devhub-single__thumb");
+    var mainImg = document.querySelector(".devhub-single__main-image img");
+    if (!thumbs.length || !mainImg) return;
+
+    thumbs.forEach(function (thumb) {
+      thumb.addEventListener("click", function () {
+        var src = thumb.querySelector("img").getAttribute("src");
+        if (src) mainImg.src = src;
+
+        thumbs.forEach(function (t) {
+          t.classList.remove("devhub-single__thumb--active");
+        });
+        thumb.classList.add("devhub-single__thumb--active");
       });
     });
   }

@@ -71,7 +71,9 @@ function devhub_render_page_bar(): void
     if ($rendered) return;
     $rendered = true;
 
-    $title = woocommerce_page_title(false);
+    $title = (is_cart() || is_checkout() || is_account_page())
+        ? get_the_title()
+        : woocommerce_page_title(false);
     ?>
     <div class="devhub-page-bar wf-container">
         <?php woocommerce_breadcrumb(); ?>

@@ -129,3 +129,35 @@ function devhub_render_broadbands_section(): void
         DEVHUB_URI . '/assets/images/Original-Router-Img.svg'
     );
 }
+
+
+// ── Electronics ───────────────────────────────────────────────────────────────
+
+add_action('devhub_electronics_section', 'devhub_render_electronics_section');
+
+function devhub_render_electronics_section(): void
+{
+    devhub_render_product_section(
+        'Electronics',
+        'devhub-electronics',
+        [],
+        'electronics',
+        DEVHUB_URI . '/assets/images/Original-Img.svg'
+    );
+}
+
+
+// ── Accessories ───────────────────────────────────────────────────────────────
+
+add_action('devhub_accessories_section', 'devhub_render_accessories_section');
+
+function devhub_render_accessories_section(): void
+{
+    devhub_render_product_section(
+        'Accessories',
+        'devhub-accessories',
+        [],
+        'accessories',
+        DEVHUB_URI . '/assets/images/Original-Img.svg'
+    );
+}

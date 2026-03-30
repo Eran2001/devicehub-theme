@@ -13,5 +13,9 @@ do_action('devhub_mobile_phones_section');
 do_action('devhub_categories_section');
 do_action('devhub_preorder_section');
 do_action('devhub_broadbands_section');
+do_action('devhub_preorder_section');
+do_action('devhub_electronics_section');
+do_action('devhub_preorder_section');
+do_action('devhub_accessories_section');
 
 get_footer();

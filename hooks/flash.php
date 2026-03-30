@@ -15,30 +15,30 @@ add_action('devhub_flash_section', 'devhub_render_flash_section');
 
 function devhub_render_flash_section(): void
 {
-    $img       = DEVHUB_URI . '/assets/images/Original-Img.svg';
+    $img = DEVHUB_URI . '/assets/images/Original-Img.svg';
     $modifiers = ['green', 'yellow'];
 
     $query = new WP_Query([
-        'post_type'      => 'product',
-        'post_status'    => 'publish',
+        'post_type' => 'product',
+        'post_status' => 'publish',
         'posts_per_page' => 2,
-        'meta_query'     => [
+        'meta_query' => [
             'relation' => 'AND',
             [
-                'key'     => '_sale_price',
-                'value'   => '',
+                'key' => '_sale_price',
+                'value' => '',
                 'compare' => '!=',
             ],
             [
-                'key'     => '_sale_price_dates_to',
-                'value'   => time(),
+                'key' => '_sale_price_dates_to',
+                'value' => time(),
                 'compare' => '>=',
-                'type'    => 'NUMERIC',
+                'type' => 'NUMERIC',
             ],
         ],
     ]);
 
-    if (! $query->have_posts()) {
+    if (!$query->have_posts()) {
         return;
     }
     ?>
@@ -47,23 +47,26 @@ function devhub_render_flash_section(): void
             <div class="devhub-flash__grid">
                 <?php
                 $idx = 0;
-                while ($query->have_posts()) :
+                while ($query->have_posts()):
                     $query->the_post();
                     $product = wc_get_product(get_the_ID());
-                    if (! $product) {
+                    if (!$product) {
                         $idx++;
                         continue;
                     }
 
-                    $sale_to  = $product->get_date_on_sale_to();
+                    $sale_to = $product->get_date_on_sale_to();
                     $end_date = $sale_to ? gmdate('Y-m-d', $sale_to->getTimestamp()) . 'T23:59:59Z' : '';
-                    $modifier = $modifiers[ $idx % count($modifiers) ];
+                    $modifier = $modifiers[$idx % count($modifiers)];
                     ?>
                     <div class="devhub-flash__card devhub-flash__card--<?php echo esc_attr($modifier); ?>">
 
                         <div class="devhub-flash__img-wrap">
                             <div class="devhub-flash__img-circle">
-                                <img src="<?php echo esc_url($img); ?>" alt="<?php echo esc_attr($product->get_name()); ?>">
+                                <!-- <img src="<?php echo esc_url($img); ?>" alt="<?php echo esc_attr($product->get_name()); ?>"> -->
+                                <img src="<?php echo esc_url(get_the_post_thumbnail_url($product->get_id(), 'woocommerce_single') ?: $img); ?>"
+                                    alt="<?php echo esc_attr($product->get_name()); ?>">
+
                             </div>
                         </div>
 
@@ -89,7 +92,9 @@ function devhub_render_flash_section(): void
 
                             <div class="devhub-flash__info">
                                 <p class="devhub-flash__name"><?php echo esc_html($product->get_name()); ?></p>
-                                <p class="devhub-flash__price"><?php echo $product->get_price_html(); // phpcs:ignore WordPress.Security.EscapeOutput ?></p>
+                                <p class="devhub-flash__price">
+                                    <?php echo $product->get_price_html(); // phpcs:ignore WordPress.Security.EscapeOutput ?>
+                                </p>
                             </div>
                         </div>
 
