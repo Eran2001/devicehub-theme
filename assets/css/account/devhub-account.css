@@ -899,6 +899,7 @@
   color: var(--devhub-dark, #111) !important;
   text-decoration: none;
   font-weight: 700;
+  font-size: 1.3rem;
 }
 
 .devhub-account-content .woocommerce-orders-table__cell-order-number a:hover {
@@ -1001,6 +1002,22 @@
   line-height: normal !important;
   vertical-align: middle;
   overflow: hidden !important;
+}
+
+.devhub-order-action-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--devhub-primary) !important;
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  text-decoration: none;
+}
+
+.devhub-order-action-icon:hover {
+  color: var(--devhub-primary) !important;
+  background: none !important;
 }
 
 .devhub-account-content .woocommerce-orders-table thead th:first-child {
