@@ -59,11 +59,10 @@ add_filter('theme_mod_shopire_hs_site_breadcrumb', function ($val) {
 }, 20);
 
 
-// ── Page bar — inject on cart / checkout / account (no custom template) ───────
+// ── Page bar — inject on cart / checkout (account uses template override) ────
 
 add_action('woocommerce_before_cart', 'devhub_render_page_bar', 5);
 add_action('woocommerce_before_checkout_form', 'devhub_render_page_bar', 5);
-add_action('woocommerce_account_navigation', 'devhub_render_page_bar', 1);
 
 function devhub_render_page_bar(): void
 {
