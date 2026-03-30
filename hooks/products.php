@@ -101,7 +101,7 @@ function devhub_render_product_section(
 
 // ── Mobile Phones ─────────────────────────────────────────────────────────────
 
-add_action('devhub_products_section', 'devhub_render_mobile_phones_section');
+add_action('devhub_mobile_phones_section', 'devhub_render_mobile_phones_section');
 
 function devhub_render_mobile_phones_section(): void
 {
