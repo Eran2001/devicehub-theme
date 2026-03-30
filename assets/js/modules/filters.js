@@ -82,7 +82,7 @@
 
             wrapper.appendChild(trigger);
             wrapper.appendChild(list);
-            ordering.innerHTML = '';
+            nativeSelect.style.display = 'none';
             ordering.appendChild(wrapper);
 
             function openDropdown() {
