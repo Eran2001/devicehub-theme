@@ -14,6 +14,73 @@ defined('ABSPATH') || exit;
 
 
 /**
+ * Render category links as a filter group.
+ * Clicking a category navigates to its archive URL — PHP then renders
+ * the relevant attribute filters for that category automatically.
+ */
+function devhub_archive_category_group(): void
+{
+    // Slugs that are utility/internal categories, not browsable sections.
+    // Add to this list whenever you create a category that shouldn't appear in the filter.
+    $excluded_slugs = ['flash-sale', 'new-arrivals', 'test'];
+
+    $terms = get_terms([
+        'taxonomy' => 'product_cat',
+        'hide_empty' => true,
+        'parent' => 0,
+        'orderby' => 'name',
+        'exclude' => [get_option('default_product_cat')],
+    ]);
+
+    if (empty($terms) || is_wp_error($terms)) {
+        return;
+    }
+
+    $terms = array_values(array_filter($terms, fn($t) => !in_array($t->slug, $excluded_slugs, true)));
+
+    if (empty($terms)) {
+        return;
+    }
+
+    $current_cat = is_product_category() ? get_queried_object() : null;
+    $shop_url = get_permalink(wc_get_page_id('shop'));
+    ?>
+    <div class="devhub-filter-group">
+        <button class="devhub-filter-group__toggle" type="button" aria-expanded="true">
+            Category
+            <i class="fas fa-chevron-up" aria-hidden="true"></i>
+        </button>
+        <ul class="devhub-filter-group__list">
+            <li>
+                <a href="<?php echo esc_url($shop_url); ?>"
+                    class="devhub-filter-option<?php echo !$current_cat ? ' devhub-filter-option--active' : ''; ?>">
+                    <span class="devhub-filter-option__check" aria-hidden="true">
+                        <?php if (!$current_cat): ?><i class="fas fa-check"></i><?php endif; ?>
+                    </span>
+                    <span class="devhub-filter-option__name">All Products</span>
+                </a>
+            </li>
+            <?php foreach ($terms as $term):
+                $is_active = $current_cat && $current_cat->term_id === $term->term_id;
+                ?>
+                <li>
+                    <a href="<?php echo esc_url(get_term_link($term)); ?>"
+                        class="devhub-filter-option<?php echo $is_active ? ' devhub-filter-option--active' : ''; ?>">
+                        <span class="devhub-filter-option__check" aria-hidden="true">
+                            <?php if ($is_active): ?><i class="fas fa-check"></i><?php endif; ?>
+                        </span>
+                        <span class="devhub-filter-option__name"><?php echo esc_html($term->name); ?></span>
+                        <span class="devhub-filter-option__count"><?php echo esc_html($term->count); ?></span>
+                    </a>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+    <?php
+}
+
+
+/**
  * Render one collapsible filter group.
  * Uses link-based URL toggling — no JS required for filtering itself.
  *
@@ -85,19 +152,48 @@ function devhub_archive_filter_group(string $label, string $taxonomy, string $ur
             <aside class="devhub-archive__sidebar">
                 <div class="devhub-archive__filters">
 
-                    <!-- Brand (pwb-brand — custom taxonomy, filtered via pre_get_posts) -->
+                    <!-- Category links — clicking navigates to the category archive -->
+                    <?php devhub_archive_category_group(); ?>
+
+                    <!-- Brand (always shown — applies to all categories) -->
                     <?php devhub_archive_filter_group('Brand', 'pwb-brand', 'filter_brand'); ?>
 
-                    <!-- WooCommerce product attribute filters (pa_* — handled natively by WC) -->
+                    <!-- Category-specific attribute filters -->
                     <?php
-                    $wc_attrs = wc_get_attribute_taxonomies();
-                    foreach ($wc_attrs as $attr):
-                        devhub_archive_filter_group(
-                            $attr->attribute_label,
-                            'pa_' . $attr->attribute_name,
-                            'filter_' . $attr->attribute_name
-                        );
-                    endforeach;
+                    // Map category slug → relevant attribute filters.
+                    // 'taxonomy' must match a registered pa_* taxonomy in WooCommerce.
+                    // Adjust slugs to match what you've created under Products → Attributes.
+                    $category_attribute_map = [
+                        'mobile-phones' => [
+                            ['label' => 'Built-in Memory', 'taxonomy' => 'pa_built-in-memory', 'param' => 'filter_built-in-memory'],
+                            ['label' => 'Storage', 'taxonomy' => 'pa_storage', 'param' => 'filter_storage'],
+                            ['label' => 'Battery Capacity', 'taxonomy' => 'pa_battery-capacity', 'param' => 'filter_battery-capacity'],
+                            ['label' => 'Screen Type', 'taxonomy' => 'pa_screen-type', 'param' => 'filter_screen-type'],
+                            ['label' => 'Screen Diagonal', 'taxonomy' => 'pa_screen-diagonal', 'param' => 'filter_screen-diagonal'],
+                            ['label' => 'Color', 'taxonomy' => 'pa_color', 'param' => 'filter_color'],
+                        ],
+                        'broad-bands' => [
+                            ['label' => 'Color', 'taxonomy' => 'pa_color', 'param' => 'filter_color'],
+                            ['label' => 'Material', 'taxonomy' => 'pa_material', 'param' => 'filter_material'],
+                        ],
+                        'electronics' => [
+                            ['label' => 'Color', 'taxonomy' => 'pa_color', 'param' => 'filter_color'],
+                            ['label' => 'Material', 'taxonomy' => 'pa_material', 'param' => 'filter_material'],
+                        ],
+                        'accessories' => [
+                            ['label' => 'Color', 'taxonomy' => 'pa_color', 'param' => 'filter_color'],
+                            ['label' => 'Size', 'taxonomy' => 'pa_size', 'param' => 'filter_size'],
+                            ['label' => 'Material', 'taxonomy' => 'pa_material', 'param' => 'filter_material'],
+                        ],
+                    ];
+
+                    $current_cat = is_product_category() ? get_queried_object() : null;
+
+                    if ($current_cat && isset($category_attribute_map[$current_cat->slug])) {
+                        foreach ($category_attribute_map[$current_cat->slug] as $attr) {
+                            devhub_archive_filter_group($attr['label'], $attr['taxonomy'], $attr['param']);
+                        }
+                    }
                     ?>
 
                 </div>
@@ -119,7 +215,9 @@ function devhub_archive_filter_group(string $label, string $taxonomy, string $ur
                             the_post();
                             $product = wc_get_product(get_the_ID());
                             if ($product) {
-                                $img = devhub_get_product_placeholder_img($product);
+                                // $img = devhub_get_product_placeholder_img($product);
+                                // devhub_render_product_card($product, $img);
+                                $img = get_the_post_thumbnail_url($product->get_id(), 'woocommerce_single') ?: devhub_get_product_placeholder_img($product);
                                 devhub_render_product_card($product, $img);
                             }
                         endwhile;

@@ -35,21 +35,21 @@ function devhub_render_product_section(
 ): void {
 
     $query = new WP_Query([
-        'post_type'      => 'product',
-        'post_status'    => 'publish',
+        'post_type' => 'product',
+        'post_status' => 'publish',
         'posts_per_page' => 8,
-        'orderby'        => 'date',
-        'order'          => 'DESC',
-        'tax_query'      => [
+        'orderby' => 'date',
+        'order' => 'DESC',
+        'tax_query' => [
             [
                 'taxonomy' => 'product_cat',
-                'field'    => 'slug',
-                'terms'    => $category_slug,
+                'field' => 'slug',
+                'terms' => $category_slug,
             ],
         ],
     ]);
 
-    if (! $query->have_posts()) {
+    if (!$query->have_posts()) {
         return;
     }
 
@@ -65,9 +65,8 @@ function devhub_render_product_section(
                 <div class="devhub-products__brands" role="group">
                     <button class="devhub-brand-tab devhub-brand-tab--active" data-brand="all"
                         data-section="<?php echo esc_attr($section_id); ?>" aria-pressed="true">All</button>
-                    <?php foreach ($brands as $brand) : ?>
-                        <button class="devhub-brand-tab"
-                            data-brand="<?php echo esc_attr(sanitize_title($brand)); ?>"
+                    <?php foreach ($brands as $brand): ?>
+                        <button class="devhub-brand-tab" data-brand="<?php echo esc_attr(sanitize_title($brand)); ?>"
                             data-section="<?php echo esc_attr($section_id); ?>"
                             aria-pressed="false"><?php echo esc_html($brand); ?></button>
                     <?php endforeach; ?>
@@ -80,7 +79,8 @@ function devhub_render_product_section(
                     $query->the_post();
                     $product = wc_get_product(get_the_ID());
                     if ($product) {
-                        devhub_render_product_card($product, $img);
+                        // devhub_render_product_card($product, $img);
+                        devhub_render_product_card($product, get_the_post_thumbnail_url($product->get_id(), 'woocommerce_single') ?: $img);
                     }
                 }
                 wp_reset_postdata();
@@ -125,7 +125,7 @@ function devhub_render_broadbands_section(): void
         'Broad Bands',
         'devhub-broad-bands',
         ['TP-Link', 'Huawei', 'ZTE'],
-        'broadband',
+        'broad-bands',
         DEVHUB_URI . '/assets/images/Original-Router-Img.svg'
     );
 }

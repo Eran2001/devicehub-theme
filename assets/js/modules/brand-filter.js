@@ -33,18 +33,33 @@
         this.setAttribute("aria-pressed", "true");
 
         // Filter cards — scoped to this section's grid only
-        document
-          .querySelectorAll("#" + sectionId + "-grid .devhub-product-card")
-          .forEach(function (card) {
-            const cardBrands = card.dataset.brands
-              ? card.dataset.brands.split(" ")
-              : [];
+        const grid = document.querySelector("#" + sectionId + "-grid");
+        let visibleCount = 0;
 
-            const visible = brand === "all" || cardBrands.includes(brand);
+        grid.querySelectorAll(".devhub-product-card").forEach(function (card) {
+          const cardBrands = card.dataset.brands
+            ? card.dataset.brands.split(" ")
+            : [];
 
-            // Use hidden attribute — no inline style, CSS can style [hidden]
-            card.hidden = !visible;
-          });
+          const visible = brand === "all" || cardBrands.includes(brand);
+          card.hidden = !visible;
+          if (visible) visibleCount++;
+        });
+
+        // Show/hide empty state
+        let empty = grid.querySelector(".devhub-brand-empty");
+        if (visibleCount === 0) {
+          if (!empty) {
+            empty = document.createElement("div");
+            empty.className = "devhub-brand-empty";
+            empty.innerHTML =
+              '<p>No products found for this brand.</p>';
+            grid.appendChild(empty);
+          }
+          empty.hidden = false;
+        } else if (empty) {
+          empty.hidden = true;
+        }
       });
     });
   }

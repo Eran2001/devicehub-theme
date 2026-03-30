@@ -126,6 +126,10 @@ foreach ($attributes as $attr_key => $attribute) {
 }
 
 $placeholder_img = DEVHUB_URI . '/assets/images/Original-Img.svg';
+$main_img        = get_the_post_thumbnail_url($product->get_id(), 'woocommerce_single') ?: $placeholder_img;
+$gallery_ids     = $product->get_gallery_image_ids();
+$thumb_imgs      = array_map(fn($id) => wp_get_attachment_image_url($id, 'woocommerce_thumbnail'), $gallery_ids);
+if (empty($thumb_imgs)) $thumb_imgs = [$placeholder_img, $placeholder_img, $placeholder_img];
 
 // ── 2. Markup ─────────────────────────────────────────────────────────────────
 ?>
@@ -139,18 +143,18 @@ $placeholder_img = DEVHUB_URI . '/assets/images/Original-Img.svg';
             <div class="devhub-single__gallery">
 
                 <div class="devhub-single__main-image">
-                    <img src="<?php echo esc_url($placeholder_img); ?>"
+                    <img src="<?php echo esc_url($main_img); ?>"
                         alt="<?php echo esc_attr($product->get_name()); ?>">
                 </div>
 
                 <div class="devhub-single__thumbnails">
-                    <?php for ($i = 0; $i < 3; $i++): ?>
+                    <?php foreach ($thumb_imgs as $i => $thumb): ?>
                         <button class="devhub-single__thumb<?php echo $i === 0 ? ' devhub-single__thumb--active' : ''; ?>"
                             type="button"
                             aria-label="<?php echo esc_attr(sprintf(__('View image %d', 'devicehub-theme'), $i + 1)); ?>">
-                            <img src="<?php echo esc_url($placeholder_img); ?>" alt="">
+                            <img src="<?php echo esc_url($thumb); ?>" alt="">
                         </button>
-                    <?php endfor; ?>
+                    <?php endforeach; ?>
                 </div>
 
                 <div class="devhub-single__safe-checkout">
