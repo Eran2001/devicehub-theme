@@ -876,7 +876,7 @@
 }
 
 .devhub-account-content .woocommerce-orders-table tbody td {
-  padding: 14px 16px !important;
+  padding: 0px 16px !important;
   color: #444 !important;
   vertical-align: middle !important;
   background: transparent !important;
@@ -976,22 +976,31 @@
   width: 88px !important;
   max-width: 88px !important;
   text-align: center !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.devhub-account-content
+  .woocommerce-orders-table__cell-order-actions
+  .woocommerce-button,
+.devhub-account-content .woocommerce-orders-table__cell-order-actions .button {
+  display: table !important;
+  float: none !important;
+  margin: 0 auto !important;
 }
 
 .devhub-account-content .woocommerce-orders-table .woocommerce-button,
 .devhub-account-content .woocommerce-orders-table .button {
-  display: inline-flex !important;
-  align-items: center;
-  justify-content: center;
-  width: 38px;
-  height: 38px;
-  padding: 0 !important;
-  border-radius: 999px !important;
-}
-
-.devhub-account-content .woocommerce-orders-table .woocommerce-button svg,
-.devhub-account-content .woocommerce-orders-table .button svg {
-  display: block;
+  display: inline-block !important;
+  width: auto;
+  height: auto;
+  padding: 7px 18px !important;
+  background: var(--devhub-account-teal) !important;
+  color: #fff !important;
+  border-radius: 6px !important;
+  line-height: normal !important;
+  vertical-align: middle;
+  overflow: hidden !important;
 }
 
 .devhub-account-content .woocommerce-orders-table thead th:first-child {
@@ -1002,12 +1011,24 @@
   border-top-right-radius: 10px;
 }
 
-.devhub-account-content .woocommerce-orders-table tbody tr:last-child th:first-child,
-.devhub-account-content .woocommerce-orders-table tbody tr:last-child td:first-child {
+.devhub-account-content
+  .woocommerce-orders-table
+  tbody
+  tr:last-child
+  th:first-child,
+.devhub-account-content
+  .woocommerce-orders-table
+  tbody
+  tr:last-child
+  td:first-child {
   border-bottom-left-radius: 10px;
 }
 
-.devhub-account-content .woocommerce-orders-table tbody tr:last-child td:last-child {
+.devhub-account-content
+  .woocommerce-orders-table
+  tbody
+  tr:last-child
+  td:last-child {
   border-bottom-right-radius: 10px;
 }
 
@@ -1508,8 +1529,8 @@
 
 .devhub-account-content .woocommerce-pagination {
   display: flex;
-  justify-content: flex-end;
-  margin-top: 20px;
+  justify-content: center;
+  margin-top: 32px;
 }
 
 .devhub-account-content .woocommerce-pagination ul.page-numbers {
@@ -1525,18 +1546,24 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
-  border: 1px solid var(--devhub-border, #e8e8e8);
-  border-radius: var(--devhub-radius-sm, 6px);
-  background: var(--devhub-white, #fff);
-  font-size: var(--devhub-text-sm, 13px);
-  color: var(--devhub-dark, #111);
+  min-width: 3.9rem;
+  height: 3.9rem;
+  padding: 0.2rem 1.2rem;
+  border: 1px solid var(--devhub-border);
+  border-radius: 999px;
+  background: var(--devhub-white);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--devhub-dark);
   text-decoration: none;
   transition:
-    background 0.15s,
-    border-color 0.15s,
-    color 0.15s;
+    background var(--devhub-transition),
+    border-color var(--devhub-transition),
+    color var(--devhub-transition);
+}
+
+.devhub-account-content .woocommerce-pagination li > .page-numbers i {
+  font-size: 1.3rem;
 }
 
 .devhub-account-content .woocommerce-pagination li > .page-numbers:hover {
@@ -1700,7 +1727,6 @@
   .devhub-dashboard-cards {
     grid-template-columns: repeat(3, 1fr);
   }
-
 }
 
 @media (max-width: 767px) {

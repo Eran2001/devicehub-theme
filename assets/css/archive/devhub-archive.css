@@ -293,18 +293,24 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  min-width: 3.9rem;
+  height: 3.9rem;
+  padding: 0.2rem 1.2rem;
   border: 1px solid var(--devhub-border);
-  border-radius: var(--devhub-radius-sm);
+  border-radius: 999px;
   background: var(--devhub-white);
-  font-size: var(--devhub-text-sm);
+  font-size: 1.5rem;
+  font-weight: 700;
   color: var(--devhub-dark);
   text-decoration: none;
   transition:
     background var(--devhub-transition),
     border-color var(--devhub-transition),
     color var(--devhub-transition);
+}
+
+.devhub-archive__pagination .woocommerce-pagination li > .page-numbers i {
+  font-size: 1.3rem;
 }
 
 .devhub-archive__pagination .woocommerce-pagination li > .page-numbers:hover {

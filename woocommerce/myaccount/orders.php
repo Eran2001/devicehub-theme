@@ -78,14 +78,8 @@ do_action( 'woocommerce_before_account_orders', $has_orders );
 											$action_aria_label = $action['aria-label'];
 										}
 
-										$action_content = esc_html( $action['name'] );
-
-										if ( 'view' === $key ) {
-											$action_content = '<span class="screen-reader-text">' . esc_html( $action['name'] ) . '</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
-										}
-
-										echo '<a href="' . esc_url( $action['url'] ) . '" class="woocommerce-button' . esc_attr( $wp_button_class ) . ' button ' . sanitize_html_class( $key ) . '" aria-label="' . esc_attr( $action_aria_label ) . '">' . wp_kses( $action_content, [ 'span' => [ 'class' => true ], 'svg' => [ 'viewBox' => true, 'width' => true, 'height' => true, 'fill' => true, 'stroke' => true, 'stroke-width' => true, 'stroke-linecap' => true, 'stroke-linejoin' => true, 'aria-hidden' => true ], 'path' => [ 'd' => true ], 'circle' => [ 'cx' => true, 'cy' => true, 'r' => true ] ] ) . '</a>';
-										unset( $action_aria_label, $action_content );
+										echo '<a href="' . esc_url( $action['url'] ) . '" class="woocommerce-button' . esc_attr( $wp_button_class ) . ' button ' . sanitize_html_class( $key ) . '" aria-label="' . esc_attr( $action_aria_label ) . '">' . esc_html( $action['name'] ) . '</a>';
+										unset( $action_aria_label );
 									}
 								}
 								?>
@@ -107,14 +101,24 @@ do_action( 'woocommerce_before_account_orders', $has_orders );
 	<?php do_action( 'woocommerce_before_account_orders_pagination' ); ?>
 
 	<?php if ( 1 < $customer_orders->max_num_pages ) : ?>
-		<div class="woocommerce-pagination woocommerce-pagination--without-numbers woocommerce-Pagination">
-			<?php if ( 1 !== $current_page ) : ?>
-				<a class="woocommerce-button woocommerce-button--previous woocommerce-Button woocommerce-Button--previous button<?php echo esc_attr( $wp_button_class ); ?>" href="<?php echo esc_url( wc_get_endpoint_url( 'orders', $current_page - 1 ) ); ?>"><?php esc_html_e( 'Previous', 'woocommerce' ); ?></a>
-			<?php endif; ?>
-
-			<?php if ( intval( $customer_orders->max_num_pages ) !== $current_page ) : ?>
-				<a class="woocommerce-button woocommerce-button--next woocommerce-Button woocommerce-Button--next button<?php echo esc_attr( $wp_button_class ); ?>" href="<?php echo esc_url( wc_get_endpoint_url( 'orders', $current_page + 1 ) ); ?>"><?php esc_html_e( 'Next', 'woocommerce' ); ?></a>
-			<?php endif; ?>
+		<div class="devhub-archive__pagination">
+			<div class="woocommerce-pagination woocommerce-Pagination">
+				<?php
+				echo wp_kses_post(
+					paginate_links(
+						[
+							'base'      => wc_get_endpoint_url( 'orders', '%#%' ),
+							'format'    => '',
+							'current'   => max( 1, $current_page ),
+							'total'     => (int) $customer_orders->max_num_pages,
+							'prev_text' => '<i class="fa fa-angle-double-left" aria-hidden="true"></i>',
+							'next_text' => '<i class="fa fa-angle-double-right" aria-hidden="true"></i>',
+							'type'      => 'list',
+						]
+					)
+				);
+				?>
+			</div>
 		</div>
 	<?php endif; ?>
 

@@ -226,7 +226,25 @@ function devhub_archive_filter_group(string $label, string $taxonomy, string $ur
                     </div>
 
                     <div class="devhub-archive__pagination">
-                        <?php woocommerce_pagination(); ?>
+                        <div class="woocommerce-pagination woocommerce-Pagination">
+                            <?php
+                            global $wp_query;
+
+                            echo wp_kses_post(
+                                paginate_links(
+                                    [
+                                        'base'      => str_replace( 999999999, '%#%', esc_url( get_pagenum_link( 999999999 ) ) ),
+                                        'format'    => '',
+                                        'current'   => max( 1, get_query_var( 'paged' ) ),
+                                        'total'     => (int) $wp_query->max_num_pages,
+                                        'prev_text' => '<i class="fa fa-angle-double-left" aria-hidden="true"></i>',
+                                        'next_text' => '<i class="fa fa-angle-double-right" aria-hidden="true"></i>',
+                                        'type'      => 'list',
+                                    ]
+                                )
+                            );
+                            ?>
+                        </div>
                     </div>
 
                 <?php else: ?>
