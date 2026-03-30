@@ -91,40 +91,129 @@
 .devhub-archive__toolbar .woocommerce-result-count {
   font-size: var(--devhub-text-sm);
   color: var(--devhub-mid);
-  margin: 0;
-  padding: 0;
-  border: none; /* override Shopire border if applied */
-  background: none; /* override Shopire background if applied */
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  background: none !important;
+  box-shadow: none !important;
 }
 
 /* WooCommerce ordering dropdown */
 .devhub-archive__toolbar .woocommerce-ordering {
-  margin: 0;
+  margin: 0 !important;
   display: flex;
   align-items: center;
 }
 
 .devhub-archive__toolbar .woocommerce-ordering select,
 .devhub-archive__toolbar .orderby {
-  font-size: var(--devhub-text-sm);
-  color: var(--devhub-dark);
-  border: 1px solid var(--devhub-border);
-  border-radius: var(--devhub-radius-full);
-  padding: 3px 28px 3px 10px;
-  background: var(--devhub-white);
+  font-size: var(--devhub-text-sm) !important;
+  font-weight: 500;
+  color: var(--devhub-dark) !important;
+  border: 1.5px solid var(--devhub-border) !important;
+  border-radius: var(--devhub-radius-full) !important;
+  padding: 4px 24px 4px 10px !important;
+  background-color: var(--devhub-white) !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b6b6b' d='M6 8L1 3h10z'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 12px center !important;
   cursor: pointer;
-  appearance: none;
-  -webkit-appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b6b6b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  box-shadow: none !important;
+  accent-color: var(--devhub-primary);
   transition: border-color var(--devhub-transition);
 }
 
 .devhub-archive__toolbar .woocommerce-ordering select:focus,
 .devhub-archive__toolbar .orderby:focus {
-  outline: none;
+  outline: none !important;
+  border-color: var(--devhub-primary) !important;
+  box-shadow: none !important;
+}
+
+/* Custom sort dropdown */
+.devhub-sort-dropdown {
+  position: relative;
+}
+
+.devhub-sort-dropdown__trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px;
+  font-size: var(--devhub-text-sm);
+  font-weight: 500;
+  color: var(--devhub-dark);
+  background: var(--devhub-white);
+  border: 1.5px solid var(--devhub-border);
+  border-radius: var(--devhub-radius-full);
+  cursor: pointer;
+  transition: border-color var(--devhub-transition);
+  white-space: nowrap;
+}
+
+.devhub-sort-dropdown__trigger:hover,
+.devhub-sort-dropdown--open .devhub-sort-dropdown__trigger {
   border-color: var(--devhub-primary);
+  outline: none;
+}
+
+.devhub-sort-dropdown__chevron {
+  display: flex;
+  align-items: center;
+  transition: transform 0.2s ease;
+}
+
+.devhub-sort-dropdown--open .devhub-sort-dropdown__chevron {
+  transform: rotate(180deg);
+}
+
+.devhub-sort-dropdown__list {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  min-width: 180px;
+  background: var(--devhub-white);
+  border: 1.5px solid var(--devhub-border);
+  border-radius: var(--devhub-radius-md);
+  box-shadow: var(--devhub-shadow-hover);
+  list-style: none;
+  margin: 0;
+  padding: 4px 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease,
+    visibility 0.18s ease;
+  z-index: 100;
+}
+
+.devhub-sort-dropdown--open .devhub-sort-dropdown__list {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.devhub-sort-dropdown__item {
+  padding: 8px 16px;
+  font-size: var(--devhub-text-sm);
+  color: var(--devhub-dark);
+  cursor: pointer;
+  transition: background var(--devhub-transition), color var(--devhub-transition);
+}
+
+.devhub-sort-dropdown__item:hover {
+  background: #fff5f0;
+  color: var(--devhub-primary);
+}
+
+.devhub-sort-dropdown__item--active {
+  color: var(--devhub-primary);
+  font-weight: 600;
+  background: #fff5f0;
 }
 
 /* ==========================================================================
