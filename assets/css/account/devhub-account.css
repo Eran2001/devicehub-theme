@@ -802,13 +802,15 @@
 
 .devhub-account-content .woocommerce-orders-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   background: #fff !important;
   border: 1px solid var(--devhub-account-border) !important;
-  border-radius: 10px;
+  border-radius: 10px !important;
   overflow: hidden;
   font-size: 14px;
   box-shadow: none !important;
+  table-layout: fixed;
 }
 
 /* Reset all cell borders from Shopire, then re-apply full grid */
@@ -854,8 +856,8 @@
   .woocommerce-orders-table
   thead
   th.woocommerce-orders-table__header-order-number {
-  width: 80px !important;
-  max-width: 80px !important;
+  width: 104px !important;
+  max-width: 104px !important;
 }
 
 /* Body rows — only a bottom divider, no left/right borders */
@@ -885,9 +887,9 @@
   .woocommerce-orders-table
   .woocommerce-orders-table__header-order-number,
 .devhub-account-content .woocommerce-orders-table__cell-order-number {
-  width: 80px !important;
+  width: 104px !important;
   min-width: 0 !important;
-  max-width: 80px !important;
+  max-width: 104px !important;
   white-space: nowrap !important;
   font-weight: 700 !important;
   color: var(--devhub-dark, #111) !important;
@@ -967,6 +969,46 @@
 .devhub-account-content .woocommerce-orders-table .woocommerce-button:hover,
 .devhub-account-content .woocommerce-orders-table .button:hover {
   background: var(--devhub-primary-dark, #e55a00) !important;
+}
+
+.devhub-account-content .woocommerce-orders-table__header-order-actions,
+.devhub-account-content .woocommerce-orders-table__cell-order-actions {
+  width: 88px !important;
+  max-width: 88px !important;
+  text-align: center !important;
+}
+
+.devhub-account-content .woocommerce-orders-table .woocommerce-button,
+.devhub-account-content .woocommerce-orders-table .button {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  padding: 0 !important;
+  border-radius: 999px !important;
+}
+
+.devhub-account-content .woocommerce-orders-table .woocommerce-button svg,
+.devhub-account-content .woocommerce-orders-table .button svg {
+  display: block;
+}
+
+.devhub-account-content .woocommerce-orders-table thead th:first-child {
+  border-top-left-radius: 10px;
+}
+
+.devhub-account-content .woocommerce-orders-table thead th:last-child {
+  border-top-right-radius: 10px;
+}
+
+.devhub-account-content .woocommerce-orders-table tbody tr:last-child th:first-child,
+.devhub-account-content .woocommerce-orders-table tbody tr:last-child td:first-child {
+  border-bottom-left-radius: 10px;
+}
+
+.devhub-account-content .woocommerce-orders-table tbody tr:last-child td:last-child {
+  border-bottom-right-radius: 10px;
 }
 
 /* ==========================================================================
@@ -1116,8 +1158,8 @@
 
 .devhub-addresses-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
 }
 
 .devhub-address-card {
@@ -1125,11 +1167,12 @@
   border: 1px solid var(--devhub-account-border);
   border-radius: 10px;
   overflow: hidden;
+  min-height: 100%;
 }
 
 .devhub-address-card__header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
   padding: 14px 18px;
@@ -1137,11 +1180,22 @@
   background: #fafafa;
 }
 
+.devhub-address-card__heading {
+  min-width: 0;
+}
+
 .devhub-address-card__title {
   font-size: 15px;
   font-weight: 700;
   color: var(--devhub-dark, #111);
   margin: 0;
+}
+
+.devhub-address-card__meta {
+  margin: 6px 0 0 !important;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #888;
 }
 
 .devhub-address-card__edit {
@@ -1163,11 +1217,50 @@
 
 .devhub-address-card__body {
   display: block;
-  padding: 16px 18px;
+  padding: 18px;
   font-size: 14px;
   color: #555;
   line-height: 1.8;
   font-style: normal;
+}
+
+.devhub-address-card__details {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px 20px;
+}
+
+.devhub-address-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.devhub-address-detail.is-wide {
+  grid-column: auto;
+}
+
+.devhub-address-detail__label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #999;
+}
+
+.devhub-address-detail__value {
+  font-size: 15px;
+  line-height: 1.55;
+  color: #333;
+  word-break: break-word;
+}
+
+.devhub-address-card__empty {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #777;
 }
 
 /* ==========================================================================
@@ -1607,6 +1700,7 @@
   .devhub-dashboard-cards {
     grid-template-columns: repeat(3, 1fr);
   }
+
 }
 
 @media (max-width: 767px) {
