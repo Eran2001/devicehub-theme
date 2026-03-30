@@ -22,13 +22,13 @@
 .devhub-brand-empty {
   grid-column: 1 / -1;
   text-align: center;
-  padding: 48px 16px;
+  padding: 20px 16px;
   color: var(--devhub-mid);
-  font-size: var(--devhub-text-sm);
+  font-size: var(--devhub-text-2xl);
 }
 
 .devhub-products__title {
-  font-size: var(--devhub-text-2xl);
+  font-size: var(--devhub-text-3xl);
   font-weight: 700;
   color: var(--devhub-black);
   position: relative;
@@ -61,7 +61,7 @@
 .devhub-brand-tab {
   padding: 5px 14px;
   border-radius: var(--devhub-radius-sm);
-  font-size: var(--devhub-text-md);
+  font-size: var(--devhub-text-xl);
   font-weight: 500;
   border: 1.5px solid transparent;
   background: none;
@@ -107,7 +107,7 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: var(--devhub-text-md);
+  font-size: var(--devhub-text-xl);
   font-weight: 600;
   color: var(--devhub-primary);
   border: 1.5px solid var(--devhub-primary);

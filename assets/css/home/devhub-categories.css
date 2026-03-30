@@ -90,14 +90,14 @@
    ========================================================================== */
 
 .devhub-categories__item-name {
-  font-size: var(--devhub-text-md);
+  font-size: var(--devhub-text-2xl);
   font-weight: 600;
   color: var(--devhub-dark);
   margin-bottom: 4px;
 }
 
 .devhub-categories__item-from {
-  font-size: var(--devhub-text-xs);
+  font-size: var(--devhub-text-lg);
   color: var(--devhub-mid);
   line-height: 1.5;
 }

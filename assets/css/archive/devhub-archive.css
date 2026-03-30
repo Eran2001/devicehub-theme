@@ -35,7 +35,7 @@
 }
 
 .devhub-page-bar__title {
-  font-size: var(--devhub-text-sm);
+  font-size: var(--devhub-text-xl);
   font-weight: 600;
   color: var(--devhub-dark);
   margin: 0;
@@ -72,7 +72,8 @@
 
 /* WooCommerce breadcrumb override */
 .devhub-archive .woocommerce-breadcrumb {
-  font-size: var(--devhub-text-sm);
+  font-size: var(--devhub-text-xl);
+  font-weight: 700;
   color: var(--devhub-mid);
   background: none;
   padding: 0;
@@ -130,7 +131,7 @@
 
 /* WooCommerce result count */
 .devhub-archive__toolbar .woocommerce-result-count {
-  font-size: var(--devhub-text-sm);
+  font-size: var(--devhub-text-lg);
   color: var(--devhub-mid);
   margin: 0 !important;
   padding: 0 !important;
@@ -148,7 +149,7 @@
 
 .devhub-archive__toolbar .woocommerce-ordering select,
 .devhub-archive__toolbar .orderby {
-  font-size: var(--devhub-text-sm) !important;
+  font-size: var(--devhub-text-xl) !important;
   font-weight: 500;
   color: var(--devhub-dark) !important;
   border: 1.5px solid var(--devhub-border) !important;
@@ -183,7 +184,7 @@
   align-items: center;
   gap: 8px;
   padding: 4px 12px;
-  font-size: var(--devhub-text-sm);
+  font-size: var(--devhub-text-lg);
   font-weight: 500;
   color: var(--devhub-dark);
   background: var(--devhub-white);
@@ -240,7 +241,7 @@
 
 .devhub-sort-dropdown__item {
   padding: 8px 16px;
-  font-size: var(--devhub-text-sm);
+  font-size: var(--devhub-text-lg);
   color: var(--devhub-dark);
   cursor: pointer;
   transition:

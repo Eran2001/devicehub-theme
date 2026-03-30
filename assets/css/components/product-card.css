@@ -37,7 +37,7 @@
   left: 10px;
   background: var(--devhub-primary);
   color: var(--devhub-white);
-  font-size: var(--devhub-text-xs);
+  font-size: var(--devhub-text-lg);
   font-weight: 700;
   padding: 3px 8px;
   border-radius: var(--devhub-radius-sm);
@@ -87,7 +87,7 @@
 }
 
 .devhub-product-card__name {
-  font-size: var(--devhub-text-sm);
+  font-size: var(--devhub-text-2xl);
   font-weight: 600;
   color: var(--devhub-dark);
   line-height: 1.4;
@@ -107,7 +107,7 @@
   display: inline-block;
   background: #fff3eb;
   color: var(--devhub-primary);
-  font-size: var(--devhub-text-xs);
+  font-size: var(--devhub-text-lg);
   font-weight: 600;
   padding: 2px 8px;
   border-radius: var(--devhub-radius-sm);
@@ -116,13 +116,13 @@
 }
 
 .devhub-product-card__price {
-  font-size: var(--devhub-text-sm);
+  font-size: var(--devhub-text-xl);
   font-weight: 700;
   color: var(--devhub-black);
 }
 
 .devhub-product-card__price del {
-  font-size: var(--devhub-text-xs);
+  font-size: var(--devhub-text-md);
   color: var(--devhub-light);
   font-weight: 400;
   margin-right: 4px;
@@ -137,7 +137,7 @@
    ========================================================================== */
 
 .devhub-product-card__stock {
-  font-size: var(--devhub-text-xs);
+  font-size: 13px;
   font-weight: 600;
   display: flex;
   align-items: center;

@@ -356,9 +356,13 @@ if (empty($thumb_imgs))
                     <div class="devhub-single__quick-stats">
                         <?php foreach ($quick_stats as $stat): ?>
                             <div class="devhub-single__quick-stat">
-                                <i class="<?php echo esc_attr($stat['icon']); ?>" aria-hidden="true"></i>
-                                <span class="devhub-single__quick-stat-label"><?php echo esc_html($stat['label']); ?></span>
-                                <span class="devhub-single__quick-stat-value"><?php echo esc_html($stat['value']); ?></span>
+                                <span class="devhub-single__quick-stat-icon">
+                                    <i class="<?php echo esc_attr($stat['icon']); ?>" aria-hidden="true"></i>
+                                </span>
+                                <div class="devhub-single__quick-stat-text">
+                                    <span class="devhub-single__quick-stat-label"><?php echo esc_html($stat['label']); ?></span>
+                                    <span class="devhub-single__quick-stat-value"><?php echo esc_html($stat['value']); ?></span>
+                                </div>
                             </div>
                         <?php endforeach; ?>
                     </div>
