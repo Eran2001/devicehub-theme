@@ -519,8 +519,7 @@
    Account navigation
    ========================================================================== */
 
-.devhub-account-nav ul,
-.devhub-account-nav__sub {
+.devhub-account-nav ul {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -628,8 +627,8 @@
   transform: rotate(180deg);
 }
 
-/* Sub-menu hidden by default */
-.devhub-account-nav__sub {
+/* Sub-menu hidden by default — two classes for specificity (beats .devhub-account-nav ul) */
+.devhub-account-nav .devhub-account-nav__sub {
   display: none;
   gap: 0;
   padding: 6px 12px 10px 44px;
@@ -638,6 +637,7 @@
 
 .devhub-account-nav__group.is-open .devhub-account-nav__sub {
   display: flex;
+  flex-direction: column;
 }
 
 .devhub-account-nav__sub li {

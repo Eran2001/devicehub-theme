@@ -212,3 +212,46 @@ add_filter('theme_mod_shopire_default_pg_sidebar_option', function ($value) {
     }
     return $value;
 });
+
+
+// ── Custom account endpoints: Wishlist, Coupons, Points, Dispute ──────────────
+// NOTE: After activating, go to Settings > Permalinks and click Save to flush rewrite rules.
+
+add_action('init', 'devhub_register_account_endpoints');
+
+function devhub_register_account_endpoints(): void
+{
+    add_rewrite_endpoint('wishlist', EP_ROOT | EP_PAGES);
+    add_rewrite_endpoint('coupons',  EP_ROOT | EP_PAGES);
+    add_rewrite_endpoint('points',   EP_ROOT | EP_PAGES);
+    add_rewrite_endpoint('dispute',  EP_ROOT | EP_PAGES);
+}
+
+// Register endpoints with WooCommerce so wc_get_account_endpoint_url() works
+add_filter('woocommerce_account_menu_items', 'devhub_custom_account_menu_items');
+
+function devhub_custom_account_menu_items(array $items): array
+{
+    $items['wishlist'] = __('Wishlist',          'devicehub-theme');
+    $items['coupons']  = __('Coupons',           'devicehub-theme');
+    $items['points']   = __('Points Collected',  'devicehub-theme');
+    $items['dispute']  = __('Dispute',           'devicehub-theme');
+    return $items;
+}
+
+// Wire content for each endpoint
+add_action('woocommerce_account_wishlist_endpoint', function (): void {
+    include DEVHUB_DIR . '/woocommerce/myaccount/wishlist.php';
+});
+
+add_action('woocommerce_account_coupons_endpoint', function (): void {
+    include DEVHUB_DIR . '/woocommerce/myaccount/coupons.php';
+});
+
+add_action('woocommerce_account_points_endpoint', function (): void {
+    include DEVHUB_DIR . '/woocommerce/myaccount/points.php';
+});
+
+add_action('woocommerce_account_dispute_endpoint', function (): void {
+    include DEVHUB_DIR . '/woocommerce/myaccount/dispute.php';
+});

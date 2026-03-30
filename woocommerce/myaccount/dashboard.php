@@ -32,28 +32,28 @@ $stats = [
         'key'   => 'wishlist',
         'label' => __( 'WISHLIST', 'devicehub-theme' ),
         'count' => 0, // TODO: YITH Wishlist or similar
-        'url'   => '#',
+        'url'   => wc_get_account_endpoint_url( 'wishlist' ),
         'icon'  => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>',
     ],
     [
         'key'   => 'coupons',
         'label' => __( 'COUPONES', 'devicehub-theme' ),
         'count' => 0, // TODO: customer coupon count
-        'url'   => '#',
+        'url'   => wc_get_account_endpoint_url( 'coupons' ),
         'icon'  => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>',
     ],
     [
         'key'   => 'points',
         'label' => __( 'POINTS COLLECTED', 'devicehub-theme' ),
         'count' => 0, // TODO: WooCommerce Points & Rewards or similar
-        'url'   => '#',
+        'url'   => wc_get_account_endpoint_url( 'points' ),
         'icon'  => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',
     ],
     [
         'key'   => 'dispute',
         'label' => __( 'Dispute', 'devicehub-theme' ),
         'count' => 0, // TODO: open dispute count
-        'url'   => '#',
+        'url'   => wc_get_account_endpoint_url( 'dispute' ),
         'icon'  => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>',
     ],
 ];
