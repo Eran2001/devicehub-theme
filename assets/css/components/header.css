@@ -195,3 +195,14 @@
 #wf_header .wf_mobilenav-mainmenu-toggle span {
   background-color: var(--devhub-primary);
 }
+
+
+/* ── Shopire page-title banner — hidden on all WooCommerce pages ─────────────
+   Backup for the PHP filter in inc/hooks.php. WooCommerce adds these body
+   classes automatically so this is always reliable.                          */
+
+.single-product #wf_pagetitle,
+.tax-product_cat #wf_pagetitle,
+.woocommerce-shop #wf_pagetitle {
+  display: none;
+}

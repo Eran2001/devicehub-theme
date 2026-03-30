@@ -139,12 +139,12 @@ function devhub_archive_filter_group(string $label, string $taxonomy, string $ur
 <div class="devhub-archive">
     <div class="wf-container">
 
-        <?php if (apply_filters('woocommerce_show_page_title', true)): ?>
-            <div class="devhub-archive__header">
-                <h1 class="devhub-archive__title"><?php woocommerce_page_title(); ?></h1>
-                <?php woocommerce_breadcrumb(); ?>
-            </div>
-        <?php endif; ?>
+        <div class="devhub-page-bar">
+            <?php woocommerce_breadcrumb(); ?>
+            <?php if (apply_filters('woocommerce_show_page_title', true)): ?>
+                <h1 class="devhub-page-bar__title"><?php woocommerce_page_title(); ?></h1>
+            <?php endif; ?>
+        </div>
 
         <div class="devhub-archive__layout">
 

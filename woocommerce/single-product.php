@@ -136,6 +136,11 @@ if (empty($thumb_imgs))
 <div class="devhub-single" data-variations="<?php echo esc_attr($available_variations); ?>">
     <div class="wf-container">
 
+        <div class="devhub-page-bar">
+            <?php woocommerce_breadcrumb(); ?>
+            <h1 class="devhub-page-bar__title"><?php the_title(); ?></h1>
+        </div>
+
         <div class="devhub-single__layout">
 
             <!-- ── Gallery (left) ──────────────────────────────────────────── -->

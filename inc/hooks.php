@@ -51,6 +51,46 @@ remove_action('shopire_header_contact', 'shopire_header_contact');
 add_action('shopire_header_contact', '__return_false');
 
 
+// ── Shopire page-title banner — suppress on WooCommerce pages ─────────────────
+// The banner is replaced by compact inline breadcrumb bars in the WC templates.
+
+add_filter('theme_mod_shopire_hs_site_breadcrumb', function ($val) {
+    return (is_product() || is_product_category() || is_shop() || is_cart() || is_checkout() || is_account_page()) ? '0' : $val;
+}, 20);
+
+
+// ── Page bar — inject on cart / checkout / account (no custom template) ───────
+
+add_action('woocommerce_before_cart', 'devhub_render_page_bar', 5);
+add_action('woocommerce_before_checkout_form', 'devhub_render_page_bar', 5);
+add_action('woocommerce_account_navigation', 'devhub_render_page_bar', 1);
+
+function devhub_render_page_bar(): void
+{
+    static $rendered = false;
+    if ($rendered) return;
+    $rendered = true;
+
+    $title = woocommerce_page_title(false);
+    ?>
+    <div class="devhub-page-bar wf-container">
+        <?php woocommerce_breadcrumb(); ?>
+        <h1 class="devhub-page-bar__title"><?php echo esc_html($title); ?></h1>
+    </div>
+    <?php
+}
+
+
+// ── WooCommerce archive title — remove "Category:" prefix ─────────────────────
+
+add_filter('woocommerce_page_title', function ($title) {
+    if (is_product_category()) {
+        return single_cat_title('', false);
+    }
+    return $title;
+});
+
+
 // ── Header — add Orders icon before cart ─────────────────────────────────────
 
 add_action('shopire_woo_cart', 'devhub_render_orders_icon', 5);

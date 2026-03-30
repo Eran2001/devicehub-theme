@@ -27,8 +27,12 @@ if (!$product)
 $is_variable = $product->is_type('variable');
 $attributes = $product->get_attributes();
 $variation_attributes = $is_variable ? $product->get_variation_attributes() : [];
-$color_slugs = $variation_attributes['pa_color'] ?? [];
-$storage_slugs = $variation_attributes['pa_storage'] ?? [];
+$color_slugs = ($is_variable && isset($attributes['pa_color']))
+    ? wc_get_product_terms($product->get_id(), 'pa_color', ['fields' => 'slugs'])
+    : [];
+$storage_slugs = ($is_variable && isset($attributes['pa_storage']))
+    ? wc_get_product_terms($product->get_id(), 'pa_storage', ['fields' => 'slugs'])
+    : [];
 
 // Color name → hex lookup
 $color_hex_map = [
@@ -136,6 +140,11 @@ if (empty($thumb_imgs)) $thumb_imgs = [$placeholder_img, $placeholder_img, $plac
 
 <div class="devhub-single" data-variations="<?php echo esc_attr($available_variations); ?>">
     <div class="wf-container">
+
+        <div class="devhub-page-bar">
+            <?php woocommerce_breadcrumb(); ?>
+            <h1 class="devhub-page-bar__title"><?php the_title(); ?></h1>
+        </div>
 
         <div class="devhub-single__layout">
 
