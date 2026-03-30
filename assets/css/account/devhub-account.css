@@ -875,11 +875,21 @@
   background: #fafafa !important;
 }
 
-.devhub-account-content .woocommerce-orders-table tbody td {
-  padding: 0px 16px !important;
+.devhub-account-content .woocommerce-orders-table tbody tr td {
+  padding: 6px 16px !important;
   color: #444 !important;
   vertical-align: middle !important;
   background: transparent !important;
+  height: auto !important;
+  min-height: 0 !important;
+  line-height: 1.4 !important;
+}
+
+/* Kill WooCommerce's min-height: 3.5rem on my_account_orders td */
+.woocommerce table.my_account_orders td,
+.woocommerce table.my_account_orders th {
+  min-height: 0 !important;
+  padding: 6px 16px !important;
 }
 
 /* Order number — narrow, bold */
@@ -1071,9 +1081,18 @@
   font-size: 18px;
   font-weight: 700;
   color: var(--devhub-dark, #111);
-  margin: 0 0 14px;
-  padding-bottom: 10px;
-  border-bottom: 2px solid var(--devhub-account-border);
+  margin: 0 0 16px;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+/* Rounded card wraps only the table, not the section heading */
+.devhub-account-content .devhub-order-table-card {
+  background: #fff;
+  border: 1px solid var(--devhub-account-border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 24px;
 }
 
 /* Order details table */
@@ -1081,11 +1100,11 @@
   width: 100%;
   border-collapse: collapse;
   background: #fff !important;
-  border: 1px solid var(--devhub-account-border) !important;
-  border-radius: 10px;
+  border: none !important;
+  border-radius: 0;
   overflow: hidden;
   font-size: 14px;
-  margin-bottom: 32px;
+  margin-bottom: 0;
 }
 
 .devhub-account-content .woocommerce-table--order-details th,
@@ -1159,29 +1178,49 @@
   font-weight: 600;
 }
 
-/* Billing / Shipping address */
+/* Billing / Shipping address — DeviceHub grid card */
 .devhub-account-content .woocommerce-customer-details {
-  margin-top: 32px;
+  margin-top: 0;
 }
 
-.devhub-account-content .woocommerce-column__title {
+.devhub-order-address-card {
+  background: #fff;
+  border: 1px solid var(--devhub-account-border);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.devhub-order-address-card__title {
   font-size: 18px;
   font-weight: 700;
   color: var(--devhub-dark, #111);
-  margin: 0 0 14px;
-  padding-bottom: 10px;
-  border-bottom: 2px solid var(--devhub-account-border);
+  margin: 0 0 16px;
+  border-bottom: none;
 }
 
-.devhub-account-content .woocommerce-column address {
-  background: #fff;
-  border: 1px solid var(--devhub-account-border);
-  border-radius: 10px;
-  padding: 18px 20px;
+.devhub-order-address-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px 24px;
+}
+
+.devhub-order-address-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.devhub-order-address-field__label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #999;
+  letter-spacing: 0.06em;
+}
+
+.devhub-order-address-field__value {
   font-size: 14px;
-  color: #555;
-  line-height: 1.8;
-  font-style: normal;
+  color: #333;
 }
 
 /* ==========================================================================

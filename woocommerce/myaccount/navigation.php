@@ -100,9 +100,9 @@ foreach ( $account_sub_endpoints as $ep ) {
             </ul>
         </li>
 
-        <!-- Your Gift Cards (placeholder — wire to plugin endpoint when available) -->
-        <li class="devhub-account-nav__item">
-            <a href="#">
+        <!-- Your Gift Cards -->
+        <li class="devhub-account-nav__item <?php echo esc_attr( wc_get_account_menu_item_classes( 'gift-cards' ) ); ?>">
+            <a href="<?php echo esc_url( wc_get_account_endpoint_url( 'gift-cards' ) ); ?>">
                 <span class="devhub-account-nav__icon" aria-hidden="true">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                         <rect x="2" y="7" width="20" height="14" rx="2"/>

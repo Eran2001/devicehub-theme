@@ -55,7 +55,7 @@ add_action('shopire_header_contact', '__return_false');
 // The banner is replaced by compact inline breadcrumb bars in the WC templates.
 
 add_filter('theme_mod_shopire_hs_site_breadcrumb', function ($val) {
-    return (is_product() || is_product_category() || is_shop() || is_cart() || is_checkout() || is_account_page()) ? '0' : $val;
+    return (is_product() || is_product_category() || is_shop() || is_cart() || is_checkout() || is_account_page() || is_404()) ? '0' : $val;
 }, 20);
 
 
@@ -221,10 +221,11 @@ add_action('init', 'devhub_register_account_endpoints');
 
 function devhub_register_account_endpoints(): void
 {
-    add_rewrite_endpoint('wishlist', EP_ROOT | EP_PAGES);
-    add_rewrite_endpoint('coupons',  EP_ROOT | EP_PAGES);
-    add_rewrite_endpoint('points',   EP_ROOT | EP_PAGES);
-    add_rewrite_endpoint('dispute',  EP_ROOT | EP_PAGES);
+    add_rewrite_endpoint('wishlist',    EP_ROOT | EP_PAGES);
+    add_rewrite_endpoint('coupons',     EP_ROOT | EP_PAGES);
+    add_rewrite_endpoint('points',      EP_ROOT | EP_PAGES);
+    add_rewrite_endpoint('dispute',     EP_ROOT | EP_PAGES);
+    add_rewrite_endpoint('gift-cards',  EP_ROOT | EP_PAGES);
 }
 
 // Register endpoints with WooCommerce so wc_get_account_endpoint_url() works
@@ -232,10 +233,11 @@ add_filter('woocommerce_account_menu_items', 'devhub_custom_account_menu_items')
 
 function devhub_custom_account_menu_items(array $items): array
 {
-    $items['wishlist'] = __('Wishlist',          'devicehub-theme');
-    $items['coupons']  = __('Coupons',           'devicehub-theme');
-    $items['points']   = __('Points Collected',  'devicehub-theme');
-    $items['dispute']  = __('Dispute',           'devicehub-theme');
+    $items['wishlist']   = __('Wishlist',          'devicehub-theme');
+    $items['coupons']    = __('Coupons',           'devicehub-theme');
+    $items['points']     = __('Points Collected',  'devicehub-theme');
+    $items['dispute']    = __('Dispute',           'devicehub-theme');
+    $items['gift-cards'] = __('Your Gift Cards',   'devicehub-theme');
     return $items;
 }
 
@@ -254,4 +256,8 @@ add_action('woocommerce_account_points_endpoint', function (): void {
 
 add_action('woocommerce_account_dispute_endpoint', function (): void {
     include DEVHUB_DIR . '/woocommerce/myaccount/dispute.php';
+});
+
+add_action('woocommerce_account_gift-cards_endpoint', function (): void {
+    include DEVHUB_DIR . '/woocommerce/myaccount/gift-cards.php';
 });
