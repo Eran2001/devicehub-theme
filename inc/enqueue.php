@@ -147,6 +147,7 @@ function devhub_enqueue_scripts(): void
     // ── My Account ────────────────────────────────────────────────────────────
     if (is_account_page()) {
         devhub_script('devhub-login', '/modules/login.js', [], true);
+        devhub_script('devhub-account', '/modules/account.js', [], true);
     }
 
     if (is_singular() && comments_open() && get_option('thread_comments')) {

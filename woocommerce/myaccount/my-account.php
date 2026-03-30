@@ -2,24 +2,42 @@
 /**
  * My Account page — DeviceHub override
  *
- * Adds devhub-page-bar (breadcrumb + title) above the account layout.
- * Based on WooCommerce template version 3.5.0.
+ * Two-column layout: sidebar (user info + nav) + main content.
  *
  * @package DeviceHub
  */
 
-defined('ABSPATH') || exit;
+defined( 'ABSPATH' ) || exit;
 
-$title = get_the_title();
+$current_user = wp_get_current_user();
+$display_name = $current_user->display_name ?: $current_user->user_login;
+$user_email   = $current_user->user_email;
+$logout_url   = wc_get_account_endpoint_url( 'customer-logout' );
 ?>
 
-<div class="devhub-page-bar wf-container">
-    <?php woocommerce_breadcrumb(); ?>
-    <h1 class="devhub-page-bar__title"><?php echo esc_html($title); ?></h1>
-</div>
+<div class="devhub-account-wrap wf-container">
 
-<?php do_action('woocommerce_account_navigation'); ?>
+    <aside class="devhub-account-sidebar">
 
-<div class="woocommerce-MyAccount-content">
-    <?php do_action('woocommerce_account_content'); ?>
+        <div class="devhub-account-user-card">
+            <div class="devhub-account-avatar">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="44" height="44" aria-hidden="true">
+                    <path d="M12 12c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm0 2c-3.33 0-10 1.67-10 5v2h20v-2c0-3.33-6.67-5-10-5z"/>
+                </svg>
+            </div>
+            <div class="devhub-account-user-info">
+                <strong class="devhub-account-user-name"><?php echo esc_html( $display_name ); ?></strong>
+                <span class="devhub-account-user-email"><?php echo esc_html( $user_email ); ?></span>
+                <a href="<?php echo esc_url( $logout_url ); ?>" class="devhub-account-logout">Logout</a>
+            </div>
+        </div>
+
+        <?php do_action( 'woocommerce_account_navigation' ); ?>
+
+    </aside>
+
+    <main class="devhub-account-content">
+        <?php do_action( 'woocommerce_account_content' ); ?>
+    </main>
+
 </div>
