@@ -11,22 +11,417 @@
   --devhub-account-sub-indent: 16px;
 }
 
-/* Remove Shopire page.php section/container/col spacing on account page */
-.woocommerce-account .wf_posts.wf-py-default {
+/* Remove Shopire page.php section/container/col spacing on logged-in account views */
+.woocommerce-account.logged-in .wf_posts.wf-py-default {
   padding: 0 !important;
 }
-.woocommerce-account .wf_posts > .wf-container {
+.woocommerce-account.logged-in .wf_posts > .wf-container {
   padding-left: 0 !important;
   padding-right: 0 !important;
 }
-.woocommerce-account .wf_posts .wf-row {
+.woocommerce-account.logged-in .wf_posts .wf-row {
   margin-left: 0 !important;
   margin-right: 0 !important;
 }
-.woocommerce-account .wf_posts [class*="wf-col"] {
+.woocommerce-account.logged-in .wf_posts [class*="wf-col"] {
   margin-top: 0 !important;
   padding-left: 0 !important;
   padding-right: 0 !important;
+}
+
+/* Guest auth flow */
+.woocommerce-account:not(.logged-in) .wf_posts.wf-py-default {
+  padding-top: 20px !important;
+  padding-bottom: 72px !important;
+}
+
+.woocommerce-account:not(.logged-in) .wf_posts > .wf-container {
+  max-width: 1120px;
+}
+
+.woocommerce-account:not(.logged-in) .post.single-post {
+  margin-bottom: 0;
+}
+
+.woocommerce-account:not(.logged-in) .woocommerce-notices-wrapper {
+  width: min(100%, 480px);
+  margin: 0 auto 18px;
+}
+
+.devhub-auth {
+  min-height: 75vh;
+}
+
+.devhub-auth__shell {
+  display: flex;
+  justify-content: center;
+}
+
+.devhub-auth__card {
+  width: min(100%, 480px);
+  padding: 36px 32px 30px;
+  background:
+    radial-gradient(circle at top, rgba(255, 102, 0, 0.08), transparent 34%),
+    #fff;
+  border: 1px solid rgba(232, 232, 232, 0.9);
+  border-radius: 18px;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.devhub-auth__brand {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.devhub-auth__brand-logo {
+  width: auto;
+  height: 32px;
+  display: inline-block;
+}
+
+.devhub-auth__panel + .devhub-auth__panel {
+  margin-top: 28px;
+  padding-top: 28px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.devhub-auth.is-enhanced .devhub-auth__panel + .devhub-auth__panel {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.devhub-auth.is-enhanced .devhub-auth__panel {
+  display: none;
+}
+
+.devhub-auth.is-enhanced .devhub-auth__panel.is-active {
+  display: block;
+}
+
+.devhub-auth__intro {
+  text-align: center;
+  margin-bottom: 22px;
+}
+
+.devhub-auth__intro h2,
+.devhub-auth__title {
+  font-size: 28px;
+  line-height: 1.1;
+  margin: 0 0 8px;
+  color: var(--devhub-dark, #111);
+}
+
+.devhub-auth__intro p,
+.devhub-auth__subtitle {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #666;
+}
+
+.devhub-auth__options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.devhub-auth__option {
+  width: 100%;
+  min-height: 54px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border: 1px solid #ececec;
+  border-radius: 10px;
+  background: #fff;
+  color: #1c1c1c;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
+}
+
+.devhub-auth__option:hover,
+.devhub-auth__option:focus-visible {
+  border-color: rgba(255, 102, 0, 0.4);
+  box-shadow: 0 10px 20px rgba(255, 102, 0, 0.08);
+  transform: translateY(-1px);
+}
+
+.devhub-auth__option:focus-visible {
+  outline: 2px solid rgba(255, 102, 0, 0.18);
+  outline-offset: 2px;
+}
+
+.devhub-auth__option--ghost {
+  justify-content: center;
+  border-color: #e4e4e4;
+}
+
+.devhub-auth__option-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  flex: 0 0 20px;
+}
+
+.devhub-auth__options
+  .devhub-auth__option:nth-child(2)
+  .devhub-auth__option-icon {
+  width: 32px;
+  height: 32px;
+}
+
+.devhub-auth__divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 18px 0;
+  color: #999;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.devhub-auth__divider::before,
+.devhub-auth__divider::after {
+  content: "";
+  flex: 1 1 auto;
+  height: 1px;
+  background: #e9e9e9;
+}
+
+.devhub-auth__status {
+  margin-top: 16px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #fff5ee;
+  color: #914417;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.devhub-auth__status[hidden] {
+  display: none;
+}
+
+.devhub-auth__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--devhub-account-teal);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.devhub-auth__back:hover,
+.devhub-auth__back:active,
+.devhub-auth__back:focus-visible {
+  color: var(--devhub-primary-dark, #e55a00);
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.devhub-auth__form {
+  margin-top: 18px;
+}
+
+.devhub-auth__form form.login,
+.devhub-auth__form form.register,
+.devhub-auth__form form.lost_reset_password {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+.devhub-auth__form .form-row-first,
+.devhub-auth__form .form-row-last,
+.devhub-auth__form .form-row-wide {
+  float: none !important;
+  width: 100% !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.devhub-auth__form .form-row {
+  margin-bottom: 18px;
+}
+
+.devhub-auth__form .form-row label {
+  display: block;
+  margin-bottom: 8px;
+  color: #222;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.devhub-auth__form .form-row input.input-text,
+.devhub-auth__form .form-row select {
+  min-height: 50px;
+  padding: 12px 16px;
+  border: 1px solid #dddddd !important;
+  border-radius: 10px !important;
+  box-shadow: none !important;
+  font-size: 14px;
+}
+
+.devhub-auth__form .form-row input.input-text:focus,
+.devhub-auth__form .form-row select:focus {
+  border-color: rgba(255, 102, 0, 0.65) !important;
+  outline: none !important;
+}
+
+.devhub-auth__form .show-password-input {
+  top: 50% !important;
+  right: 16px !important;
+  transform: translateY(-50%);
+}
+
+.devhub-auth__form .devhub-auth__actions.form-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: nowrap;
+  margin: 0 0 18px !important;
+  padding: 0 !important;
+}
+
+.devhub-auth__actions .woocommerce-form-login__rememberme {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  margin: 0;
+  color: #444;
+  font-size: 13px;
+  line-height: 1;
+  flex: 0 0 auto;
+  cursor: pointer;
+}
+
+.devhub-auth__actions .woocommerce-form-login__rememberme input {
+  margin: 0;
+  position: relative;
+  top: 0;
+  flex: 0 0 auto;
+}
+
+.devhub-auth__forgot {
+  margin: 0 0 0 auto !important;
+  padding: 0 !important;
+  text-align: right;
+  font-size: 13px;
+  line-height: 1;
+  flex: 0 0 auto;
+}
+
+.devhub-auth__forgot a {
+  color: var(--devhub-account-teal);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.devhub-auth__forgot a:hover,
+.devhub-auth__forgot a:focus-visible {
+  color: var(--devhub-primary-dark, #e55a00);
+}
+
+.devhub-auth__submit {
+  width: 100%;
+  min-height: 50px;
+  padding: 12px 24px !important;
+  border: 0 !important;
+  border-radius: 10px !important;
+  background: var(--devhub-account-teal) !important;
+  color: #fff !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  transition:
+    background 0.15s ease,
+    transform 0.15s ease;
+}
+
+.devhub-auth__submit:hover,
+.devhub-auth__submit:focus-visible {
+  background: var(--devhub-primary-dark, #e55a00) !important;
+  transform: translateY(-1px);
+}
+
+.devhub-auth__footer {
+  margin-top: 16px;
+  text-align: center;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #666;
+}
+
+.devhub-auth__footer a,
+.devhub-auth__footer button {
+  color: var(--devhub-account-teal);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.devhub-auth__footer button {
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.devhub-auth__footer a:hover,
+.devhub-auth__footer button:hover,
+.devhub-auth__footer a:focus-visible,
+.devhub-auth__footer button:focus-visible {
+  color: var(--devhub-primary-dark, #e55a00);
+}
+
+.devhub-auth__notice {
+  margin-top: 18px;
+}
+
+.devhub-auth__notice .woocommerce-message,
+.devhub-auth__notice .woocommerce-info,
+.devhub-auth__notice .woocommerce-error {
+  margin: 0 0 18px !important;
+  padding: 18px 20px !important;
+  line-height: 1.5 !important;
+  border-radius: 12px;
+  border: 1px solid #e8efc3 !important;
+  background: #f9fbef !important;
+  box-shadow: none !important;
+}
+
+.devhub-auth__notice .woocommerce-info::before,
+.devhub-auth__notice .woocommerce-message::before,
+.devhub-auth__notice .woocommerce-error::before {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.devhub-auth__confirmation {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #555;
 }
 
 /* ==========================================================================
@@ -1211,6 +1606,42 @@
 
   .devhub-dashboard-cards {
     grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 767px) {
+  .woocommerce-account:not(.logged-in) .wf_posts.wf-py-default {
+    padding-top: 28px !important;
+    padding-bottom: 48px !important;
+  }
+
+  .devhub-auth__card {
+    width: 100%;
+    padding: 28px 20px 24px;
+    border-radius: 14px;
+  }
+
+  .devhub-auth__intro h2,
+  .devhub-auth__title {
+    font-size: 24px;
+  }
+
+  .devhub-auth__actions {
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .devhub-auth__actions .woocommerce-form-login__rememberme {
+    width: 100%;
+  }
+
+  .devhub-auth__forgot {
+    width: 100%;
+    text-align: left;
+  }
+
+  .devhub-auth__submit {
+    min-height: 48px;
   }
 }
 
