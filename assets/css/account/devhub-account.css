@@ -775,7 +775,6 @@
   font-style: normal;
 }
 
-
 /* ==========================================================================
    Account forms (edit account, edit address)
    ========================================================================== */
@@ -882,12 +881,19 @@
 }
 
 /* Country / Region — Select2 override to match other inputs */
-.devhub-account-content .woocommerce-address-fields__field-wrapper .select2-container {
+.devhub-account-content
+  .woocommerce-address-fields__field-wrapper
+  .select2-container {
   width: 100% !important;
 }
 
-.devhub-account-content .woocommerce-address-fields__field-wrapper .select2-container .select2-selection--single {
+.devhub-account-content
+  .woocommerce-address-fields__field-wrapper
+  .select2-container
+  .select2-selection--single {
   height: 42px !important;
+  display: flex !important;
+  align-items: center !important;
   border: 1px solid var(--devhub-account-border) !important;
   border-radius: 8px !important;
   background: #fff !important;
@@ -895,23 +901,43 @@
   outline: none !important;
 }
 
-.devhub-account-content .woocommerce-address-fields__field-wrapper .select2-container .select2-selection--single .select2-selection__rendered,
-.devhub-account-content .woocommerce-address-fields__field-wrapper .select2-container--default .select2-selection--single .select2-selection__rendered {
-  line-height: 42px !important;
+.devhub-account-content
+  .woocommerce-address-fields__field-wrapper
+  .select2-container
+  .select2-selection--single
+  .select2-selection__rendered,
+.devhub-account-content
+  .woocommerce-address-fields__field-wrapper
+  .select2-container--default
+  .select2-selection--single
+  .select2-selection__rendered {
+  line-height: normal !important;
   padding-left: 14px !important;
   padding-right: 36px !important;
   font-size: 14px !important;
   color: #333 !important;
   font-style: normal !important;
+  flex: 1 !important;
+  min-width: 0 !important;
 }
 
-.devhub-account-content .woocommerce-address-fields__field-wrapper .select2-container .select2-selection--single .select2-selection__arrow {
+.devhub-account-content
+  .woocommerce-address-fields__field-wrapper
+  .select2-container
+  .select2-selection--single
+  .select2-selection__arrow {
   height: 42px !important;
   right: 10px !important;
 }
 
-.devhub-account-content .woocommerce-address-fields__field-wrapper .select2-container--focus .select2-selection--single,
-.devhub-account-content .woocommerce-address-fields__field-wrapper .select2-container--open .select2-selection--single {
+.devhub-account-content
+  .woocommerce-address-fields__field-wrapper
+  .select2-container--focus
+  .select2-selection--single,
+.devhub-account-content
+  .woocommerce-address-fields__field-wrapper
+  .select2-container--open
+  .select2-selection--single {
   border-color: var(--devhub-account-teal) !important;
   outline: none !important;
 }
@@ -1019,7 +1045,10 @@
   font-size: var(--devhub-text-sm, 13px);
   color: var(--devhub-dark, #111);
   text-decoration: none;
-  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    border-color 0.15s,
+    color 0.15s;
 }
 
 .devhub-account-content .woocommerce-pagination li > .page-numbers:hover {
