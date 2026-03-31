@@ -27,6 +27,7 @@ defined('ABSPATH') || exit;
 // ── Styles ───────────────────────────────────────────────────────────────────
 
 add_action('wp_enqueue_scripts', 'devhub_enqueue_styles', 20);
+add_action('wp_enqueue_scripts', 'devhub_footer_option_styles', 30);
 
 function devhub_enqueue_styles(): void
 {
@@ -97,6 +98,25 @@ function devhub_enqueue_styles(): void
 
 
 // ── Scripts ───────────────────────────────────────────────────────────────────
+
+function devhub_footer_option_styles(): void
+{
+    if (!wp_style_is('devhub-footer', 'enqueued') || !function_exists('devhub_get_footer_settings')) {
+        return;
+    }
+
+    $settings = devhub_get_footer_settings();
+    $background_color = sanitize_hex_color((string) ($settings['background_color'] ?? '#ff6600'));
+
+    if (!$background_color) {
+        return;
+    }
+
+    wp_add_inline_style(
+        'devhub-footer',
+        "#wf_footer.wf_footer--one{background-color:{$background_color};}"
+    );
+}
 
 add_action('wp_enqueue_scripts', 'devhub_enqueue_scripts', 20);
 
