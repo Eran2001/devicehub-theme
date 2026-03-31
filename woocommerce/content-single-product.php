@@ -157,14 +157,28 @@ if (empty($thumb_imgs)) $thumb_imgs = [$placeholder_img, $placeholder_img, $plac
                         alt="<?php echo esc_attr($product->get_name()); ?>">
                 </div>
 
-                <div class="devhub-single__thumbnails">
-                    <?php foreach ($thumb_imgs as $i => $thumb): ?>
-                        <button class="devhub-single__thumb<?php echo $i === 0 ? ' devhub-single__thumb--active' : ''; ?>"
-                            type="button"
-                            aria-label="<?php echo esc_attr(sprintf(__('View image %d', 'devicehub-theme'), $i + 1)); ?>">
-                            <img src="<?php echo esc_url($thumb); ?>" alt="">
-                        </button>
-                    <?php endforeach; ?>
+                <div class="devhub-single__thumbnails-slider" id="devhubGallerySlider">
+                    <button class="devhub-single__bundle-arrow devhub-single__gallery-arrow devhub-single__gallery-arrow--prev"
+                        id="devhubGalleryPrev" type="button" hidden
+                        aria-label="<?php esc_attr_e('Previous product images', 'devicehub-theme'); ?>">
+                        <i class="fas fa-chevron-up" aria-hidden="true"></i>
+                    </button>
+                    <div class="devhub-single__thumbnails-viewport" id="devhubGalleryViewport">
+                        <div class="devhub-single__thumbnails" id="devhubGalleryTrack">
+                            <?php foreach ($thumb_imgs as $i => $thumb): ?>
+                                <button class="devhub-single__thumb<?php echo $i === 0 ? ' devhub-single__thumb--active' : ''; ?>"
+                                    type="button"
+                                    aria-label="<?php echo esc_attr(sprintf(__('View image %d', 'devicehub-theme'), $i + 1)); ?>">
+                                    <img src="<?php echo esc_url($thumb); ?>" alt="">
+                                </button>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                    <button class="devhub-single__bundle-arrow devhub-single__gallery-arrow devhub-single__gallery-arrow--next"
+                        id="devhubGalleryNext" type="button" hidden
+                        aria-label="<?php esc_attr_e('Next product images', 'devicehub-theme'); ?>">
+                        <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                    </button>
                 </div>
 
                 <div class="devhub-single__safe-checkout">
@@ -172,17 +186,31 @@ if (empty($thumb_imgs)) $thumb_imgs = [$placeholder_img, $placeholder_img, $plac
                         <i class="fas fa-shield-alt" aria-hidden="true"></i>
                         <?php esc_html_e('Guaranteed safe Checkout', 'devicehub-theme'); ?>
                     </p>
-                    <div class="devhub-single__payment-icons">
-                        <img src="<?php echo esc_url(DEVHUB_URI . '/assets/images/visa.svg'); ?>" alt="Visa"
-                            class="devhub-single__payment-icon">
-                        <img src="<?php echo esc_url(DEVHUB_URI . '/assets/images/master.svg'); ?>" alt="Mastercard"
-                            class="devhub-single__payment-icon">
-                        <img src="<?php echo esc_url(DEVHUB_URI . '/assets/images/amex.svg'); ?>" alt="Amex"
-                            class="devhub-single__payment-icon">
-                        <img src="<?php echo esc_url(DEVHUB_URI . '/assets/images/koko.svg'); ?>" alt="KOKO"
-                            class="devhub-single__payment-icon">
-                        <img src="<?php echo esc_url(DEVHUB_URI . '/assets/images/webx.svg'); ?>" alt="WebXPay"
-                            class="devhub-single__payment-icon">
+                    <div class="devhub-single__payment-slider">
+                        <button class="devhub-single__bundle-arrow devhub-single__payment-arrow devhub-single__payment-arrow--prev"
+                            id="devhubPaymentPrev" type="button" hidden
+                            aria-label="<?php esc_attr_e('Previous payment methods', 'devicehub-theme'); ?>">
+                            <i class="fas fa-chevron-left" aria-hidden="true"></i>
+                        </button>
+                        <div class="devhub-single__payment-viewport" id="devhubPaymentViewport">
+                            <div class="devhub-single__payment-icons">
+                                <img src="<?php echo esc_url(DEVHUB_URI . '/assets/images/visa.svg'); ?>" alt="Visa"
+                                    class="devhub-single__payment-icon">
+                                <img src="<?php echo esc_url(DEVHUB_URI . '/assets/images/master.svg'); ?>" alt="Mastercard"
+                                    class="devhub-single__payment-icon">
+                                <img src="<?php echo esc_url(DEVHUB_URI . '/assets/images/amex.svg'); ?>" alt="Amex"
+                                    class="devhub-single__payment-icon">
+                                <img src="<?php echo esc_url(DEVHUB_URI . '/assets/images/koko.svg'); ?>" alt="KOKO"
+                                    class="devhub-single__payment-icon">
+                                <img src="<?php echo esc_url(DEVHUB_URI . '/assets/images/webx.svg'); ?>" alt="WebXPay"
+                                    class="devhub-single__payment-icon">
+                            </div>
+                        </div>
+                        <button class="devhub-single__bundle-arrow devhub-single__payment-arrow devhub-single__payment-arrow--next"
+                            id="devhubPaymentNext" type="button" hidden
+                            aria-label="<?php esc_attr_e('Next payment methods', 'devicehub-theme'); ?>">
+                            <i class="fas fa-chevron-right" aria-hidden="true"></i>
+                        </button>
                     </div>
                 </div>
 

@@ -912,6 +912,7 @@ if ( ! function_exists( 'shopire_hdr_product_search' ) ) {
 						<span class="screen-reader-text"><?php esc_html_e( 'Search for:', 'shopire' ); ?></span>
 						<input type="search" id="wf_search-form-1" class="wf_search-field" placeholder="<?php esc_attr_e( 'search Here', 'shopire' ); ?>" value="" name="s" />
 					</label>
+					<input type="hidden" name="post_type" value="product" />
 					<button class="header-search-button" type="submit"><i class="fa fa-search"></i></button>
 				</form>
 			</div>

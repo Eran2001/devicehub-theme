@@ -155,6 +155,19 @@ function devhub_filter_archive_by_brand(WP_Query $query): void
 // directly, so content-single-product.php is picked up from the theme
 // woocommerce/ folder automatically — no filter needed for it.
 
+add_action('pre_get_posts', 'devhub_search_products_only');
+
+function devhub_search_products_only(WP_Query $query): void
+{
+    if (is_admin() || ! $query->is_main_query() || ! $query->is_search()) {
+        return;
+    }
+
+    if (empty($query->get('post_type'))) {
+        $query->set('post_type', ['product']);
+    }
+}
+
 add_filter('woocommerce_locate_template', 'devhub_locate_template', 10, 3);
 
 function devhub_locate_template(string $template, string $template_name, string $template_path): string

@@ -70,6 +70,10 @@ function devhub_enqueue_styles(): void
     }
 
     // ── Single product ────────────────────────────────────────────────────────
+    if (is_search()) {
+        devhub_style('devhub-search', '/archive/devhub-search.css', ['devhub-style', 'devhub-product-card']);
+    }
+
     if (is_product()) {
         devhub_style('devhub-single', '/single/devhub-single.css', ['devhub-style']);
     }

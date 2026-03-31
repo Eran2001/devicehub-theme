@@ -90,6 +90,14 @@
   margin-top: 14px;
 }
 
+.devhub-single__thumbnails-slider {
+  position: relative;
+}
+
+.devhub-single__thumbnails-viewport {
+  overflow: visible;
+}
+
 .devhub-single__thumb {
   width: 80px;
   height: 80px;
@@ -129,11 +137,27 @@
   margin-bottom: 12px;
 }
 
+.devhub-single__payment-slider {
+  position: relative;
+}
+
+.devhub-single__payment-viewport {
+  overflow-x: auto;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+}
+
+.devhub-single__payment-viewport::-webkit-scrollbar {
+  display: none;
+}
+
 .devhub-single__payment-icons {
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: flex-start;
+  gap: 16px;
   flex-wrap: nowrap;
+  min-width: 100%;
 }
 
 .devhub-single__payment-icon {
@@ -141,6 +165,7 @@
   width: auto;
   display: block;
   object-fit: contain;
+  flex-shrink: 0;
 }
 
 .devhub-single__payment-badge {
@@ -444,6 +469,30 @@
   right: -16px;
 }
 
+.devhub-single__gallery-arrow--prev,
+.devhub-single__gallery-arrow--next {
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+}
+
+.devhub-single__gallery-arrow--prev {
+  top: 0;
+}
+
+.devhub-single__gallery-arrow--next {
+  top: auto;
+  bottom: 0;
+}
+
+.devhub-single__payment-arrow--prev {
+  left: -16px;
+}
+
+.devhub-single__payment-arrow--next {
+  right: -16px;
+}
+
 .devhub-single__bundle-arrow[hidden] {
   display: none;
 }
@@ -678,8 +727,7 @@
     grid-template-columns: repeat(2, 1fr);
   }
   .devhub-single__bundle-footer {
-    flex-direction: column;
-    align-items: flex-start;
+    align-items: flex-end;
   }
 }
 
@@ -724,5 +772,67 @@
   }
   .devhub-single__bundle-arrow--next {
     right: -10px;
+  }
+  .devhub-single__payment-arrow--prev {
+    left: -10px;
+  }
+  .devhub-single__payment-arrow--next {
+    right: -10px;
+  }
+}
+
+@media (min-width: 577px) and (max-width: 768px) {
+  .devhub-single__gallery {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 132px;
+    gap: 10px;
+    align-items: stretch;
+  }
+  .devhub-single__main-image {
+    grid-column: 1;
+    grid-row: 1;
+    height: 100%;
+    max-height: none;
+  }
+  .devhub-single__thumbnails-slider {
+    grid-column: 2;
+    grid-row: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-self: stretch;
+    min-height: 0;
+  }
+  .devhub-single__thumbnails-viewport {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+  }
+  .devhub-single__thumbnails {
+    margin-top: 0;
+    flex-direction: column;
+    gap: 10px;
+    will-change: transform;
+  }
+  .devhub-single__thumb {
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    padding: 6px;
+  }
+  .devhub-single__safe-checkout {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    margin-top: 12px;
+  }
+  .devhub-single__gallery-arrow--prev,
+  .devhub-single__gallery-arrow--next {
+    display: flex;
+  }
+}
+
+@media (max-width: 576px) {
+  .devhub-single__payment-icons {
+    justify-content: flex-start;
   }
 }
