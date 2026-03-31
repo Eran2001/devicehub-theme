@@ -55,8 +55,8 @@
 
 .devhub-single__layout {
   display: grid;
-  grid-template-columns: 40% 1fr;
-  gap: 0px;
+  grid-template-columns: 35% minmax(0, 1fr);
+  gap: 20px;
   align-items: start;
   margin-bottom: 48px;
 }
@@ -667,16 +667,26 @@
 }
 
 /* Responsive */
-@media (max-width: 1024px) {
+@media (max-width: 1199px) {
   .devhub-single__layout {
-    gap: 32px;
+    grid-template-columns: 42% minmax(0, 1fr);
   }
+}
+
+@media (max-width: 1024px) {
   .devhub-single__quick-stats {
     grid-template-columns: repeat(2, 1fr);
   }
   .devhub-single__bundle-footer {
     flex-direction: column;
     align-items: flex-start;
+  }
+}
+
+@media (max-width: 991px) {
+  .devhub-single__layout {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 24px;
   }
 }
 
