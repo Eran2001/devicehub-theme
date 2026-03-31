@@ -131,6 +131,7 @@ function devhub_enqueue_scripts(): void
     wp_enqueue_script('fancybox', DEVHUB_URI . '/assets/vendors/js/jquery.fancybox.js', ['jquery'], null, true);
     wp_enqueue_script('shopire-theme', DEVHUB_URI . '/assets/js/theme.js', ['jquery'], null, true);
     wp_enqueue_script('shopire-custom', DEVHUB_URI . '/assets/js/custom.js', ['jquery'], null, true);
+    devhub_script('devhub-mobile-menu', '/modules/mobile-menu.js', [], true);
 
     // ── DeviceHub API utility — always loaded ─────────────────────────────────
     // Exposes devhubConfig to all JS modules: nonce, restUrl, cartUrl, isLoggedIn

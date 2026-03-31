@@ -81,7 +81,13 @@ $shopire_hs_hdr_bcat = get_theme_mod('shopire_hs_hdr_bcat', '1');
                                         <nav class="wf_mobilenav-mainmenu-content">
                                             <div class="wf_header-closemenu off--layer"></div>
                                             <div class="wf_mobilenav-mainmenu-inner">
-                                                <button type="button" class="wf_header-closemenu site--close"></button>
+                                                <div class="dh-mobile-drawer__header">
+                                                    <div class="dh-mobile-drawer__logo site--logo">
+                                                        <?php do_action('shopire_site_logo'); ?>
+                                                    </div>
+                                                    <button type="button" class="wf_header-closemenu site--close"
+                                                        aria-label="<?php esc_attr_e('Close menu', 'devicehub-theme'); ?>"></button>
+                                                </div>
                                                 <div class="wf_mobilenav-mainmenu-wrap">
                                                     <?php
                                                     $shopire_hdr_bcat_ttl = get_theme_mod('shopire_hdr_bcat_ttl', 'Browse Categories');

@@ -172,6 +172,10 @@
 }
 
 @media (max-width: 61.95em) {
+  #wf_footer.wf_footer--one {
+    padding-bottom: calc(8.8rem + env(safe-area-inset-bottom, 0px));
+  }
+
   .dh-footer__inner {
     grid-template-columns: 1fr 1fr;
     gap: 2.8rem;
@@ -194,6 +198,10 @@
 }
 
 @media (max-width: 35.95em) {
+  #wf_footer.wf_footer--one {
+    padding-bottom: calc(8.8rem + env(safe-area-inset-bottom, 0px));
+  }
+
   .dh-footer__inner {
     grid-template-columns: 1fr;
     gap: 2.4rem;

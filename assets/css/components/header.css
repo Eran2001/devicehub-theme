@@ -400,6 +400,103 @@
   #wf_header .wf_mobilenav-right .wf_navbar-list-right > li:not(:last-child) {
     margin-right: 0;
   }
+
+  #wf_header .wf_mobilenav-mainmenu-content {
+    overscroll-behavior: contain;
+  }
+
+  #wf_header .wf_mobilenav-mainmenu-inner {
+    padding-top: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  #wf_header .dh-mobile-drawer__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1.2rem;
+    padding: 1.6rem 1.6rem 1.2rem;
+    border-bottom: 1px solid var(--devhub-border);
+    flex: 0 0 auto;
+  }
+
+  #wf_header .dh-mobile-drawer__logo {
+    display: block;
+    min-width: 0;
+    max-width: calc(100% - 6rem);
+  }
+
+  #wf_header .dh-mobile-drawer__logo a {
+    display: inline-flex;
+    align-items: center;
+    max-width: 100%;
+  }
+
+  #wf_header .dh-mobile-drawer__logo img {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    max-height: 3.2rem;
+  }
+
+  #wf_header .wf_mobilenav-mainmenu-inner .wf_mobilenav-mainmenu-wrap {
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+
+  #wf_header .site--close {
+    position: relative;
+    top: auto;
+    right: auto;
+    width: 4.8rem;
+    min-width: 4.8rem;
+    height: 4.8rem;
+    line-height: 4.8rem;
+    margin-top: 0;
+    border: 1px solid var(--devhub-border);
+    border-radius: 999px;
+  }
+
+  #wf_header .site--close:before,
+  #wf_header .site--close:after {
+    top: 50%;
+    left: 50%;
+    margin-top: 0;
+    margin-left: 0;
+    transform-origin: center;
+    background-color: var(--devhub-dark);
+  }
+
+  #wf_header .site--close:before {
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+
+  #wf_header .site--close:after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+  }
+
+  #wf_header .site--close:hover:before,
+  #wf_header .site--close:hover:after,
+  #wf_header .site--close:focus:before,
+  #wf_header .site--close:focus:after {
+    top: 50%;
+    left: 50%;
+    margin-top: 0;
+    margin-left: 0;
+    transform-origin: center;
+    background-color: var(--devhub-dark);
+  }
+
+  #wf_header .site--close:hover:before,
+  #wf_header .site--close:focus:before {
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+
+  #wf_header .site--close:hover:after,
+  #wf_header .site--close:focus:after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+  }
 }
 
 @media (max-width: 575px) {
@@ -509,6 +606,11 @@
   position: sticky;
   top: 0;
   z-index: 100;
+}
+
+body.devhub-mobile-menu-locked {
+  overflow: hidden;
+  touch-action: none;
 }
 
 /* ==========================================================================

@@ -173,6 +173,33 @@ function devhub_get_footer_phone_href(string $phone): string
     return is_string($phone_href) ? $phone_href : '';
 }
 
+function devhub_sanitize_footer_link_target($value): string
+{
+    $value = trim((string) $value);
+
+    if ($value === '') {
+        return '';
+    }
+
+    if ($value === '#') {
+        return '#';
+    }
+
+    if ($value[0] === '#') {
+        return sanitize_text_field($value);
+    }
+
+    if ($value[0] === '/') {
+        return '/' . ltrim(sanitize_text_field($value), '/');
+    }
+
+    if (preg_match('/^(mailto:|tel:)/i', $value) === 1) {
+        return sanitize_text_field($value);
+    }
+
+    return esc_url_raw($value);
+}
+
 function devhub_register_footer_settings_page(): void
 {
     add_menu_page(
@@ -209,12 +236,12 @@ function devhub_sanitize_footer_settings($input): array
     $sanitized['address'] = sanitize_textarea_field($input['address'] ?? $defaults['address']);
     $sanitized['phone'] = sanitize_text_field($input['phone'] ?? $defaults['phone']);
     $sanitized['email'] = sanitize_email($input['email'] ?? $defaults['email']);
-    $sanitized['google_play_url'] = esc_url_raw($input['google_play_url'] ?? $defaults['google_play_url']);
-    $sanitized['app_store_url'] = esc_url_raw($input['app_store_url'] ?? $defaults['app_store_url']);
-    $sanitized['facebook_url'] = esc_url_raw($input['facebook_url'] ?? $defaults['facebook_url']);
-    $sanitized['twitter_url'] = esc_url_raw($input['twitter_url'] ?? $defaults['twitter_url']);
-    $sanitized['linkedin_url'] = esc_url_raw($input['linkedin_url'] ?? $defaults['linkedin_url']);
-    $sanitized['instagram_url'] = esc_url_raw($input['instagram_url'] ?? $defaults['instagram_url']);
+    $sanitized['google_play_url'] = devhub_sanitize_footer_link_target($input['google_play_url'] ?? $defaults['google_play_url']);
+    $sanitized['app_store_url'] = devhub_sanitize_footer_link_target($input['app_store_url'] ?? $defaults['app_store_url']);
+    $sanitized['facebook_url'] = devhub_sanitize_footer_link_target($input['facebook_url'] ?? $defaults['facebook_url']);
+    $sanitized['twitter_url'] = devhub_sanitize_footer_link_target($input['twitter_url'] ?? $defaults['twitter_url']);
+    $sanitized['linkedin_url'] = devhub_sanitize_footer_link_target($input['linkedin_url'] ?? $defaults['linkedin_url']);
+    $sanitized['instagram_url'] = devhub_sanitize_footer_link_target($input['instagram_url'] ?? $defaults['instagram_url']);
 
     $background_color = sanitize_hex_color($input['background_color'] ?? $defaults['background_color']);
     $sanitized['background_color'] = $background_color ?: $defaults['background_color'];
@@ -238,7 +265,7 @@ function devhub_sanitize_footer_settings($input): array
 
             $sanitized['link_sections'][$section_index]['links'][$link_index] = [
                 'label' => sanitize_text_field($link_input['label'] ?? $link_defaults['label']),
-                'url' => esc_url_raw($link_input['url'] ?? $link_defaults['url']),
+                'url' => devhub_sanitize_footer_link_target($link_input['url'] ?? $link_defaults['url']),
             ];
         }
     }
@@ -340,13 +367,13 @@ function devhub_render_footer_settings_page(): void
                 <tr>
                     <th scope="row"><label for="devhub-footer-google-play-url"><?php esc_html_e('Google Play URL', 'devicehub-theme'); ?></label></th>
                     <td>
-                        <input id="devhub-footer-google-play-url" class="regular-text" type="url" name="devhub_footer_settings[google_play_url]" value="<?php echo esc_attr($settings['google_play_url']); ?>">
+                        <input id="devhub-footer-google-play-url" class="regular-text" type="text" name="devhub_footer_settings[google_play_url]" value="<?php echo esc_attr($settings['google_play_url']); ?>" placeholder="https://example.com/app or /app">
                     </td>
                 </tr>
                 <tr>
                     <th scope="row"><label for="devhub-footer-app-store-url"><?php esc_html_e('App Store URL', 'devicehub-theme'); ?></label></th>
                     <td>
-                        <input id="devhub-footer-app-store-url" class="regular-text" type="url" name="devhub_footer_settings[app_store_url]" value="<?php echo esc_attr($settings['app_store_url']); ?>">
+                        <input id="devhub-footer-app-store-url" class="regular-text" type="text" name="devhub_footer_settings[app_store_url]" value="<?php echo esc_attr($settings['app_store_url']); ?>" placeholder="https://example.com/app or /app">
                     </td>
                 </tr>
             </table>
@@ -380,7 +407,7 @@ function devhub_render_footer_settings_page(): void
                                             <input id="devhub-footer-section-<?php echo esc_attr((string) $section_index); ?>-link-label-<?php echo esc_attr((string) $link_index); ?>" type="text" name="devhub_footer_settings[link_sections][<?php echo esc_attr((string) $section_index); ?>][links][<?php echo esc_attr((string) $link_index); ?>][label]" value="<?php echo esc_attr($link['label']); ?>">
                                         </td>
                                         <td>
-                                            <input id="devhub-footer-section-<?php echo esc_attr((string) $section_index); ?>-link-url-<?php echo esc_attr((string) $link_index); ?>" type="url" name="devhub_footer_settings[link_sections][<?php echo esc_attr((string) $section_index); ?>][links][<?php echo esc_attr((string) $link_index); ?>][url]" value="<?php echo esc_attr($link['url']); ?>">
+                                            <input id="devhub-footer-section-<?php echo esc_attr((string) $section_index); ?>-link-url-<?php echo esc_attr((string) $link_index); ?>" type="text" name="devhub_footer_settings[link_sections][<?php echo esc_attr((string) $section_index); ?>][links][<?php echo esc_attr((string) $link_index); ?>][url]" value="<?php echo esc_attr($link['url']); ?>" placeholder="https://example.com or /page">
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
@@ -423,25 +450,25 @@ function devhub_render_footer_settings_page(): void
                 <tr>
                     <th scope="row"><label for="devhub-footer-facebook-url"><?php esc_html_e('Facebook URL', 'devicehub-theme'); ?></label></th>
                     <td>
-                        <input id="devhub-footer-facebook-url" class="regular-text" type="url" name="devhub_footer_settings[facebook_url]" value="<?php echo esc_attr($settings['facebook_url']); ?>">
+                        <input id="devhub-footer-facebook-url" class="regular-text" type="text" name="devhub_footer_settings[facebook_url]" value="<?php echo esc_attr($settings['facebook_url']); ?>" placeholder="https://facebook.com/your-page">
                     </td>
                 </tr>
                 <tr>
                     <th scope="row"><label for="devhub-footer-twitter-url"><?php esc_html_e('Twitter URL', 'devicehub-theme'); ?></label></th>
                     <td>
-                        <input id="devhub-footer-twitter-url" class="regular-text" type="url" name="devhub_footer_settings[twitter_url]" value="<?php echo esc_attr($settings['twitter_url']); ?>">
+                        <input id="devhub-footer-twitter-url" class="regular-text" type="text" name="devhub_footer_settings[twitter_url]" value="<?php echo esc_attr($settings['twitter_url']); ?>" placeholder="https://x.com/your-page">
                     </td>
                 </tr>
                 <tr>
                     <th scope="row"><label for="devhub-footer-linkedin-url"><?php esc_html_e('LinkedIn URL', 'devicehub-theme'); ?></label></th>
                     <td>
-                        <input id="devhub-footer-linkedin-url" class="regular-text" type="url" name="devhub_footer_settings[linkedin_url]" value="<?php echo esc_attr($settings['linkedin_url']); ?>">
+                        <input id="devhub-footer-linkedin-url" class="regular-text" type="text" name="devhub_footer_settings[linkedin_url]" value="<?php echo esc_attr($settings['linkedin_url']); ?>" placeholder="https://linkedin.com/company/your-page">
                     </td>
                 </tr>
                 <tr>
                     <th scope="row"><label for="devhub-footer-instagram-url"><?php esc_html_e('Instagram URL', 'devicehub-theme'); ?></label></th>
                     <td>
-                        <input id="devhub-footer-instagram-url" class="regular-text" type="url" name="devhub_footer_settings[instagram_url]" value="<?php echo esc_attr($settings['instagram_url']); ?>">
+                        <input id="devhub-footer-instagram-url" class="regular-text" type="text" name="devhub_footer_settings[instagram_url]" value="<?php echo esc_attr($settings['instagram_url']); ?>" placeholder="https://instagram.com/your-page">
                     </td>
                 </tr>
             </table>
