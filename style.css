@@ -63,7 +63,8 @@ License URI: https://www.gnu.org/licenses/gpl-3.0.html
   --devhub-text-4xl: 2.25rem; /* 36px */
 
   /* Layout */
-  --devhub-container: 1280px;
+  /* --devhub-container: 1280px; */
+  --devhub-container: 100%;
 
   /* Border radii */
   --devhub-radius-sm: 4px;

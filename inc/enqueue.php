@@ -61,6 +61,7 @@ function devhub_enqueue_styles(): void
         devhub_style('devhub-preorder', '/home/devhub-preorder.css', ['devhub-style']);
         devhub_style('devhub-broadbands', '/home/devhub-broadbands.css', ['devhub-style', 'devhub-product-card']);
         devhub_script('devhub-hero-categories', '/modules/hero-categories.js', [], true);
+        devhub_script('devhub-hero-slider', '/modules/hero-slider.js', [], true);
     }
 
     // ── Shop / Archive ────────────────────────────────────────────────────────

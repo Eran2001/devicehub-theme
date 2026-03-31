@@ -16,6 +16,12 @@
   padding-bottom: 12px;
 }
 
+#wf_header .wf_navbar-wrapper > .wf-container,
+#wf_header .wf_mobilenav-menu {
+  padding-left: clamp(16px, 2.4vw, 32px);
+  padding-right: clamp(16px, 2.4vw, 32px);
+}
+
 /* Sticky state keeps same padding */
 #wf_header .wf_navbar-wrapper.is--sticky {
   padding-top: 12px;

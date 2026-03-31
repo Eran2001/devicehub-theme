@@ -29,17 +29,29 @@ function devhub_render_hero_section(): void
 
     if (is_wp_error($categories))
         return;
+    $hero_slides = get_posts([
+        'post_type' => 'devhub_hero_slide',
+        'post_status' => 'publish',
+        'posts_per_page' => -1,
+        'orderby' => [
+            'menu_order' => 'ASC',
+            'date' => 'DESC',
+        ],
+        'no_found_rows' => true,
+    ]);
 
-    $banner_eyebrow = get_theme_mod('devhub_hero_eyebrow', 'GALAXY SALE IS LIVE NOW');
-    $banner_title   = get_theme_mod('devhub_hero_title', 'Galaxy S24 | S24+');
-    $banner_subtitle = get_theme_mod('devhub_hero_subtitle', 'Get up to $1,000 in trade-in credit from participating carriers. Terms apply.');
+    $hero_slides = array_values(array_filter($hero_slides, static function (WP_Post $slide): bool {
+        return has_post_thumbnail($slide);
+    }));
+
+    $slide_count = count($hero_slides);
     ?>
     <section class="devhub-hero" aria-label="<?php esc_attr_e('Hero banner', 'devicehub-theme'); ?>">
         <div class="wf-container">
             <div class="devhub-hero__inner">
 
                 <!-- Category sidebar -->
-                <nav class="devhub-hero__categories"
+                <nav class="devhub-hero__categories is-collapsed"
                     aria-label="<?php esc_attr_e('Product categories', 'devicehub-theme'); ?>">
                     <div class="devhub-hero__cat-header">
                         <i class="fas fa-list-ul" aria-hidden="true"></i>
@@ -80,25 +92,66 @@ function devhub_render_hero_section(): void
 
                 <!-- Banner -->
                 <div class="devhub-hero__banner">
-                    <div class="devhub-hero__banner-content">
-                        <?php if ($banner_eyebrow): ?>
-                            <p class="devhub-hero__eyebrow"><?php echo esc_html($banner_eyebrow); ?></p>
-                        <?php endif; ?>
-                        <?php if ($banner_title): ?>
-                            <h2 class="devhub-hero__title"><?php echo esc_html($banner_title); ?></h2>
-                        <?php endif; ?>
-                        <?php if ($banner_subtitle): ?>
-                            <p class="devhub-hero__subtitle"><?php echo esc_html($banner_subtitle); ?></p>
-                        <?php endif; ?>
-                    </div>
-                    <div class="devhub-hero__center-img" aria-hidden="true">
-                        <img src="<?php echo esc_url(DEVHUB_URI . '/assets/images/Hero-Section-Center-Img.svg'); ?>" alt="">
-                    </div>
-                </div>
+                    <?php if ($slide_count > 0): ?>
+                        <div class="devhub-hero__slider" id="devhubHeroSlider">
+                            <div class="devhub-hero__viewport">
+                                <div class="devhub-hero__track">
+                                    <?php foreach ($hero_slides as $index => $slide):
+                                        $slide_image_id = (int) get_post_thumbnail_id($slide);
+                                        $slide_title = trim((string) get_the_title($slide));
+                                        ?>
+                                        <article class="devhub-hero__slide"
+                                            aria-label="<?php echo esc_attr(sprintf(__('Hero slide %1$d of %2$d', 'devicehub-theme'), $index + 1, $slide_count)); ?>">
+                                            <div class="devhub-hero__slide-media">
+                                                <?php
+                                                echo wp_get_attachment_image(
+                                                    $slide_image_id,
+                                                    'full',
+                                                    false,
+                                                    [
+                                                        'class' => 'devhub-hero__slide-image',
+                                                        'alt' => $slide_title !== '' ? $slide_title : __('Hero banner', 'devicehub-theme'),
+                                                        'loading' => $index === 0 ? 'eager' : 'lazy',
+                                                        'decoding' => 'async',
+                                                    ]
+                                                );
+                                                ?>
+                                            </div>
+                                        </article>
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
 
-                <!-- Right device image -->
-                <div class="devhub-hero__right-img" aria-hidden="true">
-                    <img src="<?php echo esc_url(DEVHUB_URI . '/assets/images/Hero-Section-Right-Img.svg'); ?>" alt="">
+                            <?php if ($slide_count > 1): ?>
+                                <button class="devhub-hero__arrow devhub-hero__arrow--prev" id="devhubHeroPrev"
+                                    type="button" aria-label="<?php esc_attr_e('Previous slide', 'devicehub-theme'); ?>">
+                                    <i class="fas fa-chevron-left" aria-hidden="true"></i>
+                                </button>
+                                <button class="devhub-hero__arrow devhub-hero__arrow--next" id="devhubHeroNext"
+                                    type="button" aria-label="<?php esc_attr_e('Next slide', 'devicehub-theme'); ?>">
+                                    <i class="fas fa-chevron-right" aria-hidden="true"></i>
+                                </button>
+
+                                <div class="devhub-hero__dots" role="tablist"
+                                    aria-label="<?php esc_attr_e('Hero slide navigation', 'devicehub-theme'); ?>">
+                                    <?php foreach ($hero_slides as $index => $slide): ?>
+                                        <button class="devhub-hero__dot<?php echo $index === 0 ? ' is-active' : ''; ?>"
+                                            type="button"
+                                            aria-label="<?php echo esc_attr(sprintf(__('Go to slide %d', 'devicehub-theme'), $index + 1)); ?>"
+                                            aria-current="<?php echo $index === 0 ? 'true' : 'false'; ?>"
+                                            data-slide-index="<?php echo esc_attr((string) $index); ?>">
+                                        </button>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    <?php else: ?>
+                        <div class="devhub-hero__empty">
+                            <?php if (current_user_can('edit_theme_options')): ?>
+                                <p><?php esc_html_e('Add images in Dashboard > Hero Slides to populate this area.', 'devicehub-theme'); ?></p>
+                            <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
                 </div>
 
             </div>
