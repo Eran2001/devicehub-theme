@@ -90,6 +90,7 @@ $bundles = [
     ['name' => "Hutch 2x\nData 20 GB", 'data' => '20 GB', 'voice' => '160 minutes', 'price' => 'Rs. 599', 'url' => '#'],
     ['name' => "Hutch 2x\nData 30 GB", 'data' => '30 GB', 'voice' => '200 minutes', 'price' => 'Rs. 849', 'url' => '#'],
     ['name' => "Hutch 2x\nData 50 GB", 'data' => '50 GB', 'voice' => '300 minutes', 'price' => 'Rs. 1,249', 'url' => '#'],
+    ['name' => "Hutch 2x\nData 50 GB", 'data' => '50 GB', 'voice' => '300 minutes', 'price' => 'Rs. 1,249', 'url' => '#'],
 ];
 
 // Quick stats — pull from available product attributes
@@ -249,6 +250,11 @@ if (empty($thumb_imgs)) $thumb_imgs = [$placeholder_img, $placeholder_img, $plac
                             <?php esc_html_e('Optional Bundle Packages', 'devicehub-theme'); ?>
                         </p>
                         <div class="devhub-single__bundles-slider">
+                            <button class="devhub-single__bundle-arrow devhub-single__bundle-arrow--prev"
+                                id="devhubBundlePrev" type="button" hidden
+                                aria-label="<?php esc_attr_e('Previous bundle', 'devicehub-theme'); ?>">
+                                <i class="fas fa-chevron-left" aria-hidden="true"></i>
+                            </button>
                             <div class="devhub-single__bundles-viewport">
                                 <div class="devhub-single__bundles-track" id="devhubBundlesTrack">
                                     <?php foreach ($bundles as $idx => $bundle): ?>
@@ -294,18 +300,11 @@ if (empty($thumb_imgs)) $thumb_imgs = [$placeholder_img, $placeholder_img, $plac
                                     <?php endforeach; ?>
                                 </div>
                             </div>
-                            <!-- <?php if (count($bundles) > 3): ?>
-                        <button class="devhub-single__bundle-arrow devhub-single__bundle-arrow--prev"
-                            id="devhubBundlePrev" type="button"
-                            aria-label="<?php esc_attr_e('Previous bundle', 'devicehub-theme'); ?>">
-                            <i class="fas fa-chevron-left" aria-hidden="true"></i>
-                        </button>
-                        <button class="devhub-single__bundle-arrow devhub-single__bundle-arrow--next"
-                            id="devhubBundleNext" type="button"
-                            aria-label="<?php esc_attr_e('Next bundle', 'devicehub-theme'); ?>">
-                            <i class="fas fa-chevron-right" aria-hidden="true"></i>
-                        </button>
-                        <?php endif; ?> -->
+                            <button class="devhub-single__bundle-arrow devhub-single__bundle-arrow--next"
+                                id="devhubBundleNext" type="button" hidden
+                                aria-label="<?php esc_attr_e('Next bundle', 'devicehub-theme'); ?>">
+                                <i class="fas fa-chevron-right" aria-hidden="true"></i>
+                            </button>
                         </div>
                     </div>
                 <?php endif; ?>

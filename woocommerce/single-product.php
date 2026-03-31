@@ -83,6 +83,7 @@ $bundles = [
     ['name' => "Hutch 2x\nData 20 GB", 'data' => '20 GB', 'voice' => '160 minutes', 'price' => 'Rs. 599', 'url' => '#'],
     ['name' => "Hutch 2x\nData 30 GB", 'data' => '30 GB', 'voice' => '200 minutes', 'price' => 'Rs. 849', 'url' => '#'],
     ['name' => "Hutch 2x\nData 50 GB", 'data' => '50 GB', 'voice' => '300 minutes', 'price' => 'Rs. 1,249', 'url' => '#'],
+    ['name' => "Hutch 2x\nData 50 GB", 'data' => '50 GB', 'voice' => '300 minutes', 'price' => 'Rs. 1,249', 'url' => '#'],
 ];
 
 // Quick stats — pull from available product attributes

@@ -174,8 +174,6 @@
     if (!track || !viewport) return;
 
     var cards = track.querySelectorAll(".devhub-single__bundle-card");
-    var VISIBLE = 4;
-    var GAP = 12;
     var current = 0;
     var total = cards.length;
 
@@ -190,13 +188,31 @@
       });
     });
 
+    function getGap() {
+      var styles = window.getComputedStyle(track);
+      return parseFloat(styles.gap || styles.columnGap || "0") || 0;
+    }
+
+    function getVisibleCount() {
+      var screenWidth = window.innerWidth || document.documentElement.clientWidth;
+      if (screenWidth <= 576) return 1;
+      if (screenWidth < 768) return 2;
+      if (screenWidth < 1200) return 3;
+      return 4;
+    }
+
     function getCardWidth() {
       // Use viewport's actual rendered width — never 0
-      var vw = viewport.getBoundingClientRect().width;
-      return (vw - GAP * (VISIBLE - 1)) / VISIBLE;
+      var viewportWidth = viewport.getBoundingClientRect().width;
+      var visible = getVisibleCount();
+      var gap = getGap();
+      return (viewportWidth - gap * (visible - 1)) / visible;
     }
 
     function slide() {
+      var visible = getVisibleCount();
+      var gap = getGap();
+      var maxStart = Math.max(total - visible, 0);
       var cardWidth = getCardWidth();
 
       // Guard: if viewport not rendered yet, retry on next frame
@@ -205,24 +221,30 @@
         return;
       }
 
+      current = Math.min(current, maxStart);
+
       cards.forEach(function (card) {
         card.style.width = cardWidth + "px";
         card.style.flexShrink = "0";
       });
 
-      var offset = current * (cardWidth + GAP);
+      var hasOverflow = total > visible;
+      if (prevBtn) prevBtn.hidden = !hasOverflow;
+      if (nextBtn) nextBtn.hidden = !hasOverflow;
+
+      var offset = current * (cardWidth + gap);
       track.style.transform = "translateX(-" + offset + "px)";
 
-      if (prevBtn)
+      if (prevBtn && hasOverflow)
         prevBtn.style.visibility = current <= 0 ? "hidden" : "visible";
-      if (nextBtn)
-        nextBtn.style.visibility =
-          current + VISIBLE >= total ? "hidden" : "visible";
+      if (nextBtn && hasOverflow)
+        nextBtn.style.visibility = current >= maxStart ? "hidden" : "visible";
     }
 
     if (nextBtn) {
       nextBtn.addEventListener("click", function () {
-        if (current + VISIBLE < total) {
+        var maxStart = Math.max(total - getVisibleCount(), 0);
+        if (current < maxStart) {
           current++;
           slide();
         }
@@ -245,7 +267,6 @@
     window.addEventListener("resize", function () {
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(function () {
-        current = 0;
         slide();
       }, 100);
     });
