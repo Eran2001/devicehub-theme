@@ -51,20 +51,23 @@
   cursor: pointer;
   user-select: none;
   box-shadow: 0 10px 24px rgba(17, 17, 17, 0.12);
+  transition:
+    box-shadow 0.28s ease,
+    transform 0.28s ease;
 }
 
 .devhub-hero__cat-toggle {
   margin-left: auto;
   font-size: var(--devhub-text-xl);
-  transition: transform var(--devhub-transition);
+  transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .devhub-hero__categories.is-collapsed .devhub-hero__cat-toggle {
   transform: rotate(180deg);
 }
 
-.devhub-hero__categories.is-collapsed .devhub-hero__cat-list {
-  display: none;
+.devhub-hero__categories:hover .devhub-hero__cat-header {
+  box-shadow: 0 14px 30px rgba(17, 17, 17, 0.18);
 }
 
 .devhub-hero__cat-list {
@@ -74,6 +77,26 @@
   border: 1px solid var(--devhub-border);
   border-top: none;
   box-shadow: 0 18px 36px rgba(17, 17, 17, 0.12);
+  overflow: visible;
+  opacity: 1;
+  transform: translateY(0);
+  transform-origin: top;
+  transition:
+    height 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.22s ease,
+    transform 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.34s ease;
+}
+
+.devhub-hero__categories.is-collapsed .devhub-hero__cat-list {
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-10px);
+  box-shadow: 0 8px 18px rgba(17, 17, 17, 0.06);
+}
+
+.devhub-hero__categories.is-animating .devhub-hero__cat-list {
+  overflow: hidden;
 }
 
 .devhub-hero__cat-item {
@@ -97,6 +120,9 @@
 .devhub-hero__cat-item > a i {
   font-size: 11px;
   color: var(--devhub-mid);
+  transition:
+    color var(--devhub-transition),
+    transform 0.24s ease;
 }
 
 .devhub-hero__cat-item > a:hover {
@@ -106,11 +132,11 @@
 
 .devhub-hero__cat-item > a:hover i {
   color: var(--devhub-primary);
+  transform: translateX(3px);
 }
 
 /* Subcategory flyout */
 .devhub-hero__cat-sub {
-  display: none;
   position: absolute;
   left: 100%;
   top: 0;
@@ -121,11 +147,24 @@
   z-index: 100;
   padding: 0;
   margin: 0;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate3d(14px, 0, 0) scale(0.98);
+  transform-origin: left center;
+  transition:
+    opacity 0.2s ease,
+    transform 0.24s cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s linear 0.24s;
 }
 
 .devhub-hero__cat-item:hover .devhub-hero__cat-sub,
 .devhub-hero__cat-item:focus-within .devhub-hero__cat-sub {
-  display: block;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate3d(0, 0, 0) scale(1);
+  transition-delay: 0s;
 }
 
 .devhub-hero__cat-sub li a {
@@ -143,6 +182,16 @@
 .devhub-hero__cat-sub li a:hover {
   color: var(--devhub-primary);
   background: var(--devhub-bg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .devhub-hero__cat-header,
+  .devhub-hero__cat-toggle,
+  .devhub-hero__cat-list,
+  .devhub-hero__cat-item > a i,
+  .devhub-hero__cat-sub {
+    transition: none;
+  }
 }
 
 /* Banner */

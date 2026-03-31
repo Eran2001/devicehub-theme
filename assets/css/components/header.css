@@ -59,6 +59,11 @@
     justify-self: end;
   }
 
+  #wf_header .wf_navbar .wf-col-7 {
+    display: flex;
+    justify-content: center;
+  }
+
   #wf_header .wf_navbar-right,
   #wf_header .wf_navbar-list-right {
     min-width: max-content;
@@ -134,12 +139,39 @@
 #wf_header .header-search-form {
   width: 100%;
   padding-right: 0;
+  background: #f7f7f7;
+  border: 1px solid rgba(17, 17, 17, 0.08);
+  border-radius: 999px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  overflow: visible;
+  transition:
+    border-color 0.24s ease,
+    box-shadow 0.24s ease,
+    background-color 0.24s ease;
+}
+
+@media (min-width: 992px) {
+  #wf_header .wf-col-7 .header-search-form {
+    width: clamp(420px, 52%, 620px);
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+#wf_header .header-search-form:focus-within {
+  background: var(--devhub-white);
+  border-color: rgba(255, 107, 0, 0.22);
+  box-shadow:
+    0 0 0 4px rgba(255, 107, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
 #wf_header .header-search-form form {
   display: flex;
   align-items: stretch;
   width: 100%;
+  border-radius: inherit;
+  overflow: hidden;
 }
 
 #wf_header .header-search-form label {
@@ -158,17 +190,24 @@
   width: 100%;
   float: none;
   min-width: 0;
+  border: 0;
+  background: transparent;
+  padding-left: 18px;
+  padding-right: 40px;
 }
 
 #wf_header .header-search-form .wf_search-field {
   width: 100%;
   min-width: 0;
   display: block;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
 #wf_header .header-search-form .search-wrapper svg {
   left: auto;
-  right: 12px;
+  right: 16px;
   top: 50%;
   transform: translateY(-50%);
 }
@@ -177,10 +216,15 @@
   width: auto;
   flex: 0 0 180px;
   float: none;
+  border: 0;
+  border-left: 1px solid rgba(17, 17, 17, 0.08);
+  background: rgba(17, 17, 17, 0.02);
 }
 
 #wf_header .header-search-form .header-search-select {
   width: 100%;
+  border: 0;
+  background-color: transparent;
 }
 
 #wf_header .header-search-form .header-search-button {
@@ -188,6 +232,9 @@
   flex: 0 0 4.2rem;
   height: auto;
   min-height: 4rem;
+  border-radius: 999px;
+  margin: 4px;
+  min-height: calc(4rem - 8px);
 }
 
 #wf_header .header-search-form.product-search {
