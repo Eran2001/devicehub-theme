@@ -51,7 +51,7 @@ function devhub_render_hero_section(): void
             <div class="devhub-hero__inner">
 
                 <!-- Category sidebar -->
-                <nav class="devhub-hero__categories is-collapsed"
+                <nav class="devhub-hero__categories"
                     aria-label="<?php esc_attr_e('Product categories', 'devicehub-theme'); ?>">
                     <div class="devhub-hero__cat-header">
                         <i class="fas fa-list-ul" aria-hidden="true"></i>
