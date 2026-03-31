@@ -1,20 +1,13 @@
 <?php
 /**
- * DeviceHub — Home Page Sections
+ * DeviceHub - Home Page Sections
  *
- * Registers and renders: hero, category showcase, pre-order banner.
- * Each add_action → one function. One function per section.
- *
- * Banner content (eyebrow/title/subtitle) comes from WP Customizer options
- * so editors can update it without touching code.
+ * Registers and renders hero, category showcase, and promo banners.
  *
  * @package DeviceHub
  */
 
 defined('ABSPATH') || exit;
-
-
-// ── Hero section ──────────────────────────────────────────────────────────────
 
 add_action('devhub_hero_section', 'devhub_render_hero_section');
 
@@ -27,8 +20,10 @@ function devhub_render_hero_section(): void
         'exclude' => get_option('default_product_cat'),
     ]);
 
-    if (is_wp_error($categories))
+    if (is_wp_error($categories)) {
         return;
+    }
+
     $hero_slides = get_posts([
         'post_type' => 'devhub_hero_slide',
         'post_status' => 'publish',
@@ -50,7 +45,6 @@ function devhub_render_hero_section(): void
         <div class="wf-container">
             <div class="devhub-hero__inner">
 
-                <!-- Category sidebar -->
                 <nav class="devhub-hero__categories"
                     aria-label="<?php esc_attr_e('Product categories', 'devicehub-theme'); ?>">
                     <div class="devhub-hero__cat-header">
@@ -90,7 +84,6 @@ function devhub_render_hero_section(): void
                     </ul>
                 </nav>
 
-                <!-- Banner -->
                 <div class="devhub-hero__banner">
                     <?php if ($slide_count > 0): ?>
                         <div class="devhub-hero__slider" id="devhubHeroSlider">
@@ -160,35 +153,29 @@ function devhub_render_hero_section(): void
     <?php
 }
 
-
-// ── Category showcase section ─────────────────────────────────────────────────
-
 add_action('devhub_categories_section', 'devhub_render_categories_section');
 
 function devhub_render_categories_section(): void
 {
-    // Dummy data — wire WooCommerce later
     $categories = [
-        ['name' => 'Smart Watches', 'from' => 'LKR 7,000',    'img' => 'SmartWatch.svg'],
-        ['name' => 'Cameras',       'from' => 'LKR 20,000',   'img' => 'Cameras.svg'],
-        ['name' => 'Headphones',    'from' => 'LKR 12,000',   'img' => 'HeadPhones.svg'],
-        ['name' => 'Kettle',        'from' => 'LKR 7,000',    'img' => 'Kettle.svg'],
-        ['name' => 'Gaming Set',    'from' => 'LKR 10,000',   'img' => 'GamingSet.svg'],
-        ['name' => 'Laptops & PC',  'from' => 'LKR 120,000',  'img' => 'Laptop.svg'],
-        ['name' => 'Smartphones',   'from' => 'LKR 20,000',   'img' => 'SmartPhones.svg'],
-        ['name' => 'iPhones',       'from' => 'LKR 50,000',   'img' => 'IPhones.svg'],
+        ['name' => 'Smart Watches', 'from' => 'LKR 7,000', 'img' => 'SmartWatch.svg'],
+        ['name' => 'Cameras', 'from' => 'LKR 20,000', 'img' => 'Cameras.svg'],
+        ['name' => 'Headphones', 'from' => 'LKR 12,000', 'img' => 'HeadPhones.svg'],
+        ['name' => 'Kettle', 'from' => 'LKR 7,000', 'img' => 'Kettle.svg'],
+        ['name' => 'Gaming Set', 'from' => 'LKR 10,000', 'img' => 'GamingSet.svg'],
+        ['name' => 'Laptops & PC', 'from' => 'LKR 120,000', 'img' => 'Laptop.svg'],
+        ['name' => 'Smartphones', 'from' => 'LKR 20,000', 'img' => 'SmartPhones.svg'],
+        ['name' => 'iPhones', 'from' => 'LKR 50,000', 'img' => 'IPhones.svg'],
     ];
     ?>
     <section class="devhub-categories" aria-label="<?php esc_attr_e('Shop by category', 'devicehub-theme'); ?>">
         <div class="wf-container">
             <div class="devhub-categories__inner">
 
-                <!-- Left promo image -->
                 <div class="devhub-categories__left" aria-hidden="true">
                     <img src="<?php echo esc_url(DEVHUB_URI . '/assets/images/CategoryLeftImg.svg'); ?>" alt="">
                 </div>
 
-                <!-- Category grid -->
                 <div class="devhub-categories__grid">
                     <?php foreach ($categories as $cat):
                         $img_url = DEVHUB_URI . '/assets/images/' . $cat['img'];
@@ -214,20 +201,62 @@ function devhub_render_categories_section(): void
     <?php
 }
 
+add_action('devhub_before_broadbands_banner_section', function (): void {
+    devhub_render_promo_banner_section('before_broadbands', __('Promo banner before broad bands', 'devicehub-theme'));
+});
 
-// ── Pre-order banner section ──────────────────────────────────────────────────
+add_action('devhub_before_electronics_banner_section', function (): void {
+    devhub_render_promo_banner_section('before_electronics', __('Promo banner before electronics', 'devicehub-theme'));
+});
 
-add_action('devhub_preorder_section', 'devhub_render_preorder_section');
+add_action('devhub_before_accessories_banner_section', function (): void {
+    devhub_render_promo_banner_section('before_accessories', __('Promo banner before accessories', 'devicehub-theme'));
+});
 
-function devhub_render_preorder_section(): void
+function devhub_render_promo_banner_section(string $placement, string $aria_label): void
 {
-    ?>
-    <section class="devhub-preorder" aria-label="<?php esc_attr_e('Pre-order', 'devicehub-theme'); ?>">
-        <div class="wf-container">
-            <img src="<?php echo esc_url(DEVHUB_URI . '/assets/images/PreOrderGroupImg.svg'); ?>"
-                alt="<?php esc_attr_e('Pre Order — be the first to own', 'devicehub-theme'); ?>"
-                class="devhub-preorder__img">
-        </div>
-    </section>
-    <?php
+    $banners = devhub_get_promo_banners_by_placement($placement);
+
+    if (empty($banners)) {
+        return;
+    }
+
+    foreach ($banners as $banner) {
+        $banner_id = (int) $banner->ID;
+        $image_id = (int) get_post_thumbnail_id($banner_id);
+
+        if ($image_id <= 0) {
+            continue;
+        }
+
+        $link = devhub_get_promo_banner_link($banner_id);
+        $title = trim((string) get_the_title($banner_id));
+        ?>
+        <section class="devhub-preorder" aria-label="<?php echo esc_attr($aria_label); ?>">
+            <div class="wf-container">
+                <?php if ($link !== ''): ?>
+                    <a href="<?php echo esc_url($link); ?>" class="devhub-preorder__link">
+                <?php endif; ?>
+
+                <?php
+                echo wp_get_attachment_image(
+                    $image_id,
+                    'full',
+                    false,
+                    [
+                        'class' => 'devhub-preorder__img',
+                        'alt' => $title !== '' ? $title : __('Promo banner', 'devicehub-theme'),
+                        'loading' => 'lazy',
+                        'decoding' => 'async',
+                    ]
+                );
+                ?>
+
+                <?php if ($link !== ''): ?>
+                    </a>
+                <?php endif; ?>
+            </div>
+        </section>
+        <?php
+    }
 }

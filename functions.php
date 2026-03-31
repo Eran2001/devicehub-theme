@@ -34,6 +34,7 @@ require_once DEVHUB_INC_DIR . '/enqueue.php';     // All wp_enqueue_style / wp_e
 require_once DEVHUB_INC_DIR . '/helpers.php';     // Reusable utility functions (no output)
 require_once DEVHUB_INC_DIR . '/hooks.php';       // All add_action / remove_action overrides
 require_once DEVHUB_INC_DIR . '/hero-slides.php'; // Admin-managed homepage hero slides
+require_once DEVHUB_INC_DIR . '/promo-banners.php'; // Admin-managed homepage promo banners
 
 // ── Parent theme integrations (keep from Shopire base) ──────────────────────
 

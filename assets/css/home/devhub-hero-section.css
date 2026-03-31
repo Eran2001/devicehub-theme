@@ -32,7 +32,7 @@
 .devhub-hero__categories {
   position: absolute;
   top: 0;
-  left: 0;
+  left: 20px;
   z-index: 5;
   width: 300px;
   min-width: 300px;
