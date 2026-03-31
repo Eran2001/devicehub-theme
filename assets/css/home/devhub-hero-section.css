@@ -178,16 +178,15 @@
 }
 
 .devhub-hero__slide-media {
-  height: 500px;
-  min-height: 400px;
-  background: #000;
+  height: auto;
+  min-height: 0;
+  background: var(--devhub-white);
 }
 
 .devhub-hero__slide-image {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
+  height: auto;
+  max-width: 100%;
   display: block;
 }
 
@@ -285,9 +284,7 @@
     display: none;
   }
 
-  .devhub-hero__slide-media,
   .devhub-hero__empty {
-    height: 280px;
     min-height: 280px;
   }
 }
@@ -314,9 +311,7 @@
     bottom: 12px;
   }
 
-  .devhub-hero__slide-media,
   .devhub-hero__empty {
-    height: 220px;
     min-height: 220px;
   }
 }
