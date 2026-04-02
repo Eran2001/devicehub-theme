@@ -186,8 +186,23 @@
   border-top-width: 0 !important;
 }
 
+.wc-block-checkout__sidebar .wc-block-components-totals-coupon.wc-block-components-panel {
+  border-top: 0 !important;
+}
+
+.wc-block-checkout__sidebar
+  .wp-block-woocommerce-checkout-order-summary-coupon-form-block.wc-block-components-totals-wrapper {
+  border-top: 0 !important;
+  padding-top: 0 !important;
+}
+
 .wc-block-checkout__sidebar .wc-block-components-totals-footer-item {
   border-top: 0 !important;
+}
+
+.wc-block-checkout__sidebar .wc-block-components-totals-wrapper:has(.wc-block-components-totals-footer-item) {
+  border-top: 0 !important;
+  padding-top: 0 !important;
 }
 
 /* Place Order button */
