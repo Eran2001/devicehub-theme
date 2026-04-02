@@ -178,6 +178,27 @@ function devhub_enqueue_scripts(): void
     // ── Checkout ──────────────────────────────────────────────────────────────
     if (is_checkout()) {
         devhub_script('devhub-checkout', '/modules/checkout.js', ['devhub-utils'], true);
+        wp_localize_script('devhub-checkout', 'devhubCheckoutData', [
+            'fields' => [
+                'deliveryMethod' => defined('DEVHUB_CHECKOUT_DELIVERY_METHOD_FIELD') ? DEVHUB_CHECKOUT_DELIVERY_METHOD_FIELD : 'devicehub/delivery_method',
+                'pickupStore'    => defined('DEVHUB_CHECKOUT_PICKUP_STORE_FIELD') ? DEVHUB_CHECKOUT_PICKUP_STORE_FIELD : 'devicehub/pickup_store',
+            ],
+            'pickupLocations' => function_exists('devhub_get_checkout_pickup_locations') ? devhub_get_checkout_pickup_locations() : [],
+            'messages' => [
+                'title'             => __('Your Delivery Method', 'devicehub-theme'),
+                'pickupTitle'       => __('Pick up at store', 'devicehub-theme'),
+                'pickupSubtitle'    => __('Select the Hutch location for collection.', 'devicehub-theme'),
+                'searchPlaceholder' => __('Search stores', 'devicehub-theme'),
+                'searchHelp'        => __('Search for your nearest Hutch store.', 'devicehub-theme'),
+                'pickupLabel'       => __('Pick Up at Store', 'devicehub-theme'),
+                'pickupHint'        => __('Collect from a Hutch service location.', 'devicehub-theme'),
+                'deliveryLabel'     => __('Home Delivery', 'devicehub-theme'),
+                'deliveryHint'      => __('Delivery via courier to the billing address.', 'devicehub-theme'),
+                'pickupRequired'    => __('Please select a pickup store to continue.', 'devicehub-theme'),
+                'emptySearch'       => __('No stores match your search.', 'devicehub-theme'),
+                'pickupUnavailable' => __('Pickup is currently unavailable.', 'devicehub-theme'),
+            ],
+        ]);
     }
 
     // ── My Account ────────────────────────────────────────────────────────────

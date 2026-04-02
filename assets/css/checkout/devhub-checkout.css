@@ -28,3 +28,179 @@
   outline: none !important;
   box-shadow: none !important;
 }
+
+.devhub-delivery-method {
+  margin: 0 0 32px;
+  padding: 28px;
+  border: 1px solid rgba(17, 24, 39, 0.1);
+  background: #fff;
+}
+
+.devhub-delivery-method__title,
+.devhub-delivery-method__pickup-title {
+  margin: 0;
+  color: #101828;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.devhub-delivery-method__options {
+  display: grid;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.devhub-delivery-method__option {
+  width: 100%;
+  padding: 18px 20px;
+  border: 1px solid #d0d5dd;
+  background: #fff;
+  color: #101828;
+  text-align: left;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.devhub-delivery-method__option:hover,
+.devhub-delivery-method__option:focus-visible {
+  border-color: var(--devhub-primary);
+  box-shadow: 0 0 0 1px rgba(255, 102, 0, 0.1);
+  outline: none;
+}
+
+.devhub-delivery-method__option.is-active {
+  border-color: var(--devhub-primary);
+  box-shadow: inset 0 0 0 1px var(--devhub-primary);
+}
+
+.devhub-delivery-method__option.is-disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.devhub-delivery-method__option-title,
+.devhub-delivery-method__option-copy,
+.devhub-delivery-method__store-name,
+.devhub-delivery-method__store-address,
+.devhub-delivery-method__store-details,
+.devhub-delivery-method__pickup-copy,
+.devhub-delivery-method__search-copy,
+.devhub-delivery-method__empty,
+.devhub-delivery-method__error,
+.devhub-delivery-method__summary {
+  display: block;
+}
+
+.devhub-delivery-method__option-title,
+.devhub-delivery-method__store-name {
+  font-weight: 700;
+}
+
+.devhub-delivery-method__option-copy,
+.devhub-delivery-method__pickup-copy,
+.devhub-delivery-method__search-copy,
+.devhub-delivery-method__store-address,
+.devhub-delivery-method__store-details,
+.devhub-delivery-method__empty,
+.devhub-delivery-method__summary {
+  margin-top: 4px;
+  color: #667085;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+.devhub-delivery-method__pickup {
+  margin-top: 24px;
+}
+
+.devhub-delivery-method__pickup.is-hidden {
+  display: none;
+}
+
+.devhub-delivery-method__search {
+  margin-top: 18px;
+}
+
+.devhub-delivery-method__search-input {
+  width: 100%;
+  min-height: 52px;
+  padding: 0 16px;
+  border: 1px solid #d0d5dd;
+  background: #fff;
+  color: #101828;
+}
+
+.devhub-delivery-method__search-input:focus,
+.devhub-delivery-method__search-input:focus-visible {
+  border-color: var(--devhub-primary);
+  outline: none;
+  box-shadow: 0 0 0 1px rgba(255, 102, 0, 0.08);
+}
+
+.devhub-delivery-method__store-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.devhub-delivery-method__store {
+  display: flex;
+  gap: 14px;
+  width: 100%;
+  padding: 16px;
+  border: 1px solid #d0d5dd;
+  background: #fff;
+  color: #101828;
+  text-align: left;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.devhub-delivery-method__store:hover,
+.devhub-delivery-method__store:focus-visible {
+  border-color: var(--devhub-primary);
+  box-shadow: 0 0 0 1px rgba(255, 102, 0, 0.1);
+  outline: none;
+}
+
+.devhub-delivery-method__store.is-active {
+  border-color: var(--devhub-primary);
+  box-shadow: inset 0 0 0 1px var(--devhub-primary);
+}
+
+.devhub-delivery-method__store-indicator {
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
+  margin-top: 3px;
+  border: 2px solid #d0d5dd;
+  border-radius: 50%;
+}
+
+.devhub-delivery-method__store.is-active .devhub-delivery-method__store-indicator {
+  border-color: var(--devhub-primary);
+  box-shadow: inset 0 0 0 4px #fff, inset 0 0 0 10px var(--devhub-primary);
+}
+
+.devhub-delivery-method__store-content {
+  min-width: 0;
+}
+
+.devhub-delivery-method__error {
+  margin: 16px 0 0;
+  color: #b42318;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.devhub-delivery-method__summary {
+  margin: 12px 0 0;
+  color: #101828;
+  font-weight: 600;
+}
+
+@media (max-width: 781px) {
+  .devhub-delivery-method {
+    padding: 20px;
+  }
+}

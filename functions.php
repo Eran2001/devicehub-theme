@@ -33,6 +33,7 @@ require_once DEVHUB_INC_DIR . '/widgets.php';     // register_sidebar calls
 require_once DEVHUB_INC_DIR . '/enqueue.php';     // All wp_enqueue_style / wp_enqueue_script
 require_once DEVHUB_INC_DIR . '/helpers.php';     // Reusable utility functions (no output)
 require_once DEVHUB_INC_DIR . '/hooks.php';       // All add_action / remove_action overrides
+require_once DEVHUB_INC_DIR . '/checkout-delivery.php'; // Block checkout delivery method UI/data
 require_once DEVHUB_INC_DIR . '/hero-slides.php'; // Admin-managed homepage hero slides
 require_once DEVHUB_INC_DIR . '/promo-banners.php'; // Admin-managed homepage promo banners
 require_once DEVHUB_INC_DIR . '/category-showcase.php'; // Admin-managed category showcase section
