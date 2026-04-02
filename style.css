@@ -51,16 +51,21 @@ License URI: https://www.gnu.org/licenses/gpl-3.0.html
   /* Typography */
   --devhub-font:
     "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --devhub-font-heading:
+    "Plus Jakarta Sans", "Inter", -apple-system, sans-serif;
 
   /* Type scale */
-  --devhub-text-xs: 0.75rem; /* 12px */
-  --devhub-text-sm: 0.875rem; /* 14px */
-  --devhub-text-md: 1rem; /* 16px */
-  --devhub-text-lg: 1.125rem; /* 18px */
-  --devhub-text-xl: 1.25rem; /* 20px */
-  --devhub-text-2xl: 1.5rem; /* 24px */
-  --devhub-text-3xl: 1.875rem; /* 30px */
-  --devhub-text-4xl: 2.25rem; /* 36px */
+  --devhub-text-xs: 0.75rem;     /* 12px */
+  --devhub-text-sm: 0.875rem;    /* 14px */
+  --devhub-text-md: 1rem;        /* 16px */
+  --devhub-text-lg: 1.125rem;    /* 18px */
+  --devhub-text-xl: 1.25rem;     /* 20px */
+  --devhub-text-2xl: 1.5rem;     /* 24px */
+  --devhub-text-3xl: 1.875rem;   /* 30px */
+  --devhub-text-4xl: 2.25rem;    /* 36px */
+  --devhub-text-5xl: 3rem;       /* 48px — section hero titles */
+  --devhub-text-6xl: 3.75rem;    /* 60px — page hero headline */
+  --devhub-text-display: 4.5rem; /* 72px — large promotional banners */
 
   /* Layout */
   /* --devhub-container: 1280px; */
@@ -135,11 +140,18 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: var(--devhub-font);
+  font-family: var(--devhub-font-heading);
   color: var(--devhub-black);
   line-height: 1.2;
   margin: 0;
 }
+
+h1 { font-size: var(--devhub-text-4xl); font-weight: 800; }
+h2 { font-size: var(--devhub-text-3xl); font-weight: 700; }
+h3 { font-size: var(--devhub-text-2xl); font-weight: 700; }
+h4 { font-size: var(--devhub-text-xl);  font-weight: 600; }
+h5 { font-size: var(--devhub-text-lg);  font-weight: 600; }
+h6 { font-size: var(--devhub-text-md);  font-weight: 600; }
 
 p {
   margin: 0;

@@ -32,6 +32,16 @@ add_action('wp_enqueue_scripts', 'devhub_footer_option_styles', 30);
 function devhub_enqueue_styles(): void
 {
 
+    // ── Google Fonts ──────────────────────────────────────────────────────────
+    // Plus Jakarta Sans — headings / section titles
+    // Inter             — body text, UI labels, buttons
+    wp_enqueue_style(
+        'devhub-google-fonts',
+        'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap',
+        [],
+        null
+    );
+
     // ── Vendor ────────────────────────────────────────────────────────────────
     wp_enqueue_style('owl-carousel-min', DEVHUB_URI . '/assets/vendors/css/owl.carousel.min.css');
     wp_enqueue_style('font-awesome', DEVHUB_URI . '/assets/vendors/css/all.min.css');
