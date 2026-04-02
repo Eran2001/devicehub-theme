@@ -157,40 +157,52 @@ add_action('devhub_categories_section', 'devhub_render_categories_section');
 
 function devhub_render_categories_section(): void
 {
-    $categories = [
-        ['name' => 'Smart Watches', 'from' => 'LKR 7,000', 'img' => 'SmartWatch.svg'],
-        ['name' => 'Cameras', 'from' => 'LKR 20,000', 'img' => 'Cameras.svg'],
-        ['name' => 'Headphones', 'from' => 'LKR 12,000', 'img' => 'HeadPhones.svg'],
-        ['name' => 'Kettle', 'from' => 'LKR 7,000', 'img' => 'Kettle.svg'],
-        ['name' => 'Gaming Set', 'from' => 'LKR 10,000', 'img' => 'GamingSet.svg'],
-        ['name' => 'Laptops & PC', 'from' => 'LKR 120,000', 'img' => 'Laptop.svg'],
-        ['name' => 'Smartphones', 'from' => 'LKR 20,000', 'img' => 'SmartPhones.svg'],
-        ['name' => 'iPhones', 'from' => 'LKR 50,000', 'img' => 'IPhones.svg'],
-    ];
+    $items = devhub_get_cat_showcase_items();
+
+    if (empty($items)) {
+        return;
+    }
+
+    $banner_url = devhub_get_cat_showcase_banner_url();
     ?>
     <section class="devhub-categories" aria-label="<?php esc_attr_e('Shop by category', 'devicehub-theme'); ?>">
         <div class="wf-container">
             <div class="devhub-categories__inner">
 
-                <div class="devhub-categories__left" aria-hidden="true">
-                    <img src="<?php echo esc_url(DEVHUB_URI . '/assets/images/CategoryLeftImg.svg'); ?>" alt="">
-                </div>
+                <?php if ($banner_url !== ''): ?>
+                    <div class="devhub-categories__left" aria-hidden="true">
+                        <img src="<?php echo esc_url($banner_url); ?>" alt="">
+                    </div>
+                <?php endif; ?>
 
                 <div class="devhub-categories__grid">
-                    <?php foreach ($categories as $cat):
-                        $img_url = DEVHUB_URI . '/assets/images/' . $cat['img'];
+                    <?php foreach ($items as $item):
+                        $name       = get_the_title($item);
+                        $raw_price  = (string) get_post_meta($item->ID, DEVHUB_CAT_FROM_PRICE_META, true);
+                        $link       = (string) get_post_meta($item->ID, DEVHUB_CAT_LINK_META, true);
+                        $img_url    = get_the_post_thumbnail_url($item->ID, 'medium') ?: '';
+
+                        $from_price = '';
+                        if ($raw_price !== '' && is_numeric($raw_price)) {
+                            $currency   = function_exists('get_woocommerce_currency_symbol') ? get_woocommerce_currency_symbol() : 'LKR';
+                            $from_price = $currency . ' ' . number_format((float) $raw_price, 0, '.', ',');
+                        }
                         ?>
-                        <a href="#" class="devhub-categories__item">
+                        <a href="<?php echo $link !== '' ? esc_url($link) : '#'; ?>" class="devhub-categories__item">
                             <div class="devhub-categories__item-info">
-                                <p class="devhub-categories__item-name"><?php echo esc_html($cat['name']); ?></p>
-                                <p class="devhub-categories__item-from">
-                                    <?php esc_html_e('From', 'devicehub-theme'); ?><br>
-                                    <?php echo esc_html($cat['from']); ?>
-                                </p>
+                                <p class="devhub-categories__item-name"><?php echo esc_html($name); ?></p>
+                                <?php if ($from_price !== ''): ?>
+                                    <p class="devhub-categories__item-from">
+                                        <?php esc_html_e('From', 'devicehub-theme'); ?><br>
+                                        <?php echo esc_html($from_price); ?>
+                                    </p>
+                                <?php endif; ?>
                             </div>
-                            <div class="devhub-categories__item-img">
-                                <img src="<?php echo esc_url($img_url); ?>" alt="<?php echo esc_attr($cat['name']); ?>" loading="lazy">
-                            </div>
+                            <?php if ($img_url !== ''): ?>
+                                <div class="devhub-categories__item-img">
+                                    <img src="<?php echo esc_url($img_url); ?>" alt="<?php echo esc_attr($name); ?>" loading="lazy">
+                                </div>
+                            <?php endif; ?>
                         </a>
                     <?php endforeach; ?>
                 </div>

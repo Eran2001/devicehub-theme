@@ -35,6 +35,7 @@ require_once DEVHUB_INC_DIR . '/helpers.php';     // Reusable utility functions 
 require_once DEVHUB_INC_DIR . '/hooks.php';       // All add_action / remove_action overrides
 require_once DEVHUB_INC_DIR . '/hero-slides.php'; // Admin-managed homepage hero slides
 require_once DEVHUB_INC_DIR . '/promo-banners.php'; // Admin-managed homepage promo banners
+require_once DEVHUB_INC_DIR . '/category-showcase.php'; // Admin-managed category showcase section
 require_once DEVHUB_INC_DIR . '/footer-settings.php'; // Admin-managed footer settings page
 
 // ── Parent theme integrations (keep from Shopire base) ──────────────────────

@@ -86,8 +86,8 @@
 }
 
 .devhub-categories__item-img {
-  width: 60px;
-  height: 60px;
+  width: 80px;
+  height: 80px;
   flex-shrink: 0;
   align-self: flex-end;
 }
@@ -240,8 +240,8 @@
   }
 
   .devhub-categories__item-img {
-    width: 46px;
-    height: 46px;
+    width: 60px;
+    height: 60px;
   }
 
   .devhub-categories__item-name {
