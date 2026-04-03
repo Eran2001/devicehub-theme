@@ -1,24 +1,251 @@
 /* ==========================================================================
-   Cart Page — DeviceHub
+   Cart Page - DeviceHub
    ========================================================================== */
 
-/* Cart totals sidebar — remove left padding gap */
+/* Cart totals sidebar - remove left padding gap */
 .wc-block-cart__sidebar {
   padding-left: 0 !important;
 }
 
-/* Proceed to Checkout button — WooCommerce Cart Block */
-.wc-block-cart__submit-button.wc-block-components-button {
-  background-color: var(--devhub-primary) !important;
+/* Cart page shell - remove the extra gap below the page bar */
+.woocommerce-cart .wf_posts.wf-py-default {
+  padding-top: 20px !important;
+  padding-bottom: 48px !important;
+}
+
+.woocommerce-cart .post.single-post {
+  margin-bottom: 0;
+}
+
+.woocommerce-cart .wp-block-woocommerce-cart {
+  padding-top: 0 !important;
+}
+
+.woocommerce-cart .wc-block-cart {
+  padding-top: 0 !important;
+}
+
+.woocommerce-cart .wc-block-cart > :first-child,
+.woocommerce-cart .wc-block-cart-items-block,
+.woocommerce-cart .wc-block-cart-totals-block,
+.woocommerce-cart .wc-block-cart__submit {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+.woocommerce-cart .wc-block-cart-items-block > :first-child,
+.woocommerce-cart .wc-block-cart-totals-block > :first-child {
+  margin-top: 0 !important;
+}
+
+.woocommerce-cart .wc-block-cart__sidebar {
+  border: 1px solid #e8e8e8;
+  border-radius: 12px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.woocommerce-cart .wc-block-cart-items-block {
+  border: 1px solid #e8e8e8;
+  border-radius: 12px;
+  background: #fff;
+  overflow: hidden;
+  padding: 0 !important;
+  box-shadow: 0 0 0 1px #e8e8e8;
+}
+
+.woocommerce-cart .wc-block-cart-items {
+  width: 100%;
+  border: 1px solid #e8e8e8;
+  border-radius: 12px;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  background: #fff;
+  overflow: hidden;
+}
+
+.woocommerce-cart .wc-block-cart-items th,
+.woocommerce-cart .wc-block-cart-items td {
+  background: #fff;
+}
+
+.woocommerce-cart .wc-block-cart-items th {
+  color: #101828;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  padding: 22px 24px !important;
+}
+
+.woocommerce-cart .wc-block-cart__sidebar {
+  padding: 18px 20px 20px !important;
+}
+
+.woocommerce-cart .wc-block-cart__sidebar > *:first-child,
+.woocommerce-cart .wc-block-cart-items-block > :first-child,
+.woocommerce-cart .wc-block-cart-items > :first-child {
+  margin-top: 0 !important;
+}
+
+.wc-block-cart__sidebar .wc-block-components-totals-coupon.wc-block-components-panel {
+  border-top: 0 !important;
+}
+
+.wc-block-cart__sidebar .wc-block-components-totals-coupon__form {
+  align-items: flex-end;
+}
+
+.wc-block-cart__sidebar
+  .wc-block-components-totals-coupon__input.wc-block-components-text-input {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  margin: 0;
+}
+
+.wc-block-cart__sidebar
+  .wc-block-components-totals-coupon__input.wc-block-components-text-input
+  label {
+  order: -1;
+  position: static !important;
+  display: block !important;
+  margin-bottom: 8px !important;
+  transform: none !important;
+  color: #222 !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  line-height: 1.4 !important;
+  pointer-events: auto !important;
+}
+
+.wc-block-cart__sidebar
+  .wc-block-components-totals-coupon__input.wc-block-components-text-input
+  input {
+  min-height: 44px !important;
+  height: 44px !important;
+  padding: 10px 16px !important;
+  border: 1px solid #dddddd !important;
+  border-radius: 10px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  color: #333 !important;
+  font-size: 14px !important;
+  line-height: 1.3 !important;
+}
+
+.wc-block-cart__sidebar
+  .wc-block-components-totals-coupon__input.wc-block-components-text-input
+  input::placeholder {
+  color: #98a2b3 !important;
+  opacity: 1 !important;
+}
+
+.wc-block-cart__sidebar
+  .wc-block-components-totals-coupon__input.wc-block-components-text-input
+  input:focus {
+  border-color: rgba(255, 102, 0, 0.65) !important;
+  box-shadow: 0 0 0 3px rgba(255, 102, 0, 0.08) !important;
+  outline: none !important;
+}
+
+.wc-block-cart__sidebar .wc-block-components-totals-coupon__button {
+  display: inline-block !important;
+  vertical-align: middle !important;
+  overflow: hidden !important;
+  position: relative !important;
+  z-index: 0 !important;
+  min-height: 44px !important;
+  padding: 10px 24px !important;
+  border: 0.1rem solid var(--wf-main-color) !important;
+  border-radius: 10rem !important;
+  background-color: var(--wf-main-color) !important;
   color: #fff !important;
-  /* border-radius: var(--devhub-radius-md) !important; */
+  font-size: 1.5rem !important;
+  font-weight: 600 !important;
+  line-height: 1.134 !important;
+  letter-spacing: 0.03rem !important;
+  font-family: inherit !important;
+  white-space: nowrap !important;
+  text-decoration: none !important;
+  text-transform: initial !important;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease !important;
+}
+
+.wc-block-cart__sidebar .wc-block-components-totals-coupon__button i.fa-arrow-right {
+  margin-left: 0.4rem;
+  margin-right: 0;
+}
+
+.wc-block-cart__sidebar .wc-block-components-totals-coupon__button:hover {
+  background-color: rgba(var(--wf-main-rgb), 0.9) !important;
+  border-color: rgba(var(--wf-main-rgb), 0.9) !important;
+  color: #fff !important;
+}
+
+.wc-block-cart__sidebar .wc-block-components-totals-coupon__button:disabled,
+.wc-block-cart__sidebar .wc-block-components-totals-coupon__button[disabled],
+.wc-block-cart__sidebar .wc-block-components-totals-coupon__button[aria-disabled="true"] {
+  background-color: #e4e7ec !important;
+  border-color: #e4e7ec !important;
+  color: #98a2b3 !important;
+  cursor: not-allowed !important;
+  box-shadow: none !important;
+  opacity: 1 !important;
+}
+
+.wc-block-cart__sidebar .wc-block-components-totals-coupon__button:disabled:hover,
+.wc-block-cart__sidebar .wc-block-components-totals-coupon__button[disabled]:hover,
+.wc-block-cart__sidebar .wc-block-components-totals-coupon__button[aria-disabled="true"]:hover {
+  background-color: #e4e7ec !important;
+  border-color: #e4e7ec !important;
+  color: #98a2b3 !important;
+}
+
+.wc-block-cart__sidebar .wc-block-components-totals-coupon__button:focus,
+.wc-block-cart__sidebar .wc-block-components-totals-coupon__button:focus-visible,
+.wc-block-cart__sidebar .wc-block-components-totals-coupon__button:active {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.btn--effect-six .wc-block-cart__sidebar .wc-block-components-totals-coupon__button span {
+  display: inline-block;
+  pointer-events: none;
+}
+
+.btn--effect-six .wc-block-cart__sidebar .wc-block-components-totals-coupon__button span.text-spin {
+  -webkit-animation: text-spin 0.5s 1;
+  animation: text-spin 0.5s 1;
+}
+
+/* Proceed to Checkout button - WooCommerce Cart Block */
+.wc-block-cart__submit-button.wc-block-components-button {
+  display: inline-block !important;
+  width: 100% !important;
+  overflow: hidden !important;
+  position: relative !important;
+  z-index: 0 !important;
+  background-color: var(--devhub-primary) !important;
+  border: 0.1rem solid var(--wf-main-color) !important;
+  border-radius: 10rem !important;
+  color: #fff !important;
   font-weight: 600 !important;
   text-decoration: none !important;
-  transition: background-color 0.2s ease !important;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease !important;
+}
+
+.wc-block-cart__submit-button.wc-block-components-button i.fa-arrow-right {
+  margin-left: 0.4rem;
+  margin-right: 0;
 }
 
 .wc-block-cart__submit-button.wc-block-components-button:hover {
-  background-color: var(--devhub-primary-dark) !important;
+  background-color: rgba(var(--wf-main-rgb), 0.9) !important;
+  border-color: rgba(var(--wf-main-rgb), 0.9) !important;
   color: #fff !important;
 }
 
@@ -27,4 +254,14 @@
 .wc-block-cart__submit-button.wc-block-components-button:active {
   outline: none !important;
   box-shadow: none !important;
+}
+
+.btn--effect-six .wc-block-cart__submit-button.wc-block-components-button span {
+  display: inline-block;
+  pointer-events: none;
+}
+
+.btn--effect-six .wc-block-cart__submit-button.wc-block-components-button span.text-spin {
+  -webkit-animation: text-spin 0.5s 1;
+  animation: text-spin 0.5s 1;
 }
