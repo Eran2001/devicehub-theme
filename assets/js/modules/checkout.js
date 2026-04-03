@@ -17,6 +17,7 @@
 	const COUPON_INPUT_LABEL_SELECTOR = '.wp-block-woocommerce-checkout-order-summary-coupon-form-block .wc-block-components-totals-coupon__input label';
 	const CONTACT_EMAIL_INPUT_SELECTOR = '.wc-block-checkout__contact-fields .wc-block-components-text-input input[type="email"]';
 	const CONTACT_EMAIL_LABEL_SELECTOR = '.wc-block-checkout__contact-fields .wc-block-components-text-input label';
+	const ADDRESS_LINE_2_TOGGLE_SELECTOR = '.wc-block-components-address-form__address_2-toggle';
 
 	const state = {
 		search: '',
@@ -266,6 +267,14 @@
 		}
 	}
 
+	function expandAddressLineTwo() {
+		document.querySelectorAll( ADDRESS_LINE_2_TOGGLE_SELECTOR ).forEach( ( toggle ) => {
+			if ( toggle instanceof HTMLElement ) {
+				toggle.click();
+			}
+		} );
+	}
+
 	function render() {
 		if ( ! syncDefaults() ) {
 			return;
@@ -404,6 +413,7 @@
 		enhanceCouponButton();
 		enhanceCouponInput();
 		enhanceContactInput();
+		expandAddressLineTwo();
 	}
 
 	function boot() {
@@ -421,6 +431,7 @@
 		enhanceCouponButton();
 		enhanceCouponInput();
 		enhanceContactInput();
+		expandAddressLineTwo();
 
 		if ( unsubscribe ) {
 			return;
@@ -432,6 +443,7 @@
 			enhanceCouponButton();
 			enhanceCouponInput();
 			enhanceContactInput();
+			expandAddressLineTwo();
 		} );
 	}
 
