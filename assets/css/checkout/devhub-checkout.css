@@ -917,6 +917,11 @@
   line-height: 1.4 !important;
 }
 
+.woocommerce-checkout.devhub-checkout--custom-pickup
+  .wc-block-checkout__pickup-options {
+  display: none !important;
+}
+
 .wc-block-checkout__main
   .wc-block-checkout__pickup-options
   .wc-block-components-local-pickup-rates-control

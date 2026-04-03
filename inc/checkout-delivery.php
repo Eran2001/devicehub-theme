@@ -213,6 +213,7 @@ function devhub_store_checkout_delivery_meta( WC_Order $order, WP_REST_Request $
 		$location_map[ $location['value'] ] = $location;
 	}
 
+	$order->update_meta_data( '_devhub_delivery_method', $delivery_method );
 	$order->update_meta_data( '_devhub_delivery_method_label', 'pickup' === $delivery_method ? __( 'Pick Up at Store', 'devicehub-theme' ) : __( 'Home Delivery', 'devicehub-theme' ) );
 
 	if ( 'pickup' === $delivery_method && isset( $location_map[ $pickup_store ] ) ) {

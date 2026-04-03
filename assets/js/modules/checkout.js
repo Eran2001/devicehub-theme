@@ -18,6 +18,9 @@
 	const CONTACT_EMAIL_INPUT_SELECTOR = '.wc-block-checkout__contact-fields .wc-block-components-text-input input[type="email"]';
 	const CONTACT_EMAIL_LABEL_SELECTOR = '.wc-block-checkout__contact-fields .wc-block-components-text-input label';
 	const ADDRESS_LINE_2_TOGGLE_SELECTOR = '.wc-block-components-address-form__address_2-toggle';
+	const NATIVE_PICKUP_STEP_SELECTOR = '.wc-block-checkout__pickup-options';
+	const NATIVE_PICKUP_OPTION_SELECTOR = '.wc-block-checkout__pickup-options .wc-block-components-radio-control__option';
+	const NATIVE_PICKUP_INPUT_SELECTOR = '.wc-block-checkout__pickup-options input[type="radio"]';
 
 	const state = {
 		search: '',
@@ -71,6 +74,13 @@
 			.replace( /'/g, '&#039;' );
 	}
 
+	function normalizeText( value ) {
+		return String( value ?? '' )
+			.replace( /\s+/g, ' ' )
+			.trim()
+			.toLowerCase();
+	}
+
 	function isValidMethod( method ) {
 		return method === 'home_delivery' || method === 'pickup';
 	}
@@ -82,7 +92,77 @@
 		}, {} );
 	}
 
+	function getNativePickupOptions() {
+		return Array.from( document.querySelectorAll( NATIVE_PICKUP_OPTION_SELECTOR ) ).map( ( option ) => ( {
+			option,
+			input: option.querySelector( 'input[type="radio"]' ),
+			text: normalizeText( option.textContent ),
+		} ) );
+	}
+
+	function findLocationByNativeText( text ) {
+		const normalizedText = normalizeText( text );
+
+		return locations.find( ( location ) => {
+			const name = normalizeText( location.name );
+			const address = normalizeText( location.address );
+			return (
+				( name && normalizedText.includes( name ) ) ||
+				( address && normalizedText.includes( address ) )
+			);
+		} ) || null;
+	}
+
+	function syncPickupStoreFromNativeSelection() {
+		const additionalFields = getAdditionalFields();
+		const method = additionalFields[ DELIVERY_FIELD ];
+		const pickupStore = additionalFields[ PICKUP_FIELD ] || '';
+
+		if ( method !== 'pickup' || pickupStore ) {
+			return false;
+		}
+
+		const selectedOption = getNativePickupOptions().find( ( option ) => option.input?.checked );
+		const matchedLocation = selectedOption ? findLocationByNativeText( selectedOption.text ) : null;
+
+		if ( ! matchedLocation ) {
+			return false;
+		}
+
+		patchAdditionalFields( {
+			[ PICKUP_FIELD ]: matchedLocation.value,
+		} );
+
+		return true;
+	}
+
+	function syncNativePickupSelection( pickupStore ) {
+		const selectedLocation = getLocationMap()[ pickupStore ] || null;
+
+		if ( ! selectedLocation ) {
+			return;
+		}
+
+		const targetOption = getNativePickupOptions().find( ( option ) => {
+			const matchedLocation = findLocationByNativeText( option.text );
+			return matchedLocation?.value === selectedLocation.value;
+		} );
+
+		if ( ! targetOption?.input || targetOption.input.checked ) {
+			return;
+		}
+
+		targetOption.input.checked = true;
+		targetOption.input.dispatchEvent( new Event( 'change', { bubbles: true } ) );
+	}
+
 	function syncDefaults() {
+		document.body.classList.add( 'devhub-checkout--custom-pickup' );
+
+		if ( syncPickupStoreFromNativeSelection() ) {
+			return false;
+		}
+
 		const additionalFields = getAdditionalFields();
 		const patch = {};
 		const currentMethod = additionalFields[ DELIVERY_FIELD ];
@@ -98,6 +178,10 @@
 		if ( Object.keys( patch ).length ) {
 			patchAdditionalFields( patch );
 			return false;
+		}
+
+		if ( additionalFields[ DELIVERY_FIELD ] === 'pickup' && additionalFields[ PICKUP_FIELD ] ) {
+			syncNativePickupSelection( additionalFields[ PICKUP_FIELD ] );
 		}
 
 		return true;
@@ -397,6 +481,7 @@
 				patchAdditionalFields( {
 					[ PICKUP_FIELD ]: nextStore,
 				} );
+				syncNativePickupSelection( nextStore );
 			} );
 		} );
 
