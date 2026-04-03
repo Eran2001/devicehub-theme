@@ -130,6 +130,7 @@ $gallery_ids = $product->get_gallery_image_ids();
 $thumb_imgs = array_map(fn($id) => wp_get_attachment_image_url($id, 'woocommerce_thumbnail'), $gallery_ids);
 if (empty($thumb_imgs))
     $thumb_imgs = [$placeholder_img, $placeholder_img, $placeholder_img];
+$payment_methods = function_exists('devhub_get_payment_method_display_data') ? devhub_get_payment_method_display_data() : [];
 
 // ── 2. Markup ─────────────────────────────────────────────────────────────────
 ?>
@@ -167,11 +168,18 @@ if (empty($thumb_imgs))
                         <?php esc_html_e('Guaranteed safe Checkout', 'devicehub-theme'); ?>
                     </p>
                     <div class="devhub-single__payment-icons">
-                        <span class="devhub-single__payment-badge">Visa</span>
-                        <span class="devhub-single__payment-badge">Mastercard</span>
-                        <span class="devhub-single__payment-badge">Amex</span>
-                        <span class="devhub-single__payment-badge devhub-single__payment-badge--koko">KOKO</span>
-                        <span class="devhub-single__payment-badge devhub-single__payment-badge--webx">WebXPay</span>
+                        <?php if (!empty($payment_methods)): ?>
+                            <?php foreach ($payment_methods as $payment_method): ?>
+                                <span
+                                    class="devhub-single__payment-badge devhub-single__payment-badge--dynamic devhub-single__payment-badge--<?php echo esc_attr($payment_method['id']); ?>">
+                                    <?php echo esc_html($payment_method['title']); ?>
+                                </span>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <span class="devhub-single__payment-badge devhub-single__payment-badge--dynamic">
+                                <?php esc_html_e('Payment methods available at checkout', 'devicehub-theme'); ?>
+                            </span>
+                        <?php endif; ?>
                     </div>
                 </div>
 

@@ -135,6 +135,7 @@ $main_img        = get_the_post_thumbnail_url($product->get_id(), 'woocommerce_s
 $gallery_ids     = $product->get_gallery_image_ids();
 $thumb_imgs      = array_map(fn($id) => wp_get_attachment_image_url($id, 'woocommerce_thumbnail'), $gallery_ids);
 if (empty($thumb_imgs)) $thumb_imgs = [$placeholder_img, $placeholder_img, $placeholder_img];
+$payment_methods = function_exists('devhub_get_payment_method_display_data') ? devhub_get_payment_method_display_data() : [];
 
 // ── 2. Markup ─────────────────────────────────────────────────────────────────
 ?>
@@ -194,16 +195,18 @@ if (empty($thumb_imgs)) $thumb_imgs = [$placeholder_img, $placeholder_img, $plac
                         </button>
                         <div class="devhub-single__payment-viewport" id="devhubPaymentViewport">
                             <div class="devhub-single__payment-icons">
-                                <img src="<?php echo esc_url(DEVHUB_URI . '/assets/images/visa.svg'); ?>" alt="Visa"
-                                    class="devhub-single__payment-icon">
-                                <img src="<?php echo esc_url(DEVHUB_URI . '/assets/images/master.svg'); ?>" alt="Mastercard"
-                                    class="devhub-single__payment-icon">
-                                <img src="<?php echo esc_url(DEVHUB_URI . '/assets/images/amex.svg'); ?>" alt="Amex"
-                                    class="devhub-single__payment-icon">
-                                <img src="<?php echo esc_url(DEVHUB_URI . '/assets/images/koko.svg'); ?>" alt="KOKO"
-                                    class="devhub-single__payment-icon">
-                                <img src="<?php echo esc_url(DEVHUB_URI . '/assets/images/webx.svg'); ?>" alt="WebXPay"
-                                    class="devhub-single__payment-icon">
+                                <?php if (!empty($payment_methods)): ?>
+                                    <?php foreach ($payment_methods as $payment_method): ?>
+                                        <span
+                                            class="devhub-single__payment-badge devhub-single__payment-badge--dynamic devhub-single__payment-badge--<?php echo esc_attr($payment_method['id']); ?>">
+                                            <?php echo esc_html($payment_method['title']); ?>
+                                        </span>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <span class="devhub-single__payment-badge devhub-single__payment-badge--dynamic">
+                                        <?php esc_html_e('Payment methods available at checkout', 'devicehub-theme'); ?>
+                                    </span>
+                                <?php endif; ?>
                             </div>
                         </div>
                         <button class="devhub-single__bundle-arrow devhub-single__payment-arrow devhub-single__payment-arrow--next"
