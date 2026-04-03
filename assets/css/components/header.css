@@ -614,6 +614,31 @@
 }
 
 /* Cart dropdown buttons */
+.widget_shopping_cart .woocommerce-mini-cart__buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 20px 0 0;
+}
+
+.widget_shopping_cart .woocommerce-mini-cart__buttons .button {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin: 0 !important;
+  padding: 1.1rem 2rem !important;
+  border-radius: 10rem !important;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.widget_shopping_cart .woocommerce-mini-cart__buttons .button i {
+  margin-left: 0.55rem;
+  margin-right: 0;
+}
+
 .widget_shopping_cart .button:not(.checkout) {
   background-color: var(--devhub-black) !important;
   border-color: var(--devhub-black) !important;

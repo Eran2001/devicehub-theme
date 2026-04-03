@@ -79,7 +79,7 @@ do_action( 'woocommerce_before_mini_cart' ); ?>
 	 <p class="woocommerce-mini-cart__total total">
 		<strong><?php esc_html_e('Subtotal:','shopire'); ?></strong> <span class="woocommerce-Price-amount amount"><?php echo WC()->cart->get_cart_subtotal(); ?></span>
 	</p>
-	<p class="woocommerce-mini-cart__buttons buttons"><a href="<?php echo esc_url( wc_get_cart_url() ); ?>" class="button wc-forward"><?php esc_html_e('View Cart','shopire'); ?></a><a href="<?php echo esc_url( wc_get_checkout_url() ); ?>" class="button checkout wc-forward"><?php esc_html_e('Checkout','shopire'); ?></a></p>
+	<p class="woocommerce-mini-cart__buttons buttons"><a href="<?php echo esc_url( wc_get_cart_url() ); ?>" class="button wf-btn wf-btn-secondary wc-forward"><?php esc_html_e('View Cart','shopire'); ?> <i class="fas fa-cart-shopping" aria-hidden="true"></i></a><a href="<?php echo esc_url( wc_get_checkout_url() ); ?>" class="button checkout wf-btn wf-btn-primary wc-forward"><?php esc_html_e('Checkout','shopire'); ?> <i class="fas fa-bag-shopping" aria-hidden="true"></i></a></p>
 
 	<?php do_action( 'woocommerce_widget_shopping_cart_after_buttons' ); ?>
 
@@ -165,7 +165,7 @@ function woocommerce_header_add_to_cart_fragment( $fragments ) {
 	 <p class="woocommerce-mini-cart__total total">
 		<strong><?php esc_html_e('Subtotal:','shopire'); ?></strong> <span class="woocommerce-Price-amount amount"><?php echo WC()->cart->get_cart_subtotal(); ?></span>
 	</p>
-	<p class="woocommerce-mini-cart__buttons buttons"><a href="<?php echo esc_url( wc_get_cart_url() ); ?>" class="button wc-forward"><?php esc_html_e('View Cart','shopire'); ?></a><a href="<?php echo esc_url( wc_get_checkout_url() ); ?>" class="button checkout wc-forward"><?php esc_html_e('Checkout','shopire'); ?></a></p>
+	<p class="woocommerce-mini-cart__buttons buttons"><a href="<?php echo esc_url( wc_get_cart_url() ); ?>" class="button wf-btn wf-btn-secondary wc-forward"><?php esc_html_e('View Cart','shopire'); ?> <i class="fas fa-cart-shopping" aria-hidden="true"></i></a><a href="<?php echo esc_url( wc_get_checkout_url() ); ?>" class="button checkout wf-btn wf-btn-primary wc-forward"><?php esc_html_e('Checkout','shopire'); ?> <i class="fas fa-bag-shopping" aria-hidden="true"></i></a></p>
 	<?php do_action( 'woocommerce_widget_shopping_cart_after_buttons' ); ?>
 
 <?php else : ?>

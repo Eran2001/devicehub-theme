@@ -66,11 +66,18 @@
     });
 
     // Btn Effect Six
-    setTimeout(() => {
+    const initBtnEffectSix = () => {
         document.querySelectorAll(".btn--effect-six .wf-btn").forEach(button => {
-            const originalHTML = button.innerHTML;
+            if (button.dataset.btnEffectSixBound === "true") {
+                return;
+            }
+
+            button.dataset.btnEffectSixBound = "true";
+            button.dataset.originalHtml = button.innerHTML;
+
             button.addEventListener("mouseover", () => {
                 if (!button.classList.contains("animating") && !button.classList.contains("mouseover")) {
+                    const originalHTML = button.dataset.originalHtml || button.innerHTML;
                     button.classList.add("animating", "mouseover");
                     const tempDiv = document.createElement("div");
                     tempDiv.innerHTML = originalHTML;
@@ -92,12 +99,19 @@
                     });
                 }
             });
+
             button.addEventListener("mouseout", () => {
                 button.classList.remove("mouseover");
-                button.innerHTML = originalHTML;
+                button.innerHTML = button.dataset.originalHtml || button.innerHTML;
             });
         });
-    }, 100);
+    };
+
+    setTimeout(initBtnEffectSix, 100);
+
+    $(document.body).on("wc_fragments_loaded wc_fragments_refreshed added_to_cart removed_from_cart", () => {
+        setTimeout(initBtnEffectSix, 100);
+    });
 
     // Function to get a cookie value by name
     function getCookie(name) {
