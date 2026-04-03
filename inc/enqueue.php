@@ -98,6 +98,9 @@ function devhub_enqueue_styles(): void
     // ── Checkout ──────────────────────────────────────────────────────────────
     if (is_checkout()) {
         devhub_style('devhub-checkout', '/checkout/devhub-checkout.css', ['devhub-style']);
+        if (!is_user_logged_in()) {
+            devhub_style('devhub-account', '/account/devhub-account.css', ['devhub-style']);
+        }
     }
 
     // ── My Account ────────────────────────────────────────────────────────────
@@ -178,6 +181,9 @@ function devhub_enqueue_scripts(): void
     // ── Checkout ──────────────────────────────────────────────────────────────
     if (is_checkout()) {
         devhub_script('devhub-checkout', '/modules/checkout.js', ['devhub-utils'], true);
+        if (!is_user_logged_in()) {
+            devhub_script('devhub-login', '/modules/login.js', [], true);
+        }
         wp_localize_script('devhub-checkout', 'devhubCheckoutData', [
             'fields' => [
                 'deliveryMethod' => defined('DEVHUB_CHECKOUT_DELIVERY_METHOD_FIELD') ? DEVHUB_CHECKOUT_DELIVERY_METHOD_FIELD : 'devicehub/delivery_method',

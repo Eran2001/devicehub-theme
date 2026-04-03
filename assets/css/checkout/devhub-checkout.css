@@ -69,6 +69,43 @@
   overflow: hidden;
 }
 
+.woocommerce-checkout .devhub-checkout-auth {
+  padding: 8px 0 20px;
+}
+
+.woocommerce-checkout .devhub-checkout-auth .devhub-auth {
+  min-height: auto;
+}
+
+.woocommerce-checkout .devhub-checkout-auth .woocommerce-notices-wrapper {
+  width: min(100%, 480px);
+  margin: 0 auto 18px;
+}
+
+.woocommerce-checkout .devhub-checkout-auth .devhub-auth__submit,
+.woocommerce-checkout .devhub-checkout-auth .woocommerce-button.button.devhub-auth__submit {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 50px;
+  padding: 12px 24px !important;
+  border: 0 !important;
+  border-radius: 10px !important;
+  background: var(--devhub-primary) !important;
+  color: #fff !important;
+  opacity: 1 !important;
+  box-shadow: none !important;
+}
+
+.woocommerce-checkout .devhub-checkout-auth .devhub-auth__submit:hover,
+.woocommerce-checkout .devhub-checkout-auth .devhub-auth__submit:focus-visible,
+.woocommerce-checkout .devhub-checkout-auth .woocommerce-button.button.devhub-auth__submit:hover,
+.woocommerce-checkout .devhub-checkout-auth .woocommerce-button.button.devhub-auth__submit:focus-visible {
+  background: var(--devhub-primary-dark) !important;
+  color: #fff !important;
+}
+
 /* Main checkout sections — align with account card styling */
 .wc-block-checkout__main .wc-block-components-checkout-step {
   padding: 22px 24px;
