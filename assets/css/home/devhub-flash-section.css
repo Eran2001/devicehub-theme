@@ -95,10 +95,10 @@
 }
 
 .devhub-flash__timer-labels span {
-  font-size: var(--devhub-text-lg);
+  font-size: var(--devhub-text-2xl);
   color: rgba(255, 255, 255, 0.9);
   font-weight: 500;
-  width: 52px;
+  width: 64px;
   text-align: center;
   margin-right: 14px;
 }
@@ -113,17 +113,18 @@
 }
 
 .devhub-flash__time-part {
-  font-size: 40px;
+  font-size: 44px;
   font-weight: 800;
   color: var(--devhub-white);
-  width: 52px;
+  width: 64px;
   text-align: center;
   display: inline-block;
   line-height: 1;
+  white-space: nowrap;
 }
 
 .devhub-flash__sep {
-  font-size: 34px;
+  font-size: 38px;
   font-weight: 800;
   color: var(--devhub-white);
   width: 14px;
@@ -137,7 +138,7 @@
    ========================================================================== */
 
 .devhub-flash__name {
-  font-size: var(--devhub-text-xl);
+  font-size: var(--devhub-text-2xl);
   font-weight: 500;
   color: var(--devhub-white);
   line-height: 1.4;
@@ -149,7 +150,7 @@
 }
 
 .devhub-flash__price {
-  font-size: var(--devhub-text-4xl);
+  font-size: var(--devhub-text-5xl);
   font-weight: 800;
   color: var(--devhub-white);
   line-height: 1;
@@ -166,7 +167,7 @@
 }
 
 .devhub-flash__price del {
-  font-size: var(--devhub-text-md);
+  font-size: var(--devhub-text-lg);
   margin-right: 8px;
 }
 
@@ -180,18 +181,18 @@
   }
 
   .devhub-flash__time-part {
-    font-size: 32px;
-    width: 44px;
+    font-size: 36px;
+    width: 54px;
   }
   .devhub-flash__sep {
-    font-size: 26px;
+    font-size: 30px;
     width: 12px;
   }
   .devhub-flash__timer-labels span {
-    width: 44px;
+    width: 54px;
   }
   .devhub-flash__price {
-    font-size: var(--devhub-text-3xl);
+    font-size: var(--devhub-text-4xl);
   }
 }
 
@@ -214,23 +215,23 @@
   }
 
   .devhub-flash__time-part {
-    font-size: 24px;
-    width: 34px;
+    font-size: 28px;
+    width: 44px;
   }
   .devhub-flash__sep {
-    font-size: 20px;
+    font-size: 24px;
     width: 10px;
   }
   .devhub-flash__timer-labels span {
-    width: 40px;
+    width: 44px;
     margin-right: 2px;
-    font-size: var(--devhub-text-lg);
+    font-size: var(--devhub-text-md);
   }
   .devhub-flash__name {
     font-size: var(--devhub-text-md);
   }
   .devhub-flash__price {
-    font-size: var(--devhub-text-2xl);
+    font-size: var(--devhub-text-3xl);
   }
   .devhub-flash__body {
     padding: 16px 16px 16px 12px;
