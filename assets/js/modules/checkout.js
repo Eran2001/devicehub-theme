@@ -15,6 +15,8 @@
 	const COUPON_BUTTON_SELECTOR = '.wp-block-woocommerce-checkout-order-summary-coupon-form-block .wc-block-components-totals-coupon__button';
 	const COUPON_INPUT_SELECTOR = '.wp-block-woocommerce-checkout-order-summary-coupon-form-block .wc-block-components-totals-coupon__input input';
 	const COUPON_INPUT_LABEL_SELECTOR = '.wp-block-woocommerce-checkout-order-summary-coupon-form-block .wc-block-components-totals-coupon__input label';
+	const CONTACT_EMAIL_INPUT_SELECTOR = '.wc-block-checkout__contact-fields .wc-block-components-text-input input[type="email"]';
+	const CONTACT_EMAIL_LABEL_SELECTOR = '.wc-block-checkout__contact-fields .wc-block-components-text-input label';
 
 	const state = {
 		search: '',
@@ -249,6 +251,21 @@
 		}
 	}
 
+	function enhanceContactInput() {
+		const input = document.querySelector( CONTACT_EMAIL_INPUT_SELECTOR );
+		const label = document.querySelector( CONTACT_EMAIL_LABEL_SELECTOR );
+
+		if ( ! input ) {
+			return;
+		}
+
+		input.placeholder = 'Enter email address';
+
+		if ( label ) {
+			label.textContent = 'Email address';
+		}
+	}
+
 	function render() {
 		if ( ! syncDefaults() ) {
 			return;
@@ -386,6 +403,7 @@
 		enhancePlaceOrderButton();
 		enhanceCouponButton();
 		enhanceCouponInput();
+		enhanceContactInput();
 	}
 
 	function boot() {
@@ -402,6 +420,7 @@
 		enhancePlaceOrderButton();
 		enhanceCouponButton();
 		enhanceCouponInput();
+		enhanceContactInput();
 
 		if ( unsubscribe ) {
 			return;
@@ -412,6 +431,7 @@
 			enhancePlaceOrderButton();
 			enhanceCouponButton();
 			enhanceCouponInput();
+			enhanceContactInput();
 		} );
 	}
 
