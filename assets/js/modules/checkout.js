@@ -11,6 +11,10 @@
 	const CHECKOUT_STORE_KEY = window.wc?.wcBlocksData?.CHECKOUT_STORE_KEY || 'wc/store/checkout';
 	const VALIDATION_STORE_KEY = window.wc?.wcBlocksData?.VALIDATION_STORE_KEY || 'wc/store/validation';
 	const DELIVERY_ERROR_KEY = 'devhub-pickup-store';
+	const PLACE_ORDER_SELECTOR = '.wc-block-components-checkout-place-order-button';
+	const COUPON_BUTTON_SELECTOR = '.wp-block-woocommerce-checkout-order-summary-coupon-form-block .wc-block-components-totals-coupon__button';
+	const COUPON_INPUT_SELECTOR = '.wp-block-woocommerce-checkout-order-summary-coupon-form-block .wc-block-components-totals-coupon__input input';
+	const COUPON_INPUT_LABEL_SELECTOR = '.wp-block-woocommerce-checkout-order-summary-coupon-form-block .wc-block-components-totals-coupon__input label';
 
 	const state = {
 		search: '',
@@ -132,6 +136,117 @@
 		}
 
 		validation.clearValidationError( DELIVERY_ERROR_KEY );
+	}
+
+	function bindEffectSixButton( button ) {
+		if ( ! button || button.dataset.devhubEffectSixBound === 'true' ) {
+			return;
+		}
+
+		const getOriginalHtml = () => button.dataset.devhubOriginalHtml || button.innerHTML;
+		const isDisabled = () => button.disabled || button.getAttribute( 'aria-disabled' ) === 'true';
+
+		button.dataset.devhubEffectSixBound = 'true';
+
+		button.addEventListener( 'mouseover', () => {
+			const originalHTML = getOriginalHtml();
+
+			if (
+				! originalHTML ||
+				isDisabled() ||
+				button.classList.contains( 'animating' ) ||
+				button.classList.contains( 'mouseover' )
+			) {
+				return;
+			}
+
+			button.classList.add( 'animating', 'mouseover' );
+
+			const tempDiv = document.createElement( 'div' );
+			tempDiv.innerHTML = originalHTML;
+
+			const chars = Array.from( tempDiv.childNodes );
+			window.setTimeout( () => button.classList.remove( 'animating' ), ( chars.length + 1 ) * 50 );
+
+			const animationType = button.dataset.animation || 'text-spin';
+			button.innerHTML = '';
+
+			chars.forEach( ( node ) => {
+				if ( node.nodeType === Node.TEXT_NODE ) {
+					node.textContent.split( '' ).forEach( ( char ) => {
+						button.innerHTML += `<span class="letter">${ char === ' ' ? '&nbsp;' : char }</span>`;
+					} );
+					return;
+				}
+
+				button.innerHTML += `<span class="letter">${ node.outerHTML }</span>`;
+			} );
+
+			button.querySelectorAll( '.letter' ).forEach( ( span, index ) => {
+				window.setTimeout( () => span.classList.add( animationType ), 50 * index );
+			} );
+		} );
+
+		button.addEventListener( 'mouseout', () => {
+			button.classList.remove( 'mouseover' );
+			button.innerHTML = getOriginalHtml();
+		} );
+	}
+
+	function enhanceActionButton( button, customClass, fallbackText ) {
+		if ( ! button ) {
+			return;
+		}
+
+		button.classList.add( 'wf-btn', 'wf-btn-primary', customClass );
+
+		const text = ( button.textContent || button.getAttribute( 'aria-label' ) || fallbackText ).trim();
+		const desiredHtml = `${ text }<i class="fas fa-arrow-right" aria-hidden="true"></i>`;
+
+		if ( button.dataset.devhubOriginalHtml !== desiredHtml ) {
+			button.dataset.devhubOriginalHtml = desiredHtml;
+		}
+
+		if (
+			! button.classList.contains( 'mouseover' ) &&
+			! button.className.includes( '--loading' ) &&
+			button.innerHTML !== desiredHtml
+		) {
+			button.innerHTML = desiredHtml;
+		}
+
+		bindEffectSixButton( button );
+	}
+
+	function enhancePlaceOrderButton() {
+		enhanceActionButton(
+			document.querySelector( PLACE_ORDER_SELECTOR ),
+			'devhub-checkout-place-order-button',
+			'Place Order'
+		);
+	}
+
+	function enhanceCouponButton() {
+		enhanceActionButton(
+			document.querySelector( COUPON_BUTTON_SELECTOR ),
+			'devhub-checkout-coupon-button',
+			'Apply'
+		);
+	}
+
+	function enhanceCouponInput() {
+		const input = document.querySelector( COUPON_INPUT_SELECTOR );
+		const label = document.querySelector( COUPON_INPUT_LABEL_SELECTOR );
+
+		if ( ! input ) {
+			return;
+		}
+
+		input.placeholder = 'Enter code';
+
+		if ( label ) {
+			label.textContent = 'Coupon code';
+		}
 	}
 
 	function render() {
@@ -267,6 +382,10 @@
 				render();
 			} );
 		}
+
+		enhancePlaceOrderButton();
+		enhanceCouponButton();
+		enhanceCouponInput();
 	}
 
 	function boot() {
@@ -280,6 +399,9 @@
 		}
 
 		render();
+		enhancePlaceOrderButton();
+		enhanceCouponButton();
+		enhanceCouponInput();
 
 		if ( unsubscribe ) {
 			return;
@@ -287,6 +409,9 @@
 
 		unsubscribe = window.wp.data.subscribe( () => {
 			render();
+			enhancePlaceOrderButton();
+			enhanceCouponButton();
+			enhanceCouponInput();
 		} );
 	}
 
