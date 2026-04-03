@@ -25,6 +25,12 @@
   padding-top: 0 !important;
 }
 
+@media (min-width: 700px) {
+  .woocommerce-cart .wc-block-cart__main {
+    padding-right: 2.1% !important;
+  }
+}
+
 .woocommerce-cart .wc-block-cart > :first-child,
 .woocommerce-cart .wc-block-cart-items-block,
 .woocommerce-cart .wc-block-cart-totals-block,
@@ -43,6 +49,8 @@
   border-radius: 12px;
   background: #fff;
   overflow: hidden;
+  align-self: flex-start;
+  height: fit-content;
 }
 
 .woocommerce-cart .wc-block-cart-items-block {
@@ -222,17 +230,27 @@
 
 /* Proceed to Checkout button - WooCommerce Cart Block */
 .wc-block-cart__submit-button.wc-block-components-button {
-  display: inline-block !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  vertical-align: middle !important;
   width: 100% !important;
   overflow: hidden !important;
   position: relative !important;
   z-index: 0 !important;
+  font-size: 1.5rem !important;
+  font-weight: 600 !important;
+  line-height: 1.134 !important;
+  letter-spacing: 0.03rem !important;
+  padding: 1.1rem 2rem !important;
   background-color: var(--devhub-primary) !important;
   border: 0.1rem solid var(--wf-main-color) !important;
   border-radius: 10rem !important;
   color: #fff !important;
-  font-weight: 600 !important;
+  font-family: inherit !important;
+  white-space: nowrap !important;
   text-decoration: none !important;
+  text-transform: initial !important;
   transition:
     background-color 0.2s ease,
     border-color 0.2s ease !important;
@@ -241,6 +259,7 @@
 .wc-block-cart__submit-button.wc-block-components-button i.fa-arrow-right {
   margin-left: 0.4rem;
   margin-right: 0;
+  flex: 0 0 auto;
 }
 
 .wc-block-cart__submit-button.wc-block-components-button:hover {
