@@ -20,7 +20,7 @@
 }
 
 .devhub-single .devhub-page-bar .woocommerce-breadcrumb {
-  font-size: var(--devhub-text-xl);
+  font-size: var(--devhub-text-2xl);
   font-weight: 500;
   color: var(--devhub-mid);
   margin: 0;
@@ -36,7 +36,7 @@
 }
 
 .devhub-single .devhub-page-bar__title {
-  font-size: var(--devhub-text-xl);
+  font-size: var(--devhub-text-3xl);
   font-weight: 600;
   color: var(--devhub-dark);
   margin: 0;
@@ -132,7 +132,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: var(--devhub-text-sm);
+  font-size: var(--devhub-text-lg);
   color: var(--devhub-mid);
   margin-bottom: 12px;
 }
@@ -176,7 +176,7 @@
   padding: 0 10px;
   border: 1.5px solid var(--devhub-border);
   border-radius: 4px;
-  font-size: 11px;
+  font-size: var(--devhub-text-md);
   font-weight: 700;
   color: var(--devhub-dark);
   white-space: nowrap;
@@ -191,12 +191,12 @@
 
 .devhub-single__payment-badge--webx {
   color: var(--devhub-dark);
-  font-size: 10px;
+  font-size: var(--devhub-text-sm);
 }
 
 /* Info */
 .devhub-single__title {
-  font-size: var(--devhub-text-3xl);
+  font-size: var(--devhub-text-4xl);
   font-weight: 700;
   color: var(--devhub-black);
   line-height: 1.3;
@@ -213,7 +213,7 @@
 
 .devhub-single__price .woocommerce-Price-amount,
 .devhub-single__price .price {
-  font-size: var(--devhub-text-2xl);
+  font-size: var(--devhub-text-3xl);
   font-weight: 700;
   color: var(--devhub-primary);
 }
@@ -222,7 +222,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: var(--devhub-text-lg);
+  font-size: var(--devhub-text-xl);
   font-weight: 500;
 }
 
@@ -247,7 +247,7 @@
 }
 
 .devhub-single__option-label {
-  font-size: var(--devhub-text-xl) !important;
+  font-size: var(--devhub-text-2xl) !important;
   color: var(--devhub-mid) !important;
   margin-bottom: 10px !important;
   background: none !important;
@@ -306,7 +306,7 @@
   border: 1.5px solid var(--devhub-border);
   border-radius: var(--devhub-radius-sm);
   background: var(--devhub-white);
-  font-size: var(--devhub-text-sm);
+  font-size: var(--devhub-text-lg);
   color: var(--devhub-dark);
   cursor: pointer;
   transition:
@@ -382,7 +382,7 @@
 }
 
 .devhub-single__bundle-name {
-  font-size: var(--devhub-text-lg);
+  font-size: var(--devhub-text-2xl);
   font-weight: 600;
   color: var(--devhub-black);
   line-height: 1.4;
@@ -405,11 +405,11 @@
   margin-bottom: 0;
 }
 .devhub-single__bundle-meta-key {
-  font-size: var(--devhub-text-lg);
+  font-size: var(--devhub-text-xl);
   color: var(--devhub-mid);
 }
 .devhub-single__bundle-meta-val {
-  font-size: var(--devhub-text-lg);
+  font-size: var(--devhub-text-xl);
   font-weight: 500;
   color: var(--devhub-dark);
 }
@@ -422,17 +422,17 @@
 }
 
 .devhub-single__bundle-plan-label {
-  font-size: var(--devhub-text-lg);
+  font-size: var(--devhub-text-xl);
   color: var(--devhub-mid);
   margin-bottom: 2px;
 }
 .devhub-single__bundle-price {
-  font-size: var(--devhub-text-xl);
+  font-size: var(--devhub-text-2xl);
   font-weight: 700;
   color: var(--devhub-black);
 }
 .devhub-single__bundle-link {
-  font-size: var(--devhub-text-lg);
+  font-size: var(--devhub-text-xl);
   color: var(--devhub-primary);
   white-space: nowrap;
   flex-shrink: 0;
@@ -589,7 +589,7 @@
 
 .devhub-single__tab-btn {
   padding: 5px 14px;
-  font-size: var(--devhub-text-xl);
+  font-size: var(--devhub-text-2xl);
   font-weight: 500;
   color: var(--devhub-mid);
   background: none;
@@ -675,12 +675,12 @@
 
 .devhub-single__quick-stat-label {
   display: block;
-  font-size: var(--devhub-text-lg);
+  font-size: var(--devhub-text-xl);
   color: var(--devhub-mid);
 }
 .devhub-single__quick-stat-value {
   display: block;
-  font-size: var(--devhub-text-lg);
+  font-size: var(--devhub-text-xl);
   font-weight: 600;
   color: var(--devhub-black);
 }
@@ -701,7 +701,7 @@
 .devhub-single__spec-label,
 .devhub-single__spec-value {
   padding: 14px 20px;
-  font-size: var(--devhub-text-xl);
+  font-size: var(--devhub-text-2xl);
   vertical-align: top;
 }
 
@@ -748,7 +748,7 @@
   }
   .devhub-single__tab-btn {
     padding: 12px 16px;
-    font-size: var(--devhub-text-sm);
+    font-size: var(--devhub-text-lg);
   }
   .devhub-single__spec-label {
     width: 140px;

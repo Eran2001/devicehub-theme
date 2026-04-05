@@ -123,6 +123,134 @@
   color: var(--devhub-white);
 }
 
+#devhub-mobile-phones .devhub-products__title {
+  font-size: var(--devhub-text-4xl);
+}
+
+#devhub-mobile-phones .devhub-brand-tab {
+  font-size: var(--devhub-text-2xl);
+}
+
+#devhub-mobile-phones .devhub-products__view-all {
+  font-size: var(--devhub-text-2xl);
+}
+
+#devhub-mobile-phones .devhub-product-card__badge {
+  font-size: var(--devhub-text-xl);
+}
+
+#devhub-mobile-phones .devhub-product-card__name {
+  font-size: var(--devhub-text-3xl);
+}
+
+#devhub-mobile-phones .devhub-product-card__price {
+  font-size: var(--devhub-text-2xl);
+}
+
+#devhub-mobile-phones .devhub-product-card__price del {
+  font-size: var(--devhub-text-lg);
+}
+
+#devhub-mobile-phones .devhub-product-card__stock {
+  font-size: var(--devhub-text-xl);
+}
+
+#devhub-broad-bands .devhub-products__title {
+  font-size: var(--devhub-text-4xl);
+}
+
+#devhub-broad-bands .devhub-brand-tab {
+  font-size: var(--devhub-text-2xl);
+}
+
+#devhub-broad-bands .devhub-products__view-all {
+  font-size: var(--devhub-text-2xl);
+}
+
+#devhub-broad-bands .devhub-product-card__badge {
+  font-size: var(--devhub-text-xl);
+}
+
+#devhub-broad-bands .devhub-product-card__name {
+  font-size: var(--devhub-text-3xl);
+}
+
+#devhub-broad-bands .devhub-product-card__price {
+  font-size: var(--devhub-text-2xl);
+}
+
+#devhub-broad-bands .devhub-product-card__price del {
+  font-size: var(--devhub-text-lg);
+}
+
+#devhub-broad-bands .devhub-product-card__stock {
+  font-size: var(--devhub-text-xl);
+}
+
+#devhub-electronics .devhub-products__title {
+  font-size: var(--devhub-text-4xl);
+}
+
+#devhub-electronics .devhub-brand-tab {
+  font-size: var(--devhub-text-2xl);
+}
+
+#devhub-electronics .devhub-products__view-all {
+  font-size: var(--devhub-text-2xl);
+}
+
+#devhub-electronics .devhub-product-card__badge {
+  font-size: var(--devhub-text-xl);
+}
+
+#devhub-electronics .devhub-product-card__name {
+  font-size: var(--devhub-text-3xl);
+}
+
+#devhub-electronics .devhub-product-card__price {
+  font-size: var(--devhub-text-2xl);
+}
+
+#devhub-electronics .devhub-product-card__price del {
+  font-size: var(--devhub-text-lg);
+}
+
+#devhub-electronics .devhub-product-card__stock {
+  font-size: var(--devhub-text-xl);
+}
+
+#devhub-accessories .devhub-products__title {
+  font-size: var(--devhub-text-4xl);
+}
+
+#devhub-accessories .devhub-brand-tab {
+  font-size: var(--devhub-text-2xl);
+}
+
+#devhub-accessories .devhub-products__view-all {
+  font-size: var(--devhub-text-2xl);
+}
+
+#devhub-accessories .devhub-product-card__badge {
+  font-size: var(--devhub-text-xl);
+}
+
+#devhub-accessories .devhub-product-card__name {
+  font-size: var(--devhub-text-3xl);
+}
+
+#devhub-accessories .devhub-product-card__price {
+  font-size: var(--devhub-text-2xl);
+}
+
+#devhub-accessories .devhub-product-card__price del {
+  font-size: var(--devhub-text-lg);
+}
+
+#devhub-accessories .devhub-product-card__stock {
+  font-size: var(--devhub-text-xl);
+}
+
 /* ==========================================================================
    5. Responsive
    ========================================================================== */

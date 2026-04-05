@@ -103,7 +103,7 @@
    ========================================================================== */
 
 .devhub-categories__item-name {
-  font-size: var(--devhub-text-2xl);
+  font-size: var(--devhub-text-3xl);
   font-weight: 600;
   color: var(--devhub-dark);
   margin-bottom: 4px;
@@ -111,7 +111,7 @@
 }
 
 .devhub-categories__item-from {
-  font-size: var(--devhub-text-lg);
+  font-size: var(--devhub-text-xl);
   color: var(--devhub-mid);
   line-height: 1.5;
 }
@@ -245,10 +245,10 @@
   }
 
   .devhub-categories__item-name {
-    font-size: var(--devhub-text-xl);
+    font-size: var(--devhub-text-2xl);
   }
 
   .devhub-categories__item-from {
-    font-size: var(--devhub-text-base);
+    font-size: var(--devhub-text-lg);
   }
 }
