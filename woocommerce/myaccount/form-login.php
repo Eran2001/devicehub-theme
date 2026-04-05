@@ -193,9 +193,9 @@ do_action('woocommerce_before_customer_login_form');
 
 				<?php if ($registration_enabled): ?>
 					<p class="devhub-auth__footer">
-						<?php esc_html_e('Need an account?', 'devicehub-theme'); ?>
+						<?php esc_html_e('Don’t have an account?', 'devicehub-theme'); ?>
 						<button type="button"
-							data-devhub-auth-open="register"><?php esc_html_e('Register here', 'devicehub-theme'); ?></button>
+							data-devhub-auth-open="register"><?php esc_html_e('Create an account', 'devicehub-theme'); ?></button>
 					</p>
 				<?php endif; ?>
 			</section>
@@ -277,7 +277,7 @@ do_action('woocommerce_before_customer_login_form');
 					<p class="devhub-auth__footer">
 						<?php esc_html_e('Already have an account?', 'devicehub-theme'); ?>
 						<button type="button"
-							data-devhub-auth-open="guest"><?php esc_html_e('Go to login', 'devicehub-theme'); ?></button>
+							data-devhub-auth-open="email"><?php esc_html_e('Go to email login', 'devicehub-theme'); ?></button>
 					</p>
 				</section>
 			<?php endif; ?>
