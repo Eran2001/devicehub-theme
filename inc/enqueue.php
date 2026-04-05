@@ -76,7 +76,7 @@ function devhub_enqueue_styles(): void
     }
 
     // ── Shop / Archive ────────────────────────────────────────────────────────
-    if (is_shop() || is_product_category()) {
+    if (devhub_is_shop_page() || devhub_is_product_category_page()) {
         devhub_style('devhub-archive', '/archive/devhub-archive.css', ['devhub-style', 'devhub-product-card']);
         devhub_style('devhub-filters', '/archive/devhub-filters.css', ['devhub-style']);
     }
@@ -86,17 +86,17 @@ function devhub_enqueue_styles(): void
         devhub_style('devhub-search', '/archive/devhub-search.css', ['devhub-style', 'devhub-product-card']);
     }
 
-    if (is_product()) {
+    if (devhub_is_product_page()) {
         devhub_style('devhub-single', '/single/devhub-single.css', ['devhub-style']);
     }
 
     // ── Cart ──────────────────────────────────────────────────────────────────
-    if (is_cart()) {
+    if (devhub_is_cart_page()) {
         devhub_style('devhub-cart', '/cart/devhub-cart.css', ['devhub-style']);
     }
 
     // ── Checkout ──────────────────────────────────────────────────────────────
-    if (is_checkout()) {
+    if (devhub_is_checkout_page()) {
         devhub_style('devhub-checkout', '/checkout/devhub-checkout.css', ['devhub-style']);
         if (!is_user_logged_in()) {
             devhub_style('devhub-account', '/account/devhub-account.css', ['devhub-style']);
@@ -104,7 +104,7 @@ function devhub_enqueue_styles(): void
     }
 
     // ── My Account ────────────────────────────────────────────────────────────
-    if (is_account_page()) {
+    if (devhub_is_account_context()) {
         devhub_style('devhub-account', '/account/devhub-account.css', ['devhub-style']);
     }
 }
@@ -151,9 +151,9 @@ function devhub_enqueue_scripts(): void
     devhub_script('devhub-utils', '/utils/api.js', [], true);
     wp_localize_script('devhub-utils', 'devhubConfig', [
         'ajaxUrl' => admin_url('admin-ajax.php'),
-        'restUrl' => esc_url_raw(rest_url('wc/v3/')),
+        'restUrl' => esc_url_raw(rest_url(devhub_has_woocommerce() ? 'wc/v3/' : '')),
         'nonce' => wp_create_nonce('wp_rest'),
-        'cartUrl' => wc_get_cart_url(),
+        'cartUrl' => devhub_has_woocommerce() && function_exists('wc_get_cart_url') ? wc_get_cart_url() : home_url('/'),
         'isLoggedIn' => is_user_logged_in(),
     ]);
 
@@ -164,22 +164,22 @@ function devhub_enqueue_scripts(): void
     }
 
     // ── Archive ───────────────────────────────────────────────────────────────
-    if (is_shop() || is_product_category()) {
+    if (devhub_is_shop_page() || devhub_is_product_category_page()) {
         devhub_script('devhub-filters', '/modules/filters.js', [], true);
     }
 
     // ── Single product ────────────────────────────────────────────────────────
-    if (is_product()) {
+    if (devhub_is_product_page()) {
         devhub_script('devhub-product', '/modules/product.js', [], true);
     }
 
     // ── Cart ──────────────────────────────────────────────────────────────────
-    if (is_cart()) {
+    if (devhub_is_cart_page()) {
         devhub_script('devhub-cart', '/modules/cart.js', ['devhub-utils'], true);
     }
 
     // ── Checkout ──────────────────────────────────────────────────────────────
-    if (is_checkout()) {
+    if (devhub_is_checkout_page()) {
         devhub_script('devhub-checkout', '/modules/checkout.js', ['devhub-utils'], true);
         if (!is_user_logged_in()) {
             devhub_script('devhub-login', '/modules/login.js', [], true);
@@ -208,7 +208,7 @@ function devhub_enqueue_scripts(): void
     }
 
     // ── My Account ────────────────────────────────────────────────────────────
-    if (is_account_page()) {
+    if (devhub_is_account_context()) {
         devhub_script('devhub-login', '/modules/login.js', [], true);
         devhub_script('devhub-account', '/modules/account.js', [], true);
     }

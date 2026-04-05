@@ -13,6 +13,10 @@ add_action('devhub_hero_section', 'devhub_render_hero_section');
 
 function devhub_render_hero_section(): void
 {
+    if (!taxonomy_exists('product_cat')) {
+        return;
+    }
+
     $categories = get_terms([
         'taxonomy' => 'product_cat',
         'hide_empty' => false,

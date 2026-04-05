@@ -14,6 +14,54 @@
 
 defined('ABSPATH') || exit;
 
+/**
+ * Check whether WooCommerce is available before calling its helpers/conditionals.
+ */
+function devhub_has_woocommerce(): bool
+{
+    return class_exists('WooCommerce');
+}
+
+function devhub_is_shop_page(): bool
+{
+    return devhub_has_woocommerce() && function_exists('is_shop') && is_shop();
+}
+
+function devhub_is_product_category_page(): bool
+{
+    return devhub_has_woocommerce() && function_exists('is_product_category') && is_product_category();
+}
+
+function devhub_is_product_tag_page(): bool
+{
+    return devhub_has_woocommerce() && function_exists('is_product_tag') && is_product_tag();
+}
+
+function devhub_is_product_page(): bool
+{
+    return devhub_has_woocommerce() && function_exists('is_product') && is_product();
+}
+
+function devhub_is_cart_page(): bool
+{
+    return devhub_has_woocommerce() && function_exists('is_cart') && is_cart();
+}
+
+function devhub_is_checkout_page(): bool
+{
+    return devhub_has_woocommerce() && function_exists('is_checkout') && is_checkout();
+}
+
+function devhub_is_account_context(): bool
+{
+    return devhub_has_woocommerce() && function_exists('is_account_page') && is_account_page();
+}
+
+function devhub_has_catalog_data(): bool
+{
+    return devhub_has_woocommerce() && post_type_exists('product') && taxonomy_exists('product_cat') && function_exists('wc_get_product');
+}
+
 
 // ── Product helpers ───────────────────────────────────────────────────────────
 

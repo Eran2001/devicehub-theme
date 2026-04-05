@@ -33,6 +33,9 @@ function devhub_render_product_section(
     string $img,
     string $view_all_url = ''
 ): void {
+    if (!devhub_has_catalog_data()) {
+        return;
+    }
 
     $query = new WP_Query([
         'post_type' => 'product',
@@ -54,7 +57,7 @@ function devhub_render_product_section(
     }
 
     if ($view_all_url === '') {
-        $view_all_url = wc_get_page_permalink('shop');
+        $view_all_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/');
     }
     ?>
     <section class="devhub-products" id="<?php echo esc_attr($section_id); ?>" aria-label="<?php echo esc_attr($title); ?>">

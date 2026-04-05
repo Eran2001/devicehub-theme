@@ -55,7 +55,7 @@ add_action('shopire_header_contact', '__return_false');
 // The banner is replaced by compact inline breadcrumb bars in the WC templates.
 
 add_filter('theme_mod_shopire_hs_site_breadcrumb', function ($val) {
-    return (is_product() || is_product_category() || is_shop() || is_cart() || is_checkout() || is_account_page() || is_404()) ? '0' : $val;
+    return (devhub_is_product_page() || devhub_is_product_category_page() || devhub_is_shop_page() || devhub_is_cart_page() || devhub_is_checkout_page() || devhub_is_account_context() || is_404()) ? '0' : $val;
 }, 20);
 
 
@@ -70,7 +70,7 @@ function devhub_render_page_bar(): void
     if ($rendered) return;
     $rendered = true;
 
-    $title = (is_cart() || is_checkout() || is_account_page())
+    $title = (devhub_is_cart_page() || devhub_is_checkout_page() || devhub_is_account_context())
         ? get_the_title()
         : woocommerce_page_title(false);
     ?>
@@ -130,7 +130,7 @@ add_action('pre_get_posts', 'devhub_filter_archive_by_brand');
 function devhub_filter_archive_by_brand(WP_Query $query): void
 {
     if (is_admin() || ! $query->is_main_query()) return;
-    if (! is_shop() && ! is_product_category() && ! is_product_tag()) return;
+    if (!devhub_is_shop_page() && !devhub_is_product_category_page() && !devhub_is_product_tag_page()) return;
 
     $raw = sanitize_text_field(wp_unslash($_GET['filter_brand'] ?? ''));
     if ($raw === '') return;
@@ -185,7 +185,7 @@ add_action('wp_head', 'devhub_debug_template_comment');
 
 function devhub_debug_template_comment(): void
 {
-    if (!is_shop() && !is_product_category())
+    if (!devhub_is_shop_page() && !devhub_is_product_category_page())
         return;
     if (!current_user_can('administrator'))
         return; // Only show to admins
@@ -228,7 +228,7 @@ add_filter('woocommerce_price_format', function (string $format): string {
 });
 
 add_filter('theme_mod_shopire_default_pg_sidebar_option', function ($value) {
-    if (is_string($value) && (is_cart() || is_checkout() || is_account_page())) {
+    if (is_string($value) && (devhub_is_cart_page() || devhub_is_checkout_page() || devhub_is_account_context())) {
         return 'no_sidebar';
     }
     return $value;
@@ -239,6 +239,8 @@ add_filter('theme_mod_shopire_default_pg_sidebar_option', function ($value) {
 // NOTE: After activating, go to Settings > Permalinks and click Save to flush rewrite rules.
 
 add_action('init', 'devhub_register_account_endpoints');
+add_action('after_switch_theme', 'devhub_schedule_rewrite_flush');
+add_action('init', 'devhub_maybe_flush_rewrite_rules', 20);
 
 function devhub_register_account_endpoints(): void
 {
@@ -247,6 +249,22 @@ function devhub_register_account_endpoints(): void
     add_rewrite_endpoint('points',      EP_ROOT | EP_PAGES);
     add_rewrite_endpoint('dispute',     EP_ROOT | EP_PAGES);
     add_rewrite_endpoint('gift-cards',  EP_ROOT | EP_PAGES);
+}
+
+function devhub_schedule_rewrite_flush(): void
+{
+    update_option('devhub_flush_rewrite_rules', '1');
+}
+
+function devhub_maybe_flush_rewrite_rules(): void
+{
+    if (get_option('devhub_flush_rewrite_rules') !== '1') {
+        return;
+    }
+
+    devhub_register_account_endpoints();
+    flush_rewrite_rules();
+    delete_option('devhub_flush_rewrite_rules');
 }
 
 // Register endpoints with WooCommerce so wc_get_account_endpoint_url() works

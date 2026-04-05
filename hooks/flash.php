@@ -15,6 +15,10 @@ add_action('devhub_flash_section', 'devhub_render_flash_section');
 
 function devhub_render_flash_section(): void
 {
+    if (!devhub_has_catalog_data()) {
+        return;
+    }
+
     $img = DEVHUB_URI . '/assets/images/Original-Img.svg';
     $modifiers = ['green', 'yellow'];
 
