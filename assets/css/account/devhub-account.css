@@ -1781,6 +1781,106 @@
 }
 
 /* ==========================================================================
+   Typography / Surface Refinement
+   ========================================================================== */
+
+.devhub-auth__card,
+.devhub-account-user-card,
+.devhub-account-nav__item,
+.devhub-dashboard-card,
+.devhub-order-table-card,
+.devhub-order-address-card,
+.devhub-address-card,
+.devhub-account-content .devhub-account-section,
+.devhub-account-content .woocommerce-EditAccountForm fieldset,
+.devhub-account-content .woocommerce-address-fields__field-wrapper {
+  border-color: rgba(228, 231, 236, 0.95) !important;
+  border-radius: 16px !important;
+  box-shadow: var(--devhub-shadow-card);
+}
+
+.devhub-auth__intro h2,
+.devhub-auth__title {
+  font-size: clamp(3rem, 2.5rem + 0.45vw, 3.4rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.devhub-auth__intro p,
+.devhub-auth__subtitle,
+.devhub-dashboard__intro,
+.devhub-addresses__intro,
+.devhub-auth__confirmation,
+.devhub-empty-state__text p {
+  font-size: 1.6rem;
+  line-height: 1.75;
+}
+
+.devhub-auth__option,
+.devhub-auth__form .form-row label,
+.devhub-auth__form .form-row input.input-text,
+.devhub-auth__form .form-row select,
+.devhub-auth__submit,
+.devhub-auth__footer,
+.devhub-auth__forgot,
+.devhub-auth__actions .woocommerce-form-login__rememberme,
+.devhub-account-nav__item > a,
+.devhub-account-nav__group-btn,
+.devhub-account-content .woocommerce-orders-table,
+.devhub-account-content .woocommerce-table--order-details,
+.devhub-account-content .woocommerce-EditAccountForm input[type="text"],
+.devhub-account-content .woocommerce-EditAccountForm input[type="email"],
+.devhub-account-content .woocommerce-EditAccountForm input[type="password"],
+.devhub-account-content .woocommerce-address-fields__field-wrapper input,
+.devhub-account-content .woocommerce-address-fields__field-wrapper select,
+.devhub-empty-state__btn {
+  font-size: 1.55rem !important;
+}
+
+.devhub-account-user-name,
+.devhub-address-card__title,
+.devhub-dashboard__title,
+.devhub-account-content .woocommerce-order-details__title,
+.devhub-account-content .woocommerce-column__title,
+.devhub-order-address-card__title,
+.devhub-empty-state__text h4 {
+  font-size: 2.2rem;
+  font-weight: 800;
+}
+
+.devhub-account-user-email,
+.devhub-account-logout,
+.devhub-address-card__meta,
+.devhub-address-card__edit,
+.devhub-account-content .devhub-field-hint,
+.devhub-order-address-field__label,
+.devhub-address-detail__label {
+  font-size: 1.3rem;
+}
+
+.devhub-dashboard-card {
+  padding: 30px 18px 24px;
+}
+
+.devhub-dashboard-card__label {
+  font-size: 1.25rem;
+  letter-spacing: 0.08em;
+}
+
+.devhub-account-content .woocommerce-orders-table thead th,
+.devhub-account-content .woocommerce-table--order-details thead th,
+.devhub-account-content .woocommerce-orders-table tbody td,
+.devhub-account-content .woocommerce-table--order-details tbody td,
+.devhub-account-content .woocommerce-table--order-details tfoot th,
+.devhub-account-content .woocommerce-table--order-details tfoot td,
+.devhub-order-address-field__value,
+.devhub-address-card__body,
+.devhub-address-detail__value,
+.devhub-address-card__empty {
+  font-size: 1.5rem !important;
+}
+
+/* ==========================================================================
    Responsive
    ========================================================================== */
 

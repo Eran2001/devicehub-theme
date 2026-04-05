@@ -25,18 +25,23 @@ License URI: https://www.gnu.org/licenses/gpl-3.0.html
   --devhub-primary: #ff6600;
   --devhub-primary-dark: #e55a00;
   --devhub-primary-light: #ff8533;
+  --devhub-primary-soft: #fff2e8;
+  --devhub-primary-glow: rgba(255, 102, 0, 0.14);
 
   /* Override Shopire's --wf-main-color so all parent theme elements use our orange */
   --wf-main-color: #ff6600;
   --wf-main-rgb: 255, 102, 0;
 
   /* Neutrals */
-  --devhub-black: #1a1a1a;
-  --devhub-dark: #2d2d2d;
-  --devhub-mid: #6b6b6b;
-  --devhub-light: #a0a0a0;
-  --devhub-border: #e5e5e5;
-  --devhub-bg: #f5f5f5;
+  --devhub-black: #111111;
+  --devhub-dark: #1f2937;
+  --devhub-mid: #667085;
+  --devhub-light: #98a2b3;
+  --devhub-border: #e4e7ec;
+  --devhub-bg: #f7f8fa;
+  --devhub-surface: #fbfbfc;
+  --devhub-surface-elevated: #ffffff;
+  --devhub-surface-strong: #f2f4f7;
   --devhub-white: #ffffff;
 
   /* Status */
@@ -55,35 +60,38 @@ License URI: https://www.gnu.org/licenses/gpl-3.0.html
     "Plus Jakarta Sans", "Inter", -apple-system, sans-serif;
 
   /* Type scale */
-  --devhub-text-xs: 0.75rem;     /* 12px */
-  --devhub-text-sm: 0.875rem;    /* 14px */
-  --devhub-text-md: 1rem;        /* 16px */
-  --devhub-text-lg: 1.125rem;    /* 18px */
-  --devhub-text-xl: 1.25rem;     /* 20px */
-  --devhub-text-2xl: 1.5rem;     /* 24px */
-  --devhub-text-3xl: 1.875rem;   /* 30px */
-  --devhub-text-4xl: 2.25rem;    /* 36px */
+  --devhub-text-xs: 0.825rem;    /* ~13px */
+  --devhub-text-sm: 0.95rem;     /* ~15px */
+  --devhub-text-md: 1.05rem;     /* ~17px */
+  --devhub-text-lg: 1.175rem;    /* ~19px */
+  --devhub-text-xl: 1.35rem;     /* ~22px */
+  --devhub-text-2xl: 1.6rem;     /* ~26px */
+  --devhub-text-3xl: 2rem;       /* 32px */
+  --devhub-text-4xl: 2.45rem;    /* ~39px */
   --devhub-text-5xl: 3rem;       /* 48px — section hero titles */
   --devhub-text-6xl: 3.75rem;    /* 60px — page hero headline */
   --devhub-text-display: 4.5rem; /* 72px — large promotional banners */
 
   /* Layout */
-  /* --devhub-container: 1280px; */
-  --devhub-container: 100%;
+  --devhub-container: 1440px;
+  --devhub-page-gutter: clamp(18px, 2.2vw, 34px);
 
   /* Border radii */
-  --devhub-radius-sm: 4px;
-  --devhub-radius-md: 8px;
-  --devhub-radius-lg: 12px;
-  --devhub-radius-xl: 16px;
+  --devhub-radius-sm: 8px;
+  --devhub-radius-md: 14px;
+  --devhub-radius-lg: 20px;
+  --devhub-radius-xl: 28px;
   --devhub-radius-full: 9999px;
 
   /* Shadows */
-  --devhub-shadow-card: 0 2px 8px rgba(0, 0, 0, 0.08);
-  --devhub-shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.14);
+  --devhub-shadow-card: 0 12px 30px rgba(16, 24, 40, 0.06);
+  --devhub-shadow-hover: 0 22px 48px rgba(16, 24, 40, 0.12);
+  --devhub-shadow-glow: 0 18px 40px rgba(255, 102, 0, 0.12);
 
   /* Transitions */
-  --devhub-transition: 0.2s ease;
+  --devhub-transition: 0.24s ease;
+  --devhub-transition-slow: 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+  --devhub-focus-ring: 0 0 0 4px rgba(255, 102, 0, 0.12);
 }
 
 /* ==========================================================================
@@ -103,8 +111,12 @@ body {
 
 body {
   font-family: var(--devhub-font);
+  font-size: 1.7rem;
   color: var(--devhub-dark);
-  background-color: var(--devhub-white);
+  line-height: 1.65;
+  background:
+    radial-gradient(circle at top, rgba(255, 102, 0, 0.05), transparent 32%),
+    linear-gradient(180deg, #fff, #fdfdfd);
   -webkit-font-smoothing: antialiased;
 }
 
@@ -117,7 +129,9 @@ img {
 a {
   color: inherit;
   text-decoration: none;
-  transition: color var(--devhub-transition);
+  transition:
+    color var(--devhub-transition),
+    opacity var(--devhub-transition);
 }
 
 button {
@@ -155,7 +169,24 @@ h6 { font-size: var(--devhub-text-md);  font-weight: 600; }
 
 p {
   margin: 0;
-  line-height: 1.6;
+  line-height: 1.7;
+  color: var(--devhub-mid);
+}
+
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+::selection {
+  color: var(--devhub-white);
+  background: var(--devhub-primary);
+}
+
+:focus-visible {
+  outline: none;
+  box-shadow: var(--devhub-focus-ring);
 }
 
 /* ==========================================================================
@@ -164,11 +195,12 @@ p {
    ========================================================================== */
 
 .wf-container {
+  width: min(100%, var(--devhub-container));
   max-width: var(--devhub-container);
   margin-left: auto;
   margin-right: auto;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-left: var(--devhub-page-gutter);
+  padding-right: var(--devhub-page-gutter);
 }
 
 .devhub-sr-only {
@@ -197,13 +229,15 @@ p {
 
 .devhub-badge {
   display: inline-block;
-  padding: 2px 8px;
-  border-radius: var(--devhub-radius-sm);
+  padding: 0.45rem 0.9rem;
+  border-radius: var(--devhub-radius-full);
   font-size: var(--devhub-text-xs);
   font-weight: 700;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
   background-color: var(--devhub-primary);
   color: var(--devhub-white);
+  box-shadow: 0 10px 22px rgba(255, 102, 0, 0.18);
 }
 
 /* Consistent vertical rhythm for all home sections */
@@ -214,7 +248,7 @@ p {
 .devhub-preorder,
 .devhub-broadbands {
   padding-top: 0px;
-  padding-bottom: 48px;
+  padding-bottom: 56px;
 }
 
 @media (max-width: 768px) {
@@ -225,8 +259,31 @@ p {
   .devhub-preorder,
   .devhub-broadbands {
     padding-top: 0px;
-    padding-bottom: 32px;
+    padding-bottom: 36px;
   }
+}
+
+.devhub-archive,
+.devhub-single,
+.woocommerce-account.logged-in .wf_posts,
+.woocommerce-cart .wf_posts,
+.woocommerce-checkout .wf_posts {
+  position: relative;
+}
+
+.devhub-archive::before,
+.devhub-single::before,
+.woocommerce-account.logged-in .wf_posts::before,
+.woocommerce-cart .wf_posts::before,
+.woocommerce-checkout .wf_posts::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 220px;
+  background:
+    radial-gradient(circle at top right, rgba(255, 102, 0, 0.06), transparent 42%),
+    linear-gradient(180deg, rgba(247, 248, 250, 0.85), rgba(247, 248, 250, 0));
+  pointer-events: none;
 }
 
 /* ==========================================================================

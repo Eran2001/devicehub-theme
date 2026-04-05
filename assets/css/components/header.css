@@ -18,8 +18,15 @@
 
 #wf_header .wf_navbar-wrapper > .wf-container,
 #wf_header .wf_mobilenav-menu {
-  padding-left: clamp(16px, 2.4vw, 32px);
-  padding-right: clamp(16px, 2.4vw, 32px);
+  padding-left: var(--devhub-page-gutter);
+  padding-right: var(--devhub-page-gutter);
+}
+
+@media (min-width: 992px) {
+  #wf_header .wf_navbar-wrapper > .wf-container {
+    padding-left: calc(var(--devhub-page-gutter) + 14px);
+    padding-right: calc(var(--devhub-page-gutter) + 14px);
+  }
 }
 
 /* Sticky state keeps same padding */

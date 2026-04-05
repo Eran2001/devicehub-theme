@@ -1208,6 +1208,80 @@
   font-weight: 600;
 }
 
+/* ==========================================================================
+   Typography / Surface Refinement
+   ========================================================================== */
+
+.wc-block-checkout__main .wc-block-components-checkout-step,
+.devhub-delivery-method,
+.wc-block-checkout__sidebar .wp-block-woocommerce-checkout-order-summary-block {
+  border-color: rgba(228, 231, 236, 0.95) !important;
+  border-radius: 16px !important;
+  box-shadow: var(--devhub-shadow-card);
+}
+
+.wc-block-checkout__main .wc-block-components-checkout-step__title,
+.devhub-delivery-method__title,
+.devhub-delivery-method__pickup-title {
+  letter-spacing: -0.01em;
+}
+
+.wc-block-checkout__main .wc-block-components-checkout-step__description,
+.wc-block-checkout__main
+  .wc-block-components-address-card__address-section--secondary,
+.wc-block-checkout__main .wc-block-components-text-input label,
+.wc-block-checkout__main .wc-block-components-combobox label,
+.wc-block-checkout__main .wc-block-components-textarea label,
+.wc-block-checkout__main .wc-block-components-checkbox__label,
+.wc-block-checkout__main
+  .wc-block-checkout__contact-fields
+  .wc-block-components-text-input
+  label,
+.wc-block-checkout__main
+  .wc-block-components-address-form
+  .wc-block-components-text-input
+  label,
+.wc-block-checkout__main
+  .wc-block-components-address-form
+  .wc-blocks-components-select__label,
+.wc-block-checkout__main
+  .wc-block-components-address-form
+  .wc-block-components-combobox
+  label,
+.wc-block-checkout__main
+  .wc-block-components-address-form
+  .wc-block-components-combobox-control
+  label,
+.wc-block-checkout__main .wc-block-components-text-input input,
+.wc-block-checkout__main .wc-block-components-address-form input,
+.wc-block-checkout__main .wc-block-components-address-form select,
+.wc-block-checkout__main
+  .wc-block-components-combobox
+  .components-combobox-control__input,
+.wc-block-checkout__main
+  .wc-block-components-combobox-control
+  .components-combobox-control__input,
+.wc-block-checkout__main .wc-block-components-textarea,
+.wc-block-checkout__sidebar .wc-block-components-totals-item__label,
+.wc-block-checkout__sidebar .wc-block-components-totals-item__value,
+.wc-block-components-checkout-place-order-button.wc-block-components-button,
+.wp-block-woocommerce-checkout-order-summary-coupon-form-block
+  .wc-block-components-totals-coupon__button,
+.devhub-delivery-method__option-copy,
+.devhub-delivery-method__pickup-copy,
+.devhub-delivery-method__search-copy,
+.devhub-delivery-method__store-address,
+.devhub-delivery-method__store-details,
+.devhub-delivery-method__empty,
+.devhub-delivery-method__summary {
+  font-size: 1.55rem !important;
+}
+
+.devhub-delivery-method__option-title,
+.devhub-delivery-method__store-name {
+  font-size: 1.8rem;
+}
+
 @media (max-width: 781px) {
   .wc-block-checkout__main .wc-block-components-checkout-step,
   .devhub-delivery-method {

@@ -13,14 +13,15 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 14px 0;
-  border-bottom: 1px solid var(--devhub-border);
-  margin-bottom: 28px;
+  padding: 18px 0 20px;
+  border-bottom: 1px solid rgba(228, 231, 236, 0.9);
+  margin-bottom: 34px;
   flex-wrap: wrap;
 }
 
 .devhub-page-bar .woocommerce-breadcrumb {
-  font-size: var(--devhub-text-xs);
+  font-size: var(--devhub-text-sm);
+  font-weight: 600;
   color: var(--devhub-mid);
   margin: 0;
 }
@@ -35,9 +36,9 @@
 }
 
 .devhub-page-bar__title {
-  font-size: var(--devhub-text-xl);
-  font-weight: 600;
-  color: var(--devhub-dark);
+  font-size: var(--devhub-text-2xl);
+  font-weight: 700;
+  color: var(--devhub-black);
   margin: 0;
   white-space: nowrap;
   overflow: hidden;
@@ -60,20 +61,20 @@
    ========================================================================== */
 
 .devhub-archive__header {
-  margin-bottom: 24px;
+  margin-bottom: 28px;
 }
 
 .devhub-archive__title {
-  font-size: var(--devhub-text-2xl);
-  font-weight: 700;
+  font-size: var(--devhub-text-4xl);
+  font-weight: 800;
   color: var(--devhub-black);
-  margin-bottom: 6px;
+  margin-bottom: 10px;
 }
 
 /* WooCommerce breadcrumb override */
 .devhub-archive .woocommerce-breadcrumb {
-  font-size: var(--devhub-text-xl);
-  font-weight: 700;
+  font-size: var(--devhub-text-sm);
+  font-weight: 600;
   color: var(--devhub-mid);
   background: none;
   padding: 0;
@@ -110,10 +111,11 @@
 }
 
 .devhub-archive__filters {
-  background: var(--devhub-white);
-  border: 1px solid var(--devhub-border);
-  border-radius: var(--devhub-radius-md);
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(228, 231, 236, 0.95);
+  border-radius: calc(var(--devhub-radius-md) + 2px);
   overflow: hidden;
+  box-shadow: var(--devhub-shadow-card);
 }
 
 /* ==========================================================================
@@ -124,14 +126,15 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   gap: 12px;
   flex-wrap: wrap;
 }
 
 /* WooCommerce result count */
 .devhub-archive__toolbar .woocommerce-result-count {
-  font-size: var(--devhub-text-lg);
+  font-size: var(--devhub-text-md);
+  font-weight: 500;
   color: var(--devhub-mid);
   margin: 0 !important;
   padding: 0 !important;
@@ -149,20 +152,20 @@
 
 .devhub-archive__toolbar .woocommerce-ordering select,
 .devhub-archive__toolbar .orderby {
-  font-size: var(--devhub-text-xl) !important;
-  font-weight: 500;
+  font-size: var(--devhub-text-md) !important;
+  font-weight: 600;
   color: var(--devhub-dark) !important;
-  border: 1.5px solid var(--devhub-border) !important;
+  border: 1px solid rgba(228, 231, 236, 0.95) !important;
   border-radius: var(--devhub-radius-full) !important;
-  padding: 4px 24px 4px 10px !important;
-  background-color: var(--devhub-white) !important;
+  padding: 10px 38px 10px 16px !important;
+  background-color: rgba(255, 255, 255, 0.95) !important;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b6b6b' d='M6 8L1 3h10z'/%3E%3C/svg%3E") !important;
   background-repeat: no-repeat !important;
   background-position: right 12px center !important;
   cursor: pointer;
   appearance: none !important;
   -webkit-appearance: none !important;
-  box-shadow: none !important;
+  box-shadow: var(--devhub-shadow-card) !important;
   accent-color: var(--devhub-primary);
   transition: border-color var(--devhub-transition);
 }
@@ -267,7 +270,7 @@
 .devhub-archive__grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
+  gap: 20px;
 }
 
 /* ==========================================================================
@@ -331,13 +334,14 @@
    ========================================================================== */
 
 .devhub-archive__main .woocommerce-info {
-  background: var(--devhub-white);
+  background: rgba(255, 255, 255, 0.94);
   border: 1px solid var(--devhub-border);
   border-left: 4px solid var(--devhub-primary);
-  border-radius: var(--devhub-radius-md);
-  padding: 16px 20px;
-  font-size: var(--devhub-text-sm);
+  border-radius: calc(var(--devhub-radius-md) + 2px);
+  padding: 18px 22px;
+  font-size: var(--devhub-text-md);
   color: var(--devhub-mid);
+  box-shadow: var(--devhub-shadow-card);
 }
 
 /* ==========================================================================

@@ -284,3 +284,39 @@
   -webkit-animation: text-spin 0.5s 1;
   animation: text-spin 0.5s 1;
 }
+
+/* ==========================================================================
+   Typography / Surface Refinement
+   ========================================================================== */
+
+.woocommerce-cart .wc-block-cart__sidebar,
+.woocommerce-cart .wc-block-cart-items-block,
+.woocommerce-cart .wc-block-cart-items {
+  border-color: rgba(228, 231, 236, 0.95) !important;
+  border-radius: 16px !important;
+  box-shadow: var(--devhub-shadow-card);
+}
+
+.woocommerce-cart .wc-block-cart-items th {
+  font-size: 1.45rem;
+  letter-spacing: 0.01em;
+}
+
+.woocommerce-cart .wc-block-cart-items td,
+.woocommerce-cart .wc-block-components-product-name,
+.woocommerce-cart .wc-block-components-product-metadata,
+.woocommerce-cart .wc-block-components-formatted-money-amount,
+.woocommerce-cart .wc-block-components-totals-item__label,
+.woocommerce-cart .wc-block-components-totals-item__value,
+.woocommerce-cart .wc-block-components-totals-footer-item .wc-block-components-totals-item__label,
+.woocommerce-cart .wc-block-components-totals-footer-item .wc-block-components-totals-item__value,
+.wc-block-cart__sidebar
+  .wc-block-components-totals-coupon__input.wc-block-components-text-input
+  label,
+.wc-block-cart__sidebar
+  .wc-block-components-totals-coupon__input.wc-block-components-text-input
+  input,
+.wc-block-cart__sidebar .wc-block-components-totals-coupon__button,
+.wc-block-cart__submit-button.wc-block-components-button {
+  font-size: 1.55rem !important;
+}
