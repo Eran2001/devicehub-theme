@@ -628,6 +628,21 @@
   margin: 20px 0 0;
 }
 
+.widget_shopping_cart ul.product_list_widget,
+.widget_shopping_cart_content ul.cart-items,
+div.shopping-cart ul.cart-items {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.widget_shopping_cart ul.product_list_widget::-webkit-scrollbar,
+.widget_shopping_cart_content ul.cart-items::-webkit-scrollbar,
+div.shopping-cart ul.cart-items::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
 .widget_shopping_cart .woocommerce-mini-cart__buttons .button {
   display: inline-flex !important;
   align-items: center;

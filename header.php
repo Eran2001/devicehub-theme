@@ -21,11 +21,6 @@
 	<?php 
 		// Theme Header
 		do_action('shopire_site_main_header'); 
-		
-		// Theme Breadcrumb
-		if ( !is_page_template( 'page-templates/frontpage.php' )) {
-				get_template_part('/template-parts/site','breadcrumb');
-		}
 	?>
 	
 	<div id="content" class="site-content">

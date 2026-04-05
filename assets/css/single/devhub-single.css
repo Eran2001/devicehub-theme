@@ -20,10 +20,11 @@
 }
 
 .devhub-single .devhub-page-bar .woocommerce-breadcrumb {
-  font-size: var(--devhub-text-sm);
-  font-weight: 600;
+  font-size: clamp(1.7rem, 1.2vw, 1.95rem);
+  font-weight: 700;
   color: var(--devhub-mid);
   margin: 0;
+  line-height: 1.5;
 }
 
 .devhub-single .devhub-page-bar .woocommerce-breadcrumb a {
@@ -36,7 +37,7 @@
 }
 
 .devhub-single .devhub-page-bar__title {
-  font-size: var(--devhub-text-2xl);
+  font-size: clamp(2rem, 2vw, 2.6rem);
   font-weight: 700;
   color: var(--devhub-black);
   margin: 0;
@@ -230,7 +231,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: var(--devhub-text-md);
+  font-size: var(--devhub-text-xl);
   font-weight: 600;
 }
 
@@ -255,7 +256,7 @@
 }
 
 .devhub-single__option-label {
-  font-size: var(--devhub-text-md) !important;
+  font-size: var(--devhub-text-xl) !important;
   color: var(--devhub-mid) !important;
   margin-bottom: 10px !important;
   background: none !important;
@@ -332,10 +333,12 @@
 /* Bundle carousel */
 .devhub-single__bundles {
   margin-bottom: 24px;
+  background: #fff !important;
 }
 
 .devhub-single__bundles-slider {
   position: relative;
+  background: #fff !important;
 }
 
 .devhub-single__bundles-viewport {
@@ -343,6 +346,7 @@
   min-width: 0;
   overflow: hidden;
   padding-bottom: 2px;
+  background: #fff !important;
 }
 
 .devhub-single__bundles-track {
@@ -350,6 +354,7 @@
   gap: 12px;
   transition: transform 0.3s ease;
   will-change: transform;
+  background: #fff !important;
 }
 
 .devhub-single__bundle-card {
@@ -360,7 +365,7 @@
   background: var(--devhub-white);
   cursor: pointer;
   box-sizing: border-box;
-  box-shadow: var(--devhub-shadow-card);
+  box-shadow: none;
   transition:
     border-color var(--devhub-transition),
     transform var(--devhub-transition),
@@ -369,12 +374,12 @@
 
 .devhub-single__bundle-card--active {
   border-color: var(--devhub-primary);
-  box-shadow: var(--devhub-shadow-glow);
+  box-shadow: none;
 }
 
 .devhub-single__bundle-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--devhub-shadow-hover);
+  transform: none;
+  box-shadow: none;
 }
 
 .devhub-single__bundle-top {

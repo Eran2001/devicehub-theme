@@ -114,9 +114,7 @@ body {
   font-size: 1.7rem;
   color: var(--devhub-dark);
   line-height: 1.65;
-  background:
-    radial-gradient(circle at top, rgba(255, 102, 0, 0.05), transparent 32%),
-    linear-gradient(180deg, #fff, #fdfdfd);
+  background: #fff;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -276,14 +274,7 @@ textarea {
 .woocommerce-account.logged-in .wf_posts::before,
 .woocommerce-cart .wf_posts::before,
 .woocommerce-checkout .wf_posts::before {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto;
-  height: 220px;
-  background:
-    radial-gradient(circle at top right, rgba(255, 102, 0, 0.06), transparent 42%),
-    linear-gradient(180deg, rgba(247, 248, 250, 0.85), rgba(247, 248, 250, 0));
-  pointer-events: none;
+  content: none;
 }
 
 /* ==========================================================================

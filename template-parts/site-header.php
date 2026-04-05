@@ -1,5 +1,3 @@
-<?php do_action('shopire_site_preloader'); ?>
-<?php do_action('shopire_wp_hdr_image'); ?>
 <?php
 $shopire_hs_hdr_sticky = get_theme_mod('shopire_hs_hdr_sticky', '1');
 $shopire_hs_hdr_bcat = get_theme_mod('shopire_hs_hdr_bcat', '1');
@@ -54,20 +52,6 @@ $shopire_hs_hdr_bcat = get_theme_mod('shopire_hs_hdr_bcat', '1');
                 <div
                     class="wf_mobilenav wf-d-lg-none <?php if ($shopire_hs_hdr_sticky == '1')
                         esc_attr_e('is--sticky', 'shopire'); ?>">
-                    <div class="wf_mobilenav-topbar">
-                        <button type="button" class="wf_mobilenav-topbar-toggle">
-                            <i class="fas fa-angle-double-down" aria-hidden="true"></i>
-                        </button>
-                        <div class="wf_mobilenav-topbar-content">
-                            <div class="wf-container">
-                                <div class="wf-row">
-                                    <div class="wf-col-12">
-                                        <?php do_action('shopire_site_header'); ?>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <div class="wf-container">
                         <div class="wf-row">
                             <div class="wf-col-12">
