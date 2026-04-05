@@ -29,6 +29,9 @@ $auth_icons = [
 	'mobile' => $asset_base . 'mobile.png',
 	'mail' => $asset_base . 'mail.png',
 ];
+$auth_redirect_url = function_exists( 'devhub_get_auth_success_redirect_url' )
+	? devhub_get_auth_success_redirect_url()
+	: wc_get_page_permalink( 'myaccount' );
 
 do_action('woocommerce_before_customer_login_form');
 ?>
@@ -66,8 +69,7 @@ do_action('woocommerce_before_customer_login_form');
 						<span><?php esc_html_e('Sign up with Facebook', 'devicehub-theme'); ?></span>
 					</button>
 
-					<button type="button" class="devhub-auth__option" data-devhub-placeholder
-						data-devhub-message="<?php esc_attr_e('Mobile OTP login UI will be wired later. Use email login or continue as a guest for now.', 'devicehub-theme'); ?>">
+					<button type="button" class="devhub-auth__option" data-devhub-auth-open="mobile-request">
 						<img class="devhub-auth__option-icon" src="<?php echo esc_url($auth_icons['mobile']); ?>" alt=""
 							aria-hidden="true" />
 						<span><?php esc_html_e('Sign up with Mobile', 'devicehub-theme'); ?></span>
@@ -198,6 +200,108 @@ do_action('woocommerce_before_customer_login_form');
 							data-devhub-auth-open="register"><?php esc_html_e('Create an account', 'devicehub-theme'); ?></button>
 					</p>
 				<?php endif; ?>
+			</section>
+
+			<section class="devhub-auth__panel" data-devhub-panel="mobile-request" aria-labelledby="devhub-auth-mobile-title">
+				<button type="button" class="devhub-auth__back" data-devhub-auth-open="chooser">
+					<span aria-hidden="true">&larr;</span>
+					<span><?php esc_html_e('Back to sign-in options', 'devicehub-theme'); ?></span>
+				</button>
+
+				<h2 class="devhub-auth__title" id="devhub-auth-mobile-title">
+					<?php esc_html_e('Mobile sign in', 'devicehub-theme'); ?>
+				</h2>
+				<p class="devhub-auth__subtitle">
+					<?php esc_html_e('Use your mobile number to sign in or create your account with a one-time code.', 'devicehub-theme'); ?>
+				</p>
+
+				<div class="devhub-auth__form">
+					<form class="devhub-auth__mobile-form" data-devhub-mobile-request novalidate>
+						<input type="hidden" name="action" value="devhub_send_mobile_otp" />
+						<input type="hidden" name="nonce" value="<?php echo esc_attr( wp_create_nonce( 'devhub_mobile_auth' ) ); ?>" />
+						<input type="hidden" name="redirect" value="<?php echo esc_url( $auth_redirect_url ); ?>" />
+
+						<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+							<label for="mobile_login_phone"><?php esc_html_e('Mobile number', 'devicehub-theme'); ?>&nbsp;<span
+									class="required" aria-hidden="true">*</span><span
+									class="screen-reader-text"><?php esc_html_e('Required', 'woocommerce'); ?></span></label>
+							<input type="tel" class="woocommerce-Input woocommerce-Input--text input-text"
+								name="phone" id="mobile_login_phone" autocomplete="tel" inputmode="tel" required
+								aria-required="true" />
+						</p>
+
+						<p class="devhub-auth__subtitle">
+							<?php esc_html_e('We will send a 6-digit OTP to this mobile number.', 'devicehub-theme'); ?>
+						</p>
+
+						<p class="devhub-auth__status" data-devhub-mobile-request-status hidden></p>
+
+						<p class="form-row">
+							<button type="submit"
+								class="button devhub-auth__submit<?php echo esc_attr(wc_wp_theme_get_element_class_name('button') ? ' ' . wc_wp_theme_get_element_class_name('button') : ''); ?>">
+								<?php esc_html_e('Send OTP', 'devicehub-theme'); ?>
+							</button>
+						</p>
+					</form>
+				</div>
+
+				<p class="devhub-auth__footer">
+					<?php esc_html_e('Prefer email instead?', 'devicehub-theme'); ?>
+					<button type="button"
+						data-devhub-auth-open="email"><?php esc_html_e('Use email login', 'devicehub-theme'); ?></button>
+				</p>
+			</section>
+
+			<section class="devhub-auth__panel" data-devhub-panel="mobile-verify" aria-labelledby="devhub-auth-mobile-verify-title">
+				<button type="button" class="devhub-auth__back" data-devhub-auth-open="mobile-request">
+					<span aria-hidden="true">&larr;</span>
+					<span><?php esc_html_e('Back to mobile number', 'devicehub-theme'); ?></span>
+				</button>
+
+				<h2 class="devhub-auth__title" id="devhub-auth-mobile-verify-title">
+					<?php esc_html_e('Enter OTP', 'devicehub-theme'); ?>
+				</h2>
+				<p class="devhub-auth__subtitle" data-devhub-mobile-verify-copy>
+					<?php esc_html_e('Enter the 6-digit code sent to your mobile number.', 'devicehub-theme'); ?>
+				</p>
+
+				<div class="devhub-auth__form">
+					<form class="devhub-auth__mobile-form" data-devhub-mobile-verify novalidate>
+						<input type="hidden" name="action" value="devhub_verify_mobile_otp" />
+						<input type="hidden" name="nonce" value="<?php echo esc_attr( wp_create_nonce( 'devhub_mobile_auth' ) ); ?>" />
+						<input type="hidden" name="phone" value="" />
+						<input type="hidden" name="redirect" value="<?php echo esc_url( $auth_redirect_url ); ?>" />
+
+						<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+							<label for="mobile_login_otp"><?php esc_html_e('One-time password', 'devicehub-theme'); ?>&nbsp;<span
+									class="required" aria-hidden="true">*</span><span
+									class="screen-reader-text"><?php esc_html_e('Required', 'woocommerce'); ?></span></label>
+							<input type="text" class="woocommerce-Input woocommerce-Input--text input-text"
+								name="otp" id="mobile_login_otp" autocomplete="one-time-code" inputmode="numeric"
+								pattern="[0-9]*" maxlength="6" required aria-required="true" />
+						</p>
+
+						<p class="devhub-auth__status" data-devhub-mobile-verify-status hidden></p>
+						<p class="devhub-auth__status" data-devhub-mobile-debug hidden></p>
+
+						<p class="form-row">
+							<button type="submit"
+								class="button devhub-auth__submit<?php echo esc_attr(wc_wp_theme_get_element_class_name('button') ? ' ' . wc_wp_theme_get_element_class_name('button') : ''); ?>">
+								<?php esc_html_e('Verify and Continue', 'devicehub-theme'); ?>
+							</button>
+						</p>
+					</form>
+				</div>
+
+				<p class="devhub-auth__footer">
+					<?php esc_html_e('Didn’t receive the code?', 'devicehub-theme'); ?>
+					<button type="button" data-devhub-mobile-resend><?php esc_html_e('Resend OTP', 'devicehub-theme'); ?></button>
+				</p>
+				<p class="devhub-auth__footer">
+					<?php esc_html_e('Need a different number?', 'devicehub-theme'); ?>
+					<button type="button"
+						data-devhub-auth-open="mobile-request"><?php esc_html_e('Change mobile number', 'devicehub-theme'); ?></button>
+				</p>
 			</section>
 
 			<?php if ($registration_enabled): ?>

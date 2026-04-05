@@ -183,6 +183,7 @@ function devhub_enqueue_scripts(): void
         devhub_script('devhub-checkout', '/modules/checkout.js', ['devhub-utils'], true);
         if (!is_user_logged_in()) {
             devhub_script('devhub-login', '/modules/login.js', [], true);
+            devhub_localize_login_script();
         }
         wp_localize_script('devhub-checkout', 'devhubCheckoutData', [
             'fields' => [
@@ -210,12 +211,35 @@ function devhub_enqueue_scripts(): void
     // ── My Account ────────────────────────────────────────────────────────────
     if (devhub_is_account_context()) {
         devhub_script('devhub-login', '/modules/login.js', [], true);
+        devhub_localize_login_script();
         devhub_script('devhub-account', '/modules/account.js', [], true);
     }
 
     if (is_singular() && comments_open() && get_option('thread_comments')) {
         wp_enqueue_script('comment-reply');
     }
+}
+
+/**
+ * Localize the auth-panel script with mobile OTP config.
+ */
+function devhub_localize_login_script(): void
+{
+    if (!wp_script_is('devhub-login', 'enqueued')) {
+        return;
+    }
+
+    wp_localize_script('devhub-login', 'devhubLoginData', [
+        'ajaxUrl'     => admin_url('admin-ajax.php'),
+        'nonce'       => wp_create_nonce('devhub_mobile_auth'),
+        'redirectUrl' => function_exists('devhub_get_auth_success_redirect_url')
+            ? devhub_get_auth_success_redirect_url()
+            : home_url('/'),
+        'messages'    => [
+            'requestError' => __('We could not send your OTP right now. Please try again.', 'devicehub-theme'),
+            'verifyError'  => __('We could not verify that OTP. Please try again.', 'devicehub-theme'),
+        ],
+    ]);
 }
 
 

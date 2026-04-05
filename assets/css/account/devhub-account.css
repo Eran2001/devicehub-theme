@@ -213,6 +213,16 @@
   display: none;
 }
 
+.devhub-auth__status[data-state="error"] {
+  background: #fff5ee;
+  color: #914417;
+}
+
+.devhub-auth__status[data-state="success"] {
+  background: #eef8f0;
+  color: #17683d;
+}
+
 .devhub-auth__back {
   display: inline-flex;
   align-items: center;
