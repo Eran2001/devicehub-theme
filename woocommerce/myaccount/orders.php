@@ -70,17 +70,13 @@ do_action( 'woocommerce_before_account_orders', $has_orders );
 								<?php
 								$actions = wc_get_account_orders_actions( $order );
 
-								if ( ! empty( $actions ) ) {
-									foreach ( $actions as $key => $action ) { // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
-										if ( empty( $action['aria-label'] ) ) {
-											$action_aria_label = sprintf( __( '%1$s order number %2$s', 'woocommerce' ), $action['name'], $order->get_order_number() );
-										} else {
-											$action_aria_label = $action['aria-label'];
-										}
+								if ( ! empty( $actions['view'] ) ) {
+									$view_action       = $actions['view'];
+									$action_aria_label = ! empty( $view_action['aria-label'] )
+										? $view_action['aria-label']
+										: sprintf( __( 'View order number %s', 'woocommerce' ), $order->get_order_number() );
 
-										echo '<a href="' . esc_url( $action['url'] ) . '" class="devhub-order-action-icon ' . sanitize_html_class( $key ) . '" aria-label="' . esc_attr( $action_aria_label ) . '"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></a>';
-										unset( $action_aria_label );
-									}
+									echo '<a href="' . esc_url( $view_action['url'] ) . '" class="devhub-order-action-icon view" aria-label="' . esc_attr( $action_aria_label ) . '"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></a>';
 								}
 								?>
 							<?php endif; ?>
