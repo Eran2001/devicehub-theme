@@ -207,6 +207,21 @@ function devhub_store_checkout_delivery_meta( WC_Order $order, WP_REST_Request $
 	$fields          = (array) $request->get_param( 'additional_fields' );
 	$delivery_method = sanitize_text_field( (string) ( $fields[ DEVHUB_CHECKOUT_DELIVERY_METHOD_FIELD ] ?? 'home_delivery' ) );
 	$pickup_store    = sanitize_text_field( (string) ( $fields[ DEVHUB_CHECKOUT_PICKUP_STORE_FIELD ] ?? '' ) );
+	devhub_update_order_delivery_meta( $order, $delivery_method, $pickup_store );
+}
+
+/**
+ * Persist DeviceHub delivery meta on an order.
+ *
+ * Shared by the Store API checkout flow and the custom checkout-to-payment
+ * handoff.
+ *
+ * @param WC_Order $order           Order object.
+ * @param string   $delivery_method Selected delivery method.
+ * @param string   $pickup_store    Selected pickup location value.
+ * @return void
+ */
+function devhub_update_order_delivery_meta( WC_Order $order, string $delivery_method, string $pickup_store ): void {
 	$location_map = [];
 
 	foreach ( devhub_get_checkout_pickup_locations() as $location ) {
