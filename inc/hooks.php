@@ -213,7 +213,7 @@ function devhub_buy_now_redirect(string $url): string
 // Override LKR currency symbol to display as 'LKR' instead of රු
 add_filter('woocommerce_currency_symbol', function (string $symbol, string $currency): string {
     if ($currency === 'LKR')
-        return 'LKR';
+        return 'Rs.';
     return $symbol;
 }, 10, 2);
 
