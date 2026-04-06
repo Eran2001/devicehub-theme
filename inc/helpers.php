@@ -148,6 +148,71 @@ function devhub_get_product_placeholder_img(WC_Product $product): string
     return DEVHUB_URI . '/assets/images/Original-Img.svg';
 }
 
+/**
+ * Normalize a raw hex color string from term meta.
+ */
+function devhub_normalize_hex_color(string $value, string $fallback = '#cccccc'): string
+{
+    $value = trim($value);
+
+    if ($value === '') {
+        return $fallback;
+    }
+
+    $with_hash = sanitize_hex_color($value);
+    if ($with_hash) {
+        return $with_hash;
+    }
+
+    $no_hash = sanitize_hex_color_no_hash($value);
+    if ($no_hash) {
+        return '#' . $no_hash;
+    }
+
+    return $fallback;
+}
+
+/**
+ * Resolve Woo product color terms into swatch-ready UI data.
+ *
+ * Reads the real color value from term meta saved by Woo Variation Swatches.
+ */
+function devhub_get_product_color_options(WC_Product $product): array
+{
+    $attributes = $product->get_attributes();
+
+    if (
+        !$product->is_type('variable')
+        || !taxonomy_exists('pa_color')
+        || !isset($attributes['pa_color'])
+    ) {
+        return [];
+    }
+
+    $color_slugs = wc_get_product_terms($product->get_id(), 'pa_color', ['fields' => 'slugs']);
+    if (empty($color_slugs) || is_wp_error($color_slugs)) {
+        return [];
+    }
+
+    $colors = [];
+    foreach ($color_slugs as $slug) {
+        $term = get_term_by('slug', $slug, 'pa_color');
+        if (!$term instanceof WP_Term) {
+            continue;
+        }
+
+        $raw_hex = (string) get_term_meta($term->term_id, 'product_attribute_color', true);
+
+        $colors[] = [
+            'slug' => $slug,
+            'name' => $term->name,
+            'hex' => devhub_normalize_hex_color($raw_hex),
+        ];
+    }
+
+    return $colors;
+}
+
 
 // ── Template renderer ─────────────────────────────────────────────────────────
 

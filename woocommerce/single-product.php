@@ -24,36 +24,8 @@ if (!$product)
 $is_variable = $product->is_type('variable');
 $attributes = $product->get_attributes();
 $variation_attributes = $is_variable ? $product->get_variation_attributes() : [];
-$color_slugs = $variation_attributes['pa_color'] ?? [];
 $storage_slugs = $variation_attributes['pa_storage'] ?? [];
-
-// Color name → hex lookup
-$color_hex_map = [
-    'black' => '#1a1a1a',
-    'blue' => '#2563eb',
-    'gold' => '#d4a017',
-    'gray' => '#9ca3af',
-    'grey' => '#9ca3af',
-    'green' => '#16a34a',
-    'purple' => '#7c3aed',
-    'red' => '#dc2626',
-    'rose-gold' => '#b76e79',
-    'silver' => '#c0c0c0',
-    'white' => '#f3f3f3',
-];
-
-$colors = [];
-foreach ($color_slugs as $slug) {
-    $term = get_term_by('slug', $slug, 'pa_color');
-    if (!$term)
-        continue;
-    $key = sanitize_title($term->name);
-    $colors[] = [
-        'slug' => $slug,
-        'name' => $term->name,
-        'hex' => $color_hex_map[$key] ?? '#cccccc',
-    ];
-}
+$colors = devhub_get_product_color_options($product);
 
 $storages = [];
 foreach ($storage_slugs as $slug) {
@@ -140,7 +112,7 @@ $payment_methods = function_exists('devhub_get_payment_method_display_data') ? d
 
         <div class="devhub-page-bar">
             <?php woocommerce_breadcrumb(); ?>
-            <h1 class="devhub-page-bar__title"><?php the_title(); ?></h1>
+            <?php /* devhub-page-bar__title intentionally hidden for now. */ ?>
         </div>
 
         <div class="devhub-single__layout">
