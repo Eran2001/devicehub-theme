@@ -501,6 +501,34 @@
 		expandAddressLineTwo();
 	}
 
+	function relabelAddressBlocks() {
+		// Shipping-fields block is always visible and shown first → call it "Billing address"
+		const shippingTitle = document.querySelector(
+			'.wc-block-checkout__shipping-fields .wc-block-components-checkout-step__title'
+		);
+		if ( shippingTitle && shippingTitle.textContent.trim() !== 'Billing address' ) {
+			shippingTitle.textContent = 'Billing address';
+		}
+
+		// Billing-address block appears when addresses differ → call it "Shipping address"
+		const billingTitle = document.querySelector(
+			'.wc-block-checkout__billing-address .wc-block-components-checkout-step__title, ' +
+			'.wp-block-woocommerce-checkout-billing-address-block .wc-block-components-checkout-step__title'
+		);
+		if ( billingTitle && billingTitle.textContent.trim() !== 'Shipping address' ) {
+			billingTitle.textContent = 'Shipping address';
+		}
+
+		// Change checkbox label from "Use same address for billing" → "Use same address for shipping"
+		document
+			.querySelectorAll( '.wc-block-checkout__shipping-fields .wc-block-components-checkbox__label' )
+			.forEach( ( label ) => {
+				if ( /billing/i.test( label.textContent ) ) {
+					label.textContent = label.textContent.replace( /billing/gi, 'shipping' );
+				}
+			} );
+	}
+
 	function boot() {
 		if ( ! document.querySelector( '.wc-block-checkout, .wp-block-woocommerce-checkout' ) ) {
 			return;
@@ -517,6 +545,7 @@
 		enhanceCouponInput();
 		enhanceContactInput();
 		expandAddressLineTwo();
+		relabelAddressBlocks();
 
 		if ( unsubscribe ) {
 			return;
@@ -529,6 +558,7 @@
 			enhanceCouponInput();
 			enhanceContactInput();
 			expandAddressLineTwo();
+			relabelAddressBlocks();
 		} );
 	}
 
