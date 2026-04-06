@@ -1451,12 +1451,7 @@ class shopire_walker_page_menu extends Walker_Page{
 }
 
 
-// Hide Shop Page Title
-add_filter('woocommerce_show_page_title', 'shopire_hide_shop_page_title');
-function shopire_hide_shop_page_title($title) {
-   if (is_shop()) $title = false;
-   return $title;
-}
+// Shop page title is shown via devhub-page-bar__title in archive-product.php
 
 if ( ! function_exists( 'shopire_post_sharing' ) ) { 
 	function shopire_post_sharing() {	
