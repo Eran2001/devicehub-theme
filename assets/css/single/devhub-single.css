@@ -216,7 +216,7 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  margin-bottom: 24px;
+  margin-bottom: 12px;
   flex-wrap: wrap;
 }
 
@@ -243,10 +243,13 @@
 }
 
 .devhub-single__short-desc {
-  font-size: 0.875rem;
-  color: var(--devhub-mid);
+  font-size: var(--devhub-text-2xl);
+  color: var(--devhub-dark);
   line-height: 1.6;
-  margin-top: 0.75rem;
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(228, 231, 236, 0.9);
 }
 
 .devhub-single__short-desc p {
