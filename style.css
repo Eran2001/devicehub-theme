@@ -622,6 +622,39 @@ a.wp-block-button__link:focus {
   margin-top: 0;
 }
 
+.woocommerce-order-received .devhub-pickup-code {
+  background: var(--devhub-surface-elevated);
+  border: 1px solid var(--devhub-border);
+  border-radius: var(--devhub-radius-md);
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.woocommerce-order-received .devhub-pickup-code h2,
+.woocommerce-order-received .devhub-order-address-card__title {
+  margin: 0 0 14px;
+  font-size: var(--devhub-text-4xl);
+  font-weight: 800;
+  color: var(--devhub-black);
+}
+
+.woocommerce-order-received .devhub-pickup-code p {
+  margin: 0;
+  font-size: var(--devhub-text-2xl);
+  line-height: 1.55;
+  color: var(--devhub-dark);
+}
+
+.woocommerce-order-received .devhub-pickup-code p + p {
+  margin-top: 12px;
+}
+
+.woocommerce-order-received .devhub-pickup-code p strong {
+  font-size: var(--devhub-text-3xl);
+  font-weight: 800;
+  color: var(--devhub-black);
+}
+
 .woocommerce-order-received .devhub-order-address-card {
   background: var(--devhub-surface-elevated);
   border: 1px solid var(--devhub-border);
@@ -632,10 +665,7 @@ a.wp-block-button__link:focus {
 }
 
 .woocommerce-order-received .devhub-order-address-card__title {
-  font-size: var(--devhub-text-4xl);
-  font-weight: 800;
-  color: var(--devhub-black);
-  margin: 0 0 18px;
+  margin-bottom: 18px;
 }
 
 .woocommerce-order-received .devhub-order-address-grid {

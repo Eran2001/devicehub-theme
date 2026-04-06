@@ -48,6 +48,12 @@ function devhub_is_pickup_order( WC_Order $order ): bool {
 		return true;
 	}
 
+	$pickup_store = sanitize_text_field( (string) $order->get_meta( '_wc_other/' . DEVHUB_CHECKOUT_PICKUP_STORE_FIELD, true ) );
+
+	if ( '' !== $pickup_store ) {
+		return true;
+	}
+
 	return '' !== trim( (string) $order->get_meta( '_devhub_pickup_store_label', true ) );
 }
 
@@ -100,7 +106,7 @@ function devhub_ensure_pickup_code( WC_Order $order ): string {
 		return '';
 	}
 
-	if ( ! $order->is_paid() && ! $order->has_status( [ 'processing', 'completed' ] ) ) {
+	if ( $order->has_status( [ 'failed', 'cancelled', 'refunded' ] ) ) {
 		return '';
 	}
 
