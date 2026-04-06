@@ -242,6 +242,17 @@
   color: var(--devhub-mid);
 }
 
+.devhub-single__short-desc {
+  font-size: 0.875rem;
+  color: var(--devhub-mid);
+  line-height: 1.6;
+  margin-top: 0.75rem;
+}
+
+.devhub-single__short-desc p {
+  margin: 0;
+}
+
 .devhub-single__stock-dot {
   width: 8px;
   height: 8px;
@@ -626,7 +637,7 @@
     background var(--devhub-transition);
 }
 
-.devhub-single__tab-btn:hover {
+.devhub-single__tab-btn:hover:not(.devhub-single__tab-btn--active) {
   color: var(--devhub-dark);
   border-color: var(--devhub-border);
 }
@@ -645,9 +656,17 @@
   display: block;
 }
 
-/* Features */
+/* Description */
+.devhub-single__desc-card {
+  background: var(--devhub-bg);
+  border: 1px solid var(--devhub-border);
+  border-radius: var(--devhub-radius-md);
+  box-shadow: var(--devhub-shadow-card);
+  padding: 2.4rem 2.8rem;
+}
+
 .devhub-single__features-content {
-  font-size: var(--devhub-text-md);
+  font-size: var(--devhub-text-2xl);
   color: var(--devhub-dark);
   line-height: 1.8;
 }

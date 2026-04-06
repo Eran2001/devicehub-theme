@@ -210,6 +210,12 @@ $payment_methods = function_exists('devhub_get_payment_method_display_data') ? d
                     </span>
                 </div>
 
+                <?php $short_desc = $product->get_short_description(); if ($short_desc): ?>
+                    <div class="devhub-single__short-desc">
+                        <?php echo wp_kses_post($short_desc); ?>
+                    </div>
+                <?php endif; ?>
+
                 <?php if (!empty($colors)): ?>
                     <div class="devhub-single__option-group">
                         <p class="devhub-single__option-label"><?php esc_html_e('Select color', 'devicehub-theme'); ?></p>
@@ -261,7 +267,7 @@ $payment_methods = function_exists('devhub_get_payment_method_display_data') ? d
                                 <div class="devhub-single__bundles-track" id="devhubBundlesTrack">
                                     <?php foreach ($bundles as $idx => $bundle): ?>
                                         <div
-                                            class="devhub-single__bundle-card<?php echo $idx === 0 ? ' devhub-single__bundle-card--active' : ''; ?>">
+                                            class="devhub-single__bundle-card">
                                             <div class="devhub-single__bundle-top">
                                                 <div class="devhub-single__bundle-icon" aria-hidden="true">
                                                     <i class="fas fa-box-open"></i>
@@ -349,23 +355,25 @@ $payment_methods = function_exists('devhub_get_payment_method_display_data') ? d
         <div class="devhub-single__tabs">
 
             <div class="devhub-single__tab-nav" role="tablist">
-                <button class="devhub-single__tab-btn" role="tab" aria-selected="false"
-                    aria-controls="devhubTabFeatures" data-tab="features">
-                    <?php esc_html_e('Features', 'devicehub-theme'); ?>
-                </button>
                 <button class="devhub-single__tab-btn devhub-single__tab-btn--active" role="tab" aria-selected="true"
+                    aria-controls="devhubTabFeatures" data-tab="features">
+                    <?php esc_html_e('Description', 'devicehub-theme'); ?>
+                </button>
+                <button class="devhub-single__tab-btn" role="tab" aria-selected="false"
                     aria-controls="devhubTabSpecs" data-tab="specs">
                     <?php esc_html_e('Specifications', 'devicehub-theme'); ?>
                 </button>
             </div>
 
-            <div class="devhub-single__tab-panel" id="devhubTabFeatures" role="tabpanel" hidden>
-                <div class="devhub-single__features-content">
-                    <?php echo wp_kses_post($product->get_description()); ?>
+            <div class="devhub-single__tab-panel devhub-single__tab-panel--active" id="devhubTabFeatures" role="tabpanel">
+                <div class="devhub-single__desc-card">
+                    <div class="devhub-single__features-content">
+                        <?php echo wp_kses_post($product->get_description()); ?>
+                    </div>
                 </div>
             </div>
 
-            <div class="devhub-single__tab-panel devhub-single__tab-panel--active" id="devhubTabSpecs" role="tabpanel">
+            <div class="devhub-single__tab-panel" id="devhubTabSpecs" role="tabpanel" hidden>
 
                 <?php if (!empty($quick_stats)): ?>
                     <div class="devhub-single__quick-stats">

@@ -277,14 +277,17 @@
     var current = 0;
     var total = cards.length;
 
-    // Card selection
+    // Card selection — click to select, click again to deselect
     cards.forEach(function (card) {
       card.addEventListener("click", function (e) {
         if (e.target.closest(".devhub-single__bundle-link")) return;
+        var isActive = card.classList.contains("devhub-single__bundle-card--active");
         cards.forEach(function (c) {
           c.classList.remove("devhub-single__bundle-card--active");
         });
-        card.classList.add("devhub-single__bundle-card--active");
+        if (!isActive) {
+          card.classList.add("devhub-single__bundle-card--active");
+        }
       });
     });
 
