@@ -57,7 +57,7 @@
 }
 
 .dh-footer__heading {
-  font-size: var(--devhub-text-4xl);
+  font-size: var(--devhub-text-3xl);
   font-weight: 600;
   color: var(--devhub-white);
   margin: 0 0 1.2rem;
@@ -87,7 +87,7 @@
 .dh-footer__links a {
   color: var(--devhub-white);
   text-decoration: none;
-  font-size: var(--devhub-text-3xl);
+  font-size: var(--devhub-text-2xl);
   opacity: 0.9;
   transition: opacity var(--devhub-transition);
 }
@@ -110,7 +110,7 @@
   align-items: flex-start;
   gap: 1.2rem;
   margin-bottom: 1.2rem;
-  font-size: var(--devhub-text-3xl);
+  font-size: var(--devhub-text-2xl);
   color: var(--devhub-white);
 }
 

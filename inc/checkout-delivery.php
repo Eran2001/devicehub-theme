@@ -207,7 +207,7 @@ function devhub_store_checkout_delivery_meta( WC_Order $order, WP_REST_Request $
 	$fields          = (array) $request->get_param( 'additional_fields' );
 	$delivery_method = sanitize_text_field( (string) ( $fields[ DEVHUB_CHECKOUT_DELIVERY_METHOD_FIELD ] ?? 'home_delivery' ) );
 	$pickup_store    = sanitize_text_field( (string) ( $fields[ DEVHUB_CHECKOUT_PICKUP_STORE_FIELD ] ?? '' ) );
-	$location_map    = [];
+	$location_map = [];
 
 	foreach ( devhub_get_checkout_pickup_locations() as $location ) {
 		$location_map[ $location['value'] ] = $location;

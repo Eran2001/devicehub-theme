@@ -145,21 +145,6 @@ function devhub_enqueue_scripts(): void
     wp_enqueue_script('shopire-theme', DEVHUB_URI . '/assets/js/theme.js', ['jquery'], null, true);
     wp_enqueue_script('shopire-custom', DEVHUB_URI . '/assets/js/custom.js', ['jquery'], null, true);
     devhub_script('devhub-mobile-menu', '/modules/mobile-menu.js', [], true);
-    wp_enqueue_script(
-        'devhub-gsap',
-        'https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js',
-        [],
-        '3.12.7',
-        true
-    );
-    wp_enqueue_script(
-        'devhub-gsap-scrolltrigger',
-        'https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js',
-        ['devhub-gsap'],
-        '3.12.7',
-        true
-    );
-
     // ── DeviceHub API utility — always loaded ─────────────────────────────────
     // Exposes devhubConfig to all JS modules: nonce, restUrl, cartUrl, isLoggedIn
     devhub_script('devhub-utils', '/utils/api.js', [], true);
@@ -172,19 +157,6 @@ function devhub_enqueue_scripts(): void
     ]);
 
     // ── Home ──────────────────────────────────────────────────────────────────
-    if (
-        is_front_page()
-        || is_shop()
-        || is_product_category()
-        || is_search()
-        || is_product()
-        || is_cart()
-        || is_checkout()
-        || is_account_page()
-    ) {
-        devhub_script('devhub-motion', '/modules/motion.js', ['devhub-gsap-scrolltrigger'], true);
-    }
-
     if (is_front_page()) {
         devhub_script('devhub-flash-countdown', '/modules/flash-countdown.js', ['devhub-utils'], true);
         devhub_script('devhub-brand-filter', '/modules/brand-filter.js', [], true);

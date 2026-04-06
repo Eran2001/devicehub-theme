@@ -42,7 +42,7 @@
             : [];
 
           const visible = brand === "all" || cardBrands.includes(brand);
-          card.hidden = !visible;
+          card.style.display = visible ? "" : "none";
           if (visible) visibleCount++;
         });
 
@@ -56,9 +56,9 @@
               '<p>No products found for this brand.</p>';
             grid.appendChild(empty);
           }
-          empty.hidden = false;
+          empty.style.display = "";
         } else if (empty) {
-          empty.hidden = true;
+          empty.remove();
         }
       });
     });
