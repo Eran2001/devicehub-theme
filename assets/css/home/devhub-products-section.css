@@ -21,10 +21,34 @@
 
 .devhub-brand-empty {
   grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
   text-align: center;
-  padding: 20px 16px;
+  min-height: 220px;
+  padding: 1rem 1rem 0.5rem;
   color: var(--devhub-mid);
-  font-size: var(--devhub-text-2xl);
+}
+
+.devhub-brand-empty::before {
+  content: "";
+  width: 112px;
+  aspect-ratio: 1;
+  flex: 0 0 auto;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 160'%3E%3Ccircle cx='80' cy='80' r='80' fill='%23111111'/%3E%3Ccircle cx='58' cy='60' r='8' fill='%23ffffff'/%3E%3Ccircle cx='102' cy='60' r='8' fill='%23ffffff'/%3E%3Cpath d='M58 108Q80 90 102 108' fill='none' stroke='%23ffffff' stroke-width='9' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.devhub-brand-empty p {
+  margin: 0;
+  color: var(--devhub-black);
+  font-size: var(--devhub-text-3xl);
+  font-weight: 800;
+  line-height: 1.2;
 }
 
 .devhub-products__title {
