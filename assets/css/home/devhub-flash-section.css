@@ -90,7 +90,9 @@
 }
 
 .devhub-flash__timer-labels {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(4, 72px);
+  column-gap: 14px;
   align-items: center;
 }
 
@@ -98,13 +100,9 @@
   font-size: var(--devhub-text-2xl);
   color: rgba(255, 255, 255, 0.9);
   font-weight: 500;
-  width: 64px;
+  width: auto;
   text-align: center;
-  margin-right: 14px;
-}
-
-.devhub-flash__timer-labels span:last-child {
-  margin-right: 0;
+  white-space: nowrap;
 }
 
 .devhub-flash__timer {
@@ -189,7 +187,10 @@
     width: 12px;
   }
   .devhub-flash__timer-labels span {
-    width: 54px;
+    width: auto;
+  }
+  .devhub-flash__timer-labels {
+    grid-template-columns: repeat(4, 54px);
   }
   .devhub-flash__price {
     font-size: var(--devhub-text-4xl);
@@ -223,9 +224,12 @@
     width: 10px;
   }
   .devhub-flash__timer-labels span {
-    width: 44px;
-    margin-right: 2px;
+    width: auto;
     font-size: var(--devhub-text-md);
+  }
+  .devhub-flash__timer-labels {
+    grid-template-columns: repeat(4, 44px);
+    column-gap: 2px;
   }
   .devhub-flash__name {
     font-size: var(--devhub-text-md);
