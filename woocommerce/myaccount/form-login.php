@@ -92,29 +92,115 @@ do_action('woocommerce_before_customer_login_form');
 				<p class="devhub-auth__status" data-devhub-status hidden></p>
 			</section>
 
-			<section class="devhub-auth__panel" data-devhub-panel="guest" aria-labelledby="devhub-auth-login-title">
+			<section class="devhub-auth__panel" data-devhub-panel="guest" aria-labelledby="devhub-auth-guest-title">
 				<button type="button" class="devhub-auth__back" data-devhub-auth-open="chooser">
 					<span aria-hidden="true">&larr;</span>
 					<span><?php esc_html_e('Back to sign-in options', 'devicehub-theme'); ?></span>
 				</button>
 
-				<h2 class="devhub-auth__title" id="devhub-auth-login-title">
+				<h2 class="devhub-auth__title" id="devhub-auth-guest-title">
 					<?php esc_html_e('Guest checkout', 'devicehub-theme'); ?>
 				</h2>
 				<p class="devhub-auth__subtitle">
-					<?php esc_html_e('Continue to checkout without signing in. You can create an account later if you want.', 'devicehub-theme'); ?>
+					<?php esc_html_e('Enter your details to continue without creating an account.', 'devicehub-theme'); ?>
 				</p>
 
 				<div class="devhub-auth__form">
-					<form method="get" action="<?php echo esc_url(wc_get_checkout_url()); ?>">
-						<input type="hidden" name="devhub_guest_checkout" value="1" />
-						<p class="devhub-auth__subtitle">
-							<?php esc_html_e('You will enter delivery and billing details at checkout without logging in.', 'devicehub-theme'); ?>
+					<form class="devhub-auth__guest-form" data-devhub-guest-form novalidate>
+						<input type="hidden" name="action" value="devhub_guest_details" />
+						<input type="hidden" name="nonce" value="<?php echo esc_attr( wp_create_nonce( 'devhub_guest_checkout' ) ); ?>" />
+
+						<!-- Contact — Full name + Mobile on one row, Email full width -->
+						<p class="devhub-auth__section-label"><?php esc_html_e('Contact details', 'devicehub-theme'); ?></p>
+
+						<p class="woocommerce-form-row woocommerce-form-row--first form-row form-row-first">
+							<label for="guest_full_name"><?php esc_html_e('Full name', 'devicehub-theme'); ?>&nbsp;<span class="required" aria-hidden="true">*</span></label>
+							<input type="text" class="woocommerce-Input woocommerce-Input--text input-text"
+								name="full_name" id="guest_full_name" autocomplete="name" required aria-required="true" />
 						</p>
+
+						<p class="woocommerce-form-row woocommerce-form-row--last form-row form-row-last">
+							<label for="guest_phone"><?php esc_html_e('Mobile number', 'devicehub-theme'); ?>&nbsp;<span class="required" aria-hidden="true">*</span></label>
+							<input type="tel" class="woocommerce-Input woocommerce-Input--text input-text"
+								name="phone" id="guest_phone" autocomplete="tel" inputmode="tel" required aria-required="true" />
+						</p>
+
+						<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+							<label for="guest_email"><?php esc_html_e('Email address', 'devicehub-theme'); ?>&nbsp;<span class="required" aria-hidden="true">*</span></label>
+							<input type="email" class="woocommerce-Input woocommerce-Input--text input-text"
+								name="email" id="guest_email" autocomplete="email" required aria-required="true" />
+						</p>
+
+						<!-- Billing address (always shown) -->
+						<p class="devhub-auth__section-label"><?php esc_html_e('Billing address', 'devicehub-theme'); ?></p>
+
+						<p class="woocommerce-form-row woocommerce-form-row--first form-row form-row-first">
+							<label for="guest_billing_address_1"><?php esc_html_e('Address line 1', 'devicehub-theme'); ?>&nbsp;<span class="required" aria-hidden="true">*</span></label>
+							<input type="text" class="woocommerce-Input woocommerce-Input--text input-text"
+								name="billing_address_1" id="guest_billing_address_1" autocomplete="billing address-line1" required aria-required="true" />
+						</p>
+
+						<p class="woocommerce-form-row woocommerce-form-row--last form-row form-row-last">
+							<label for="guest_billing_address_2"><?php esc_html_e('Address line 2', 'devicehub-theme'); ?></label>
+							<input type="text" class="woocommerce-Input woocommerce-Input--text input-text"
+								name="billing_address_2" id="guest_billing_address_2" autocomplete="billing address-line2" />
+						</p>
+
+						<p class="woocommerce-form-row woocommerce-form-row--first form-row form-row-first">
+							<label for="guest_billing_city"><?php esc_html_e('City', 'devicehub-theme'); ?>&nbsp;<span class="required" aria-hidden="true">*</span></label>
+							<input type="text" class="woocommerce-Input woocommerce-Input--text input-text"
+								name="billing_city" id="guest_billing_city" autocomplete="billing address-level2" required aria-required="true" />
+						</p>
+
+						<p class="woocommerce-form-row woocommerce-form-row--last form-row form-row-last">
+							<label for="guest_billing_postcode"><?php esc_html_e('Postal code', 'devicehub-theme'); ?>&nbsp;<span class="required" aria-hidden="true">*</span></label>
+							<input type="text" class="woocommerce-Input woocommerce-Input--text input-text"
+								name="billing_postcode" id="guest_billing_postcode" autocomplete="billing postal-code" inputmode="numeric" required aria-required="true" />
+						</p>
+
+						<!-- Shipping address toggle -->
+						<p class="woocommerce-form-row form-row form-row-wide">
+							<label class="woocommerce-form__label woocommerce-form__label-for-checkbox">
+								<input type="checkbox" name="shipping_same" id="guest_shipping_same" value="1" checked data-devhub-billing-same />
+								<span><?php esc_html_e('Shipping address same as billing address', 'devicehub-theme'); ?></span>
+							</label>
+						</p>
+
+						<!-- Shipping address (hidden by default, shown when different) -->
+						<div class="devhub-auth__billing-fields" data-devhub-billing-fields hidden>
+							<p class="devhub-auth__section-label"><?php esc_html_e('Shipping address', 'devicehub-theme'); ?></p>
+
+							<p class="woocommerce-form-row woocommerce-form-row--first form-row form-row-first">
+								<label for="guest_shipping_address_1"><?php esc_html_e('Address line 1', 'devicehub-theme'); ?>&nbsp;<span class="required" aria-hidden="true">*</span></label>
+								<input type="text" class="woocommerce-Input woocommerce-Input--text input-text"
+									name="shipping_address_1" id="guest_shipping_address_1" autocomplete="shipping address-line1" />
+							</p>
+
+							<p class="woocommerce-form-row woocommerce-form-row--last form-row form-row-last">
+								<label for="guest_shipping_address_2"><?php esc_html_e('Address line 2', 'devicehub-theme'); ?></label>
+								<input type="text" class="woocommerce-Input woocommerce-Input--text input-text"
+									name="shipping_address_2" id="guest_shipping_address_2" autocomplete="shipping address-line2" />
+							</p>
+
+							<p class="woocommerce-form-row woocommerce-form-row--first form-row form-row-first">
+								<label for="guest_shipping_city"><?php esc_html_e('City', 'devicehub-theme'); ?>&nbsp;<span class="required" aria-hidden="true">*</span></label>
+								<input type="text" class="woocommerce-Input woocommerce-Input--text input-text"
+									name="shipping_city" id="guest_shipping_city" autocomplete="shipping address-level2" />
+							</p>
+
+							<p class="woocommerce-form-row woocommerce-form-row--last form-row form-row-last">
+								<label for="guest_shipping_postcode"><?php esc_html_e('Postal code', 'devicehub-theme'); ?>&nbsp;<span class="required" aria-hidden="true">*</span></label>
+								<input type="text" class="woocommerce-Input woocommerce-Input--text input-text"
+									name="shipping_postcode" id="guest_shipping_postcode" autocomplete="shipping postal-code" inputmode="numeric" />
+							</p>
+						</div>
+
+						<p class="devhub-auth__status" data-devhub-guest-status hidden></p>
+
 						<p class="form-row">
 							<button type="submit"
 								class="woocommerce-button button devhub-auth__submit<?php echo esc_attr(wc_wp_theme_get_element_class_name('button') ? ' ' . wc_wp_theme_get_element_class_name('button') : ''); ?>">
-								<?php esc_html_e('Continue as Guest', 'devicehub-theme'); ?>
+								<?php esc_html_e('Continue to checkout', 'devicehub-theme'); ?>
 							</button>
 						</p>
 					</form>

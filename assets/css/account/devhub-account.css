@@ -269,6 +269,38 @@
   margin-right: 0 !important;
 }
 
+/* Guest form — 2-column grid for paired fields */
+.devhub-auth__guest-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 14px;
+}
+
+.devhub-auth__guest-form .devhub-auth__section-label,
+.devhub-auth__guest-form .form-row-wide,
+.devhub-auth__guest-form .devhub-auth__billing-fields,
+.devhub-auth__guest-form [data-devhub-guest-status],
+.devhub-auth__guest-form .form-row:last-child {
+  grid-column: 1 / -1;
+}
+
+.devhub-auth__guest-form .form-row-first,
+.devhub-auth__guest-form .form-row-last {
+  width: 100% !important;
+  float: none !important;
+}
+
+/* Billing sub-grid — same 2-column layout, only when visible */
+.devhub-auth__billing-fields:not([hidden]) {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 14px;
+}
+
+.devhub-auth__billing-fields .devhub-auth__section-label {
+  grid-column: 1 / -1;
+}
+
 .devhub-auth__form .form-row {
   margin-bottom: 18px;
 }

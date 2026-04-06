@@ -154,10 +154,18 @@ function devhub_generate_unique_pickup_code(): string {
 /**
  * Render the pickup code on customer-facing order details pages.
  *
+ * Skipped on the order-received (thank-you) page because the code is already
+ * rendered inside the overview list in woocommerce/checkout/thankyou.php.
+ *
  * @param WC_Order $order WooCommerce order.
  * @return void
  */
 function devhub_render_pickup_code_order_details( WC_Order $order ): void {
+	// Already shown in the overview ul on the thank-you page.
+	if ( function_exists( 'is_wc_endpoint_url' ) && is_wc_endpoint_url( 'order-received' ) ) {
+		return;
+	}
+
 	if ( ! devhub_is_pickup_order( $order ) ) {
 		return;
 	}

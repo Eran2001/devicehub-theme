@@ -1447,3 +1447,16 @@
     padding: 16px 18px;
   }
 }
+
+/* ==========================================================================
+   Thank-you page — pickup code inside the order overview list
+   ========================================================================== */
+
+.woocommerce-order-overview .devhub-overview-pickup__note {
+  display: block;
+  font-size: 12px;
+  font-weight: 400;
+  color: #666;
+  margin-top: 3px;
+  line-height: 1.4;
+}
