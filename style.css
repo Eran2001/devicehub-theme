@@ -315,6 +315,12 @@ textarea {
   padding-top: 2.4rem;
 }
 
+/* Hide parent theme page-title banner on all WooCommerce pages — replaced by devhub-page-bar */
+.woocommerce #wf_pagetitle,
+.woocommerce-page #wf_pagetitle {
+  display: none !important;
+}
+
 .woocommerce form .show-password-input,
 .woocommerce-page form .show-password-input {
   top: 50%;

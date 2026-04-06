@@ -30,7 +30,7 @@
   border: none;
   outline: none;
   cursor: pointer;
-  font-size: var(--devhub-text-xl);
+  font-size: var(--devhub-text-2xl);
   font-weight: 600;
   color: var(--devhub-black);
   text-align: left;
@@ -134,7 +134,7 @@
 
 .devhub-filter-option__name {
   flex: 1;
-  font-size: var(--devhub-text-lg);
+  font-size: var(--devhub-text-xl);
   color: var(--devhub-dark);
   line-height: 1.3;
 }
@@ -145,7 +145,7 @@
 }
 
 .devhub-filter-option__count {
-  font-size: var(--devhub-text-lg);
+  font-size: var(--devhub-text-xl);
   color: var(--devhub-light);
   font-weight: 600;
 }
