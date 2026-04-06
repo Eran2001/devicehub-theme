@@ -62,13 +62,22 @@ function devhub_render_flash_section(): void
                     $sale_to = $product->get_date_on_sale_to();
                     $end_date = $sale_to ? gmdate('Y-m-d', $sale_to->getTimestamp()) . 'T23:59:59Z' : '';
                     $modifier = $modifiers[$idx % count($modifiers)];
+                    $image_class = 'devhub-flash__img';
+
+                    if ($product->get_name() === 'Apple iPhone 16 1TB Pink (MQ233)') {
+                        $image_class .= ' devhub-flash__img--pink-iphone';
+                    }
                     ?>
-                    <div class="devhub-flash__card devhub-flash__card--<?php echo esc_attr($modifier); ?>">
+                    <a
+                        class="devhub-flash__card devhub-flash__card--<?php echo esc_attr($modifier); ?>"
+                        href="<?php echo esc_url(get_permalink($product->get_id())); ?>"
+                        aria-label="<?php echo esc_attr($product->get_name()); ?>">
 
                         <div class="devhub-flash__img-wrap">
                             <div class="devhub-flash__img-circle">
                                 <!-- <img src="<?php echo esc_url($img); ?>" alt="<?php echo esc_attr($product->get_name()); ?>"> -->
-                                <img src="<?php echo esc_url(get_the_post_thumbnail_url($product->get_id(), 'woocommerce_single') ?: $img); ?>"
+                                <img class="<?php echo esc_attr($image_class); ?>"
+                                    src="<?php echo esc_url(get_the_post_thumbnail_url($product->get_id(), 'woocommerce_single') ?: $img); ?>"
                                     alt="<?php echo esc_attr($product->get_name()); ?>">
 
                             </div>
@@ -102,7 +111,7 @@ function devhub_render_flash_section(): void
                             </div>
                         </div>
 
-                    </div>
+                    </a>
                     <?php
                     $idx++;
                 endwhile;

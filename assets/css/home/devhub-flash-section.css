@@ -26,6 +26,20 @@
   position: relative;
   min-height: 220px;
   padding-left: 80px;
+  text-decoration: none;
+  color: inherit;
+  transition:
+    transform var(--devhub-transition),
+    box-shadow var(--devhub-transition);
+}
+
+.devhub-flash__card:hover {
+  transform: translateY(-2px);
+}
+
+.devhub-flash__card:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.9);
+  outline-offset: -2px;
 }
 
 .devhub-flash__card--green {
@@ -64,6 +78,11 @@
   width: 160px;
   height: 160px;
   object-fit: contain;
+}
+
+.devhub-flash__img-circle .devhub-flash__img--pink-iphone {
+  width: 176px;
+  height: 176px;
 }
 
 /* ==========================================================================
@@ -210,6 +229,11 @@
   .devhub-flash__img-circle img {
     width: 120px;
     height: 120px;
+  }
+
+  .devhub-flash__img-circle .devhub-flash__img--pink-iphone {
+    width: 132px;
+    height: 132px;
   }
   .devhub-flash__img-wrap {
     margin-left: -30px;
