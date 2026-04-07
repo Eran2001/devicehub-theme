@@ -176,7 +176,7 @@
 }
 
 #devhub-mobile-phones .devhub-product-card__price {
-  font-size: var(--devhub-text-2xl);
+  font-size: var(--devhub-text-4xl);
 }
 
 #devhub-mobile-phones .devhub-product-card__price del {
@@ -208,7 +208,7 @@
 }
 
 #devhub-broad-bands .devhub-product-card__price {
-  font-size: var(--devhub-text-2xl);
+  font-size: var(--devhub-text-4xl);
 }
 
 #devhub-broad-bands .devhub-product-card__price del {
@@ -240,7 +240,7 @@
 }
 
 #devhub-electronics .devhub-product-card__price {
-  font-size: var(--devhub-text-2xl);
+  font-size: var(--devhub-text-4xl);
 }
 
 #devhub-electronics .devhub-product-card__price del {
@@ -272,7 +272,14 @@
 }
 
 #devhub-accessories .devhub-product-card__price {
-  font-size: var(--devhub-text-2xl);
+  font-size: var(--devhub-text-4xl);
+}
+
+#devhub-mobile-phones .devhub-product-card__price-prefix,
+#devhub-broad-bands .devhub-product-card__price-prefix,
+#devhub-electronics .devhub-product-card__price-prefix,
+#devhub-accessories .devhub-product-card__price-prefix {
+  font-size: 0.72em;
 }
 
 #devhub-accessories .devhub-product-card__price del {
