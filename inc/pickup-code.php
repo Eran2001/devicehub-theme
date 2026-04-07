@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-const DEVHUB_PICKUP_CODE_META_KEY = '_devhub_pickup_code';
+const DEVHUB_PICKUP_CODE_META_KEY = 'pickup_code';
 
 add_action( 'woocommerce_payment_complete', 'devhub_maybe_generate_pickup_code', 20, 1 );
 add_action( 'woocommerce_order_status_processing', 'devhub_maybe_generate_pickup_code', 20, 1 );
