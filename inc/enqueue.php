@@ -43,11 +43,10 @@ function devhub_enqueue_styles(): void
 {
 
     // ── Google Fonts ──────────────────────────────────────────────────────────
-    // Plus Jakarta Sans — headings / section titles
-    // Inter             — body text, UI labels, buttons
+    // Plus Jakarta Sans — entire UI
     wp_enqueue_style(
         'devhub-google-fonts',
-        'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap',
+        'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap',
         [],
         null
     );
