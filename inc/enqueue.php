@@ -24,6 +24,16 @@
 defined('ABSPATH') || exit;
 
 
+// ── Block parent theme enqueue — run at priority 5, before Shopire's 10 ──────
+// Shopire's functions.php registers shopire_scripts and shopire_google_fonts_scripts_styles
+// at default priority 10. Without this, both parent and child styles load together,
+// causing mixed/conflicting styles when DeviceHub theme is active.
+add_action('wp_enqueue_scripts', function () {
+    remove_action('wp_enqueue_scripts', 'shopire_scripts', 10);
+    remove_action('wp_enqueue_scripts', 'shopire_google_fonts_scripts_styles', 10);
+}, 5);
+
+
 // ── Styles ───────────────────────────────────────────────────────────────────
 
 add_action('wp_enqueue_scripts', 'devhub_enqueue_styles', 20);
