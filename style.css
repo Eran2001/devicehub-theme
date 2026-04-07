@@ -1,7 +1,7 @@
 /*
 Theme Name: DeviceHub Theme
 Text Domain: devicehub-theme
-Version:            1.0.70
+Version:            1.0.71
 Tested up to:       6.9
 Requires at least:  4.7
 Requires PHP:       7.4
@@ -1158,4 +1158,32 @@ a.wp-block-button__link:focus {
     :is(.wc-block-product-template, .wc-block-grid__products) {
     grid-template-columns: minmax(0, 1fr);
   }
+}
+
+/* ── Single product price ─────────────────────────────────────────────────── */
+.devhub-single__price ins,
+.devhub-single__price ins * {
+  text-decoration: none !important;
+  border-bottom: none !important;
+}
+
+.devhub-single__price .price ins {
+  font-size: 48px !important;
+  font-weight: 800 !important;
+  color: var(--devhub-primary) !important;
+  text-decoration: none !important;
+}
+
+.devhub-single__price .price del {
+  font-size: 30px !important;
+  font-weight: 600 !important;
+  color: var(--devhub-mid) !important;
+  opacity: 0.8;
+  text-decoration: line-through !important;
+}
+
+.devhub-single__price .price > .woocommerce-Price-amount {
+  font-size: 42px !important;
+  font-weight: 800 !important;
+  color: var(--devhub-primary) !important;
 }

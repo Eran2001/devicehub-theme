@@ -220,9 +220,44 @@
   flex-wrap: wrap;
 }
 
-.devhub-single__price .woocommerce-Price-amount,
 .devhub-single__price .price {
-  font-size: var(--devhub-text-4xl);
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.devhub-single__price .price ins {
+  text-decoration: none !important;
+  font-size: var(--devhub-text-5xl) !important;
+  font-weight: 800;
+  color: var(--devhub-primary);
+}
+
+.devhub-single__price .price ins .woocommerce-Price-amount,
+.devhub-single__price .price ins .woocommerce-Price-amount bdi,
+.devhub-single__price .price ins .woocommerce-Price-amount bdi * {
+  text-decoration: none !important;
+  font-size: var(--devhub-text-5xl) !important;
+  font-weight: 800;
+  color: var(--devhub-primary);
+}
+
+.devhub-single__price .price del {
+  font-size: 1.9rem !important;
+  font-weight: 600;
+  color: var(--devhub-mid);
+  opacity: 0.8;
+  text-decoration: line-through;
+}
+
+.devhub-single__price .price del .woocommerce-Price-amount {
+  font-size: 1.9rem !important;
+}
+
+/* Non-sale price (no del/ins wrapper) */
+.devhub-single__price .price > .woocommerce-Price-amount {
+  font-size: 2.6rem !important;
   font-weight: 800;
   color: var(--devhub-primary);
 }
