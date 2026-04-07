@@ -164,8 +164,12 @@ $payment_methods = function_exists('devhub_get_payment_method_display_data') ? d
                     <?php echo esc_html($product->get_name()); ?>
                 </h1>
 
+                <?php
+                $is_price_range = $product->is_type('variable')
+                    && abs((float) $product->get_variation_price('max', true) - (float) $product->get_variation_price('min', true)) >= 0.01;
+                ?>
                 <div class="devhub-single__price-row">
-                    <div class="devhub-single__price">
+                    <div class="devhub-single__price<?php echo $is_price_range ? ' devhub-single__price--range' : ''; ?>">
                         <?php echo $product->get_price_html(); // phpcs:ignore WordPress.Security.EscapeOutput ?>
                     </div>
                     <span

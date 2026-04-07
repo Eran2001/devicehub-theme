@@ -285,7 +285,7 @@
 }
 
 .devhub-archive__grid .devhub-product-card__price del {
-  font-size: var(--devhub-text-lg);
+  font-size: var(--devhub-text-xl);
 }
 
 .devhub-archive__grid .devhub-product-card__stock {

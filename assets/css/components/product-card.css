@@ -144,8 +144,16 @@
   color: var(--devhub-black);
 }
 
+.devhub-product-card__price-prefix {
+  font-size: 0.56em;
+  font-weight: 700;
+  color: var(--devhub-mid);
+  margin-right: 0.2em;
+  white-space: nowrap;
+}
+
 .devhub-product-card__price del {
-  font-size: var(--devhub-text-sm);
+  font-size: var(--devhub-text-lg);
   color: var(--devhub-light);
   font-weight: 500;
   margin-right: 6px;

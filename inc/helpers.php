@@ -217,6 +217,37 @@ function devhub_get_product_color_options(WC_Product $product): array
 // ── Template renderer ─────────────────────────────────────────────────────────
 
 /**
+ * Format product-card prices so variable products don't show awkward min-max ranges.
+ *
+ * Cards look cleaner with a single starting price than a wrapped range.
+ */
+function devhub_get_product_card_price_html(WC_Product $product): string
+{
+    if (!$product->is_type('variable')) {
+        return (string) $product->get_price_html();
+    }
+
+    $min_price = (float) $product->get_variation_price('min', true);
+    $max_price = (float) $product->get_variation_price('max', true);
+
+    if ($min_price <= 0 || abs($max_price - $min_price) < 0.01) {
+        return (string) $product->get_price_html();
+    }
+
+    $min_regular = (float) $product->get_variation_regular_price('min', true);
+    $from_label = sprintf(
+        '<span class="devhub-product-card__price-prefix">%s</span>',
+        esc_html__('From', 'devicehub-theme')
+    );
+
+    if ($min_regular > $min_price) {
+        return $from_label . ' <del>' . wc_price($min_regular) . '</del> <ins>' . wc_price($min_price) . '</ins>';
+    }
+
+    return $from_label . ' ' . wc_price($min_price);
+}
+
+/**
  * Render a single product card.
  *
  * This is the one shared card template used on:
@@ -269,7 +300,7 @@ function devhub_render_product_card(WC_Product $product, string $img_override = 
             <?php endif; ?>
 
             <div class="devhub-product-card__price">
-                <?php echo wp_kses_post($product->get_price_html()); ?>
+                <?php echo wp_kses_post(devhub_get_product_card_price_html($product)); ?>
             </div>
 
             <span class="devhub-product-card__stock devhub-product-card__stock--<?php echo $in_stock ? 'in' : 'out'; ?>">
