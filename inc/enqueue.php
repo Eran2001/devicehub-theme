@@ -100,7 +100,10 @@ function devhub_enqueue_styles(): void
         wp_add_inline_style('devhub-single', '
             .devhub-single__price ins,
             .devhub-single__price ins * { text-decoration: none !important; border-bottom: none !important; }
-            .devhub-single__price .price ins { font-size: 48px !important; font-weight: 800 !important; }
+            .devhub-single__price ins,
+            .devhub-single__price ins .woocommerce-Price-amount,
+            .devhub-single__price ins .woocommerce-Price-amount bdi,
+            .devhub-single__price ins .woocommerce-Price-amount bdi * { font-size: var(--devhub-text-4xl) !important; font-weight: 800 !important; }
             .devhub-single__price .price del { font-size: 30px !important; font-weight: 600 !important; opacity: 0.75; text-decoration: line-through !important; }
             .devhub-single__price .price > .woocommerce-Price-amount { font-size: 48px !important; font-weight: 800 !important; }
         ');
