@@ -133,13 +133,7 @@
 
 .wc-block-checkout__main
   .wc-block-components-checkout-step
-  + .wc-block-components-checkout-step,
-.wc-block-checkout__main
-  .devhub-delivery-method
-  + .wc-block-components-checkout-step,
-.wc-block-checkout__main
-  .wc-block-components-checkout-step
-  + .devhub-delivery-method {
+  + .wc-block-components-checkout-step {
   margin-top: 18px;
 }
 
@@ -881,32 +875,6 @@
   animation: text-spin 0.5s 1;
 }
 
-.devhub-delivery-method {
-  margin: 0;
-  padding: 22px 24px;
-  border: 1px solid #e8e8e8;
-  border-radius: 12px;
-  background: #fff;
-}
-
-.devhub-delivery-method__title,
-.devhub-delivery-method__pickup-title {
-  margin: 0;
-  color: #101828;
-  font-family: "Plus Jakarta Sans", sans-serif;
-  font-size: 1.25rem;
-  font-weight: 700;
-  line-height: 1.3;
-}
-
-.devhub-delivery-method__title {
-  color: #2d2d2d;
-  font-family: var(--devhub-font);
-  font-size: 20px;
-  font-weight: 600;
-  line-height: 1.4;
-}
-
 .wc-block-checkout__main
   .wc-block-checkout__pickup-options
   .wc-block-components-checkout-step__title {
@@ -917,10 +885,6 @@
   line-height: 1.4 !important;
 }
 
-.woocommerce-checkout.devhub-checkout--custom-pickup
-  .wc-block-checkout__pickup-options {
-  display: none !important;
-}
 
 .wc-block-checkout__main
   .wc-block-checkout__pickup-options
@@ -980,298 +944,19 @@
   box-shadow: inset 0 0 0 1px var(--devhub-primary) !important;
 }
 
-.devhub-delivery-method__pickup-title {
-  margin: 0 !important;
-  color: #2d2d2d !important;
-  font-family: var(--devhub-font) !important;
-  font-size: 20px !important;
-  font-weight: 600 !important;
-  line-height: 1.4 !important;
-}
-
-.devhub-delivery-method__options {
-  display: grid;
-  gap: 12px;
-  margin-top: 18px;
-  min-width: 0;
-}
-
-.devhub-delivery-method__option {
-  display: block;
-  width: 100%;
-  max-width: 100%;
-  min-width: 0;
-  box-sizing: border-box;
-  -webkit-appearance: none;
-  appearance: none;
-  white-space: normal !important;
-  padding: 18px 22px;
-  border: 1px solid #e8e8e8;
-  border-radius: 10px;
-  background: #fff;
-  color: #101828;
-  text-align: left;
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease,
-    background-color 0.2s ease;
-}
-
-.devhub-delivery-method__option:hover,
-.devhub-delivery-method__option:focus-visible {
-  border-color: var(--devhub-primary);
-  box-shadow: inset 0 0 0 1px var(--devhub-primary);
-  outline: none;
-}
-
-.devhub-delivery-method__option.is-active {
-  border-color: var(--devhub-primary);
-  background: #fff9f5;
-  box-shadow: inset 0 0 0 1px var(--devhub-primary);
-}
-
-.devhub-delivery-method__option.is-disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-}
-
-.devhub-delivery-method__option-title,
-.devhub-delivery-method__option-copy,
-.devhub-delivery-method__store-name,
-.devhub-delivery-method__store-address,
-.devhub-delivery-method__store-details,
-.devhub-delivery-method__pickup-copy,
-.devhub-delivery-method__search-copy,
-.devhub-delivery-method__empty,
-.devhub-delivery-method__error,
-.devhub-delivery-method__summary {
-  display: block;
-  white-space: normal !important;
-}
-
-.devhub-delivery-method__option-title {
-  font-weight: 700;
-  font-size: var(--devhub-text-2xl);
-  line-height: 1.35;
-}
-
-.devhub-delivery-method__store-name {
-  font-weight: 700;
-  font-size: 1.25rem;
-  line-height: 1.4;
-}
-
-.devhub-delivery-method__option-copy {
-  margin-top: 6px;
-  color: #667085;
-  font-size: var(--devhub-text-xl);
-  line-height: 1.55;
-  overflow-wrap: anywhere;
-}
-
-.devhub-delivery-method__pickup-copy,
-.devhub-delivery-method__search-copy,
-.devhub-delivery-method__store-address,
-.devhub-delivery-method__store-details,
-.devhub-delivery-method__empty,
-.devhub-delivery-method__summary {
-  margin-top: 4px;
-  color: #667085;
-  font-size: 1.0625rem;
-  line-height: 1.5;
-}
-
-.devhub-delivery-method__pickup {
-  margin-top: 14px;
-  padding-top: 14px;
-  border-top: 1px solid #f0f0f0;
-}
-
-.devhub-delivery-method__pickup.is-hidden {
-  display: none;
-}
-
-.devhub-delivery-method__search {
-  position: relative;
-  margin-top: 16px;
-}
-
-.devhub-delivery-method__search-input {
-  width: 100%;
-  min-height: 46px;
-  height: 46px;
-  padding: 0 16px;
-  border: 1px solid rgba(17, 17, 17, 0.08);
-  border-radius: 999px !important;
-  background: #f7f7f7;
-  color: #101828;
-  -webkit-appearance: none;
-  appearance: none;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
-  transition:
-    border-color 0.24s ease,
-    box-shadow 0.24s ease,
-    background-color 0.24s ease;
-}
-
-.devhub-delivery-method__search::before {
-  content: none;
-  position: absolute;
-  top: 50%;
-  right: 18px;
-  width: 18px;
-  height: 18px;
-  border: 2px solid #98a2b3;
-  border-radius: 50%;
-  transform: translateY(-50%);
-  pointer-events: none;
-}
-
-.devhub-delivery-method__search::after {
-  content: none;
-  position: absolute;
-  top: calc(50% + 6px);
-  right: 14px;
-  width: 8px;
-  height: 2px;
-  background: #98a2b3;
-  transform: rotate(45deg);
-  border-radius: 2px;
-  pointer-events: none;
-}
-
-.devhub-delivery-method__search-input:focus,
-.devhub-delivery-method__search-input:focus-visible {
-  border-color: var(--devhub-primary);
-  background: #fff;
-  outline: none;
-  box-shadow:
-    0 0 0 4px rgba(255, 107, 0, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
-}
-
-.devhub-delivery-method__store-list {
-  display: grid;
-  gap: 14px;
-  margin-top: 0;
-  min-width: 0;
-}
-
-.devhub-delivery-method__store {
-  display: flex;
-  gap: 14px;
-  width: 100%;
-  max-width: 100%;
-  min-width: 0;
-  box-sizing: border-box;
-  -webkit-appearance: none;
-  appearance: none;
-  padding: 18px 20px;
-  border: 1px solid #e8e8e8;
-  border-radius: 12px;
-  background: #fff;
-  color: #101828;
-  text-align: left;
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.devhub-delivery-method__store:hover,
-.devhub-delivery-method__store:focus-visible {
-  border-color: var(--devhub-primary);
-  box-shadow: inset 0 0 0 1px var(--devhub-primary);
-  outline: none;
-}
-
-.devhub-delivery-method__store.is-active {
-  border-color: var(--devhub-primary);
-  background: #fff9f5;
-  box-shadow: inset 0 0 0 1px var(--devhub-primary);
-}
-
-.devhub-delivery-method__store-indicator {
-  flex: 0 0 18px;
-  width: 18px;
-  height: 18px;
-  margin-top: 3px;
-  border: 2px solid #d0d5dd;
-  border-radius: 50%;
-}
-
-.devhub-delivery-method__store.is-active
-  .devhub-delivery-method__store-indicator {
-  border-color: var(--devhub-primary);
-  box-shadow:
-    inset 0 0 0 4px #fff,
-    inset 0 0 0 10px var(--devhub-primary);
-}
-
-.devhub-delivery-method__store-content {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  width: 100%;
-  min-width: 0;
-  flex: 1 1 auto;
-  overflow: hidden;
-}
-
-.devhub-delivery-method__store-name,
-.devhub-delivery-method__store-address,
-.devhub-delivery-method__store-details {
-  overflow-wrap: anywhere;
-  max-width: 100%;
-}
-
-.devhub-delivery-method__store-name {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.devhub-delivery-method__store-address {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.devhub-delivery-method__store-details {
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-}
-
-.devhub-delivery-method__error {
-  margin: 16px 0 0;
-  color: #b42318;
-  font-size: 0.9375rem;
-  font-weight: 600;
-}
-
-.devhub-delivery-method__summary {
-  margin: 12px 0 0;
-  color: #101828;
-  font-weight: 600;
-}
 
 /* ==========================================================================
    Typography / Surface Refinement
    ========================================================================== */
 
 .wc-block-checkout__main .wc-block-components-checkout-step,
-.devhub-delivery-method,
 .wc-block-checkout__sidebar .wp-block-woocommerce-checkout-order-summary-block {
   border-color: rgba(228, 231, 236, 0.95) !important;
   border-radius: 16px !important;
   box-shadow: var(--devhub-shadow-card);
 }
 
-.wc-block-checkout__main .wc-block-components-checkout-step__title,
-.devhub-delivery-method__title,
-.devhub-delivery-method__pickup-title {
+.wc-block-checkout__main .wc-block-components-checkout-step__title {
   letter-spacing: -0.01em;
 }
 

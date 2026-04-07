@@ -36,25 +36,54 @@ function devhub_maybe_generate_pickup_code( int $order_id ): void {
 /**
  * Check whether an order is a store pickup order.
  *
- * Falls back to persisted pickup-store meta so older orders still qualify.
+ * Checks the native WC Local Pickup shipping method first, then falls back to
+ * legacy custom meta for orders placed before the switch.
  *
  * @param WC_Order $order WooCommerce order.
  * @return bool
  */
 function devhub_is_pickup_order( WC_Order $order ): bool {
-	$delivery_method = devhub_get_pickup_delivery_method( $order );
+	// Native WC Local Pickup (method_id = pickup_location).
+	foreach ( $order->get_shipping_methods() as $shipping_item ) {
+		if ( 'pickup_location' === $shipping_item->get_method_id() ) {
+			return true;
+		}
+	}
 
+	// Legacy: custom additional-fields approach.
+	$delivery_method = devhub_get_pickup_delivery_method( $order );
 	if ( 'pickup' === $delivery_method ) {
 		return true;
 	}
 
 	$pickup_store = sanitize_text_field( (string) $order->get_meta( '_wc_other/' . DEVHUB_CHECKOUT_PICKUP_STORE_FIELD, true ) );
-
 	if ( '' !== $pickup_store ) {
 		return true;
 	}
 
 	return '' !== trim( (string) $order->get_meta( '_devhub_pickup_store_label', true ) );
+}
+
+/**
+ * Get the human-readable pickup store label for an order.
+ *
+ * Reads from the native WC shipping line meta first, then falls back to
+ * legacy _devhub_pickup_store_label for older orders.
+ *
+ * @param WC_Order $order WooCommerce order.
+ * @return string
+ */
+function devhub_get_pickup_store_label( WC_Order $order ): string {
+	foreach ( $order->get_shipping_methods() as $shipping_item ) {
+		if ( 'pickup_location' === $shipping_item->get_method_id() ) {
+			$label = sanitize_text_field( (string) $shipping_item->get_meta( 'pickup_location' ) );
+			if ( '' !== $label ) {
+				return $label;
+			}
+		}
+	}
+
+	return sanitize_text_field( (string) $order->get_meta( '_devhub_pickup_store_label', true ) );
 }
 
 /**
@@ -176,7 +205,7 @@ function devhub_render_pickup_code_order_details( WC_Order $order ): void {
 		return;
 	}
 
-	$pickup_store = sanitize_text_field( (string) $order->get_meta( '_devhub_pickup_store_label', true ) );
+	$pickup_store = devhub_get_pickup_store_label( $order );
 
 	echo '<section class="devhub-pickup-code">';
 	echo '<h2>' . esc_html__( 'Store pickup code', 'devicehub-theme' ) . '</h2>';

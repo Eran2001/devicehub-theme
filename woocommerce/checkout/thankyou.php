@@ -72,7 +72,7 @@ defined( 'ABSPATH' ) || exit;
 				// Pickup code — shown only for store-pickup orders that already have a code.
 				if ( function_exists( 'devhub_is_pickup_order' ) && devhub_is_pickup_order( $order ) ) :
 					$pickup_code  = function_exists( 'devhub_ensure_pickup_code' ) ? devhub_ensure_pickup_code( $order ) : '';
-					$pickup_store = sanitize_text_field( (string) $order->get_meta( '_devhub_pickup_store_label', true ) );
+					$pickup_store = function_exists( 'devhub_get_pickup_store_label' ) ? devhub_get_pickup_store_label( $order ) : sanitize_text_field( (string) $order->get_meta( '_devhub_pickup_store_label', true ) );
 
 					if ( '' !== $pickup_code ) :
 						?>
