@@ -634,28 +634,12 @@
 }
 
 .wc-block-checkout__sidebar
-  .wp-block-woocommerce-checkout-order-summary-block.devhub-checkout-card--disabled
-  .wc-block-components-checkout-order-summary,
-.wc-block-checkout__sidebar
-  .wp-block-woocommerce-checkout-order-summary-block.devhub-checkout-card--disabled
-  .wc-block-components-totals-wrapper,
-.wc-block-checkout__sidebar
-  .wp-block-woocommerce-checkout-order-summary-block.devhub-checkout-card--disabled
-  .wc-block-components-panel {
+  .wp-block-woocommerce-checkout-order-summary-block.devhub-checkout-processing {
   opacity: 0.6;
 }
 
 .wc-block-checkout__sidebar
-  .wp-block-woocommerce-checkout-order-summary-block.devhub-checkout-card--disabled
-  .wc-block-components-checkout-order-summary
-  *,
-.wc-block-checkout__sidebar
-  .wp-block-woocommerce-checkout-order-summary-block.devhub-checkout-card--disabled
-  .wc-block-components-totals-wrapper
-  *,
-.wc-block-checkout__sidebar
-  .wp-block-woocommerce-checkout-order-summary-block.devhub-checkout-card--disabled
-  .wc-block-components-panel
+  .wp-block-woocommerce-checkout-order-summary-block.devhub-checkout-processing
   * {
   pointer-events: none;
 }
@@ -955,11 +939,11 @@
   background: #fff;
 }
 
-.devhub-delivery-method.devhub-delivery-method--disabled .devhub-delivery-method__inner {
+.devhub-delivery-method.wc-block-components-checkout-step--disabled {
   opacity: 0.6;
 }
 
-.devhub-delivery-method.devhub-delivery-method--disabled .devhub-delivery-method__inner * {
+.devhub-delivery-method.wc-block-components-checkout-step--disabled * {
   pointer-events: none;
 }
 

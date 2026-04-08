@@ -206,37 +206,13 @@
 	}
 
 	function isCheckoutProcessing() {
-		const checkoutStore = getCheckoutStore();
-
-		if ( checkoutStore ) {
-			if (
-				checkoutStore.isBeforeProcessing?.() ||
-				checkoutStore.isProcessing?.() ||
-				checkoutStore.isAfterProcessing?.()
-			) {
-				return true;
-			}
-		}
-
-		const placeOrderButton = document.querySelector( PLACE_ORDER_SELECTOR );
-
-		return !! placeOrderButton && (
-			placeOrderButton.disabled ||
-			placeOrderButton.getAttribute( 'aria-disabled' ) === 'true' ||
-			placeOrderButton.className.includes( '--loading' )
-		);
+		return !! getCheckoutStore()?.isProcessing?.();
 	}
 
 	function syncProcessingState( isProcessing ) {
 		if ( root ) {
-			root.classList.toggle( 'devhub-delivery-method--disabled', isProcessing );
+			root.classList.toggle( 'wc-block-components-checkout-step--disabled', isProcessing );
 			root.setAttribute( 'aria-disabled', isProcessing ? 'true' : 'false' );
-
-			if ( isProcessing ) {
-				root.setAttribute( 'aria-busy', 'true' );
-			} else {
-				root.removeAttribute( 'aria-busy' );
-			}
 		}
 
 		const orderSummary = document.querySelector( ORDER_SUMMARY_SELECTOR );
@@ -245,14 +221,8 @@
 			return;
 		}
 
-		orderSummary.classList.toggle( 'devhub-checkout-card--disabled', isProcessing );
+		orderSummary.classList.toggle( 'devhub-checkout-processing', isProcessing );
 		orderSummary.setAttribute( 'aria-disabled', isProcessing ? 'true' : 'false' );
-
-		if ( isProcessing ) {
-			orderSummary.setAttribute( 'aria-busy', 'true' );
-		} else {
-			orderSummary.removeAttribute( 'aria-busy' );
-		}
 	}
 
 	function setValidationState( method, pickupStore ) {
@@ -441,7 +411,6 @@
 		const isProcessing = isCheckoutProcessing();
 		const locationMap = getLocationMap();
 		const selectedLocation = locationMap[ pickupStore ] || null;
-		const pickupDisabled = ! locations.length || isProcessing;
 		const signature = JSON.stringify( {
 			method,
 			pickupStore,
@@ -466,12 +435,12 @@
 				</div>
 
 				<div class="devhub-delivery-method__options" role="radiogroup" aria-label="${ escapeHtml( messages.title || 'Your Delivery Method' ) }">
-					<button type="button" class="devhub-delivery-method__option ${ method === 'pickup' ? 'is-active' : '' } ${ pickupDisabled ? 'is-disabled' : '' }" data-method="pickup" aria-pressed="${ method === 'pickup' }" ${ pickupDisabled ? 'disabled aria-disabled="true"' : '' }>
+					<button type="button" class="devhub-delivery-method__option ${ method === 'pickup' ? 'is-active' : '' } ${ ! locations.length || isProcessing ? 'is-disabled' : '' }" data-method="pickup" aria-pressed="${ method === 'pickup' }" ${ ! locations.length || isProcessing ? 'disabled' : '' }>
 						<span class="devhub-delivery-method__option-title">${ escapeHtml( messages.pickupLabel || 'Pick Up at Store' ) }</span>
 						<span class="devhub-delivery-method__option-copy">${ escapeHtml( messages.pickupHint || 'Collect from a Hutch service location.' ) }</span>
 					</button>
 
-					<button type="button" class="devhub-delivery-method__option ${ method === 'home_delivery' ? 'is-active' : '' } ${ isProcessing ? 'is-disabled' : '' }" data-method="home_delivery" aria-pressed="${ method === 'home_delivery' }" ${ isProcessing ? 'disabled aria-disabled="true"' : '' }>
+					<button type="button" class="devhub-delivery-method__option ${ method === 'home_delivery' ? 'is-active' : '' } ${ isProcessing ? 'is-disabled' : '' }" data-method="home_delivery" aria-pressed="${ method === 'home_delivery' }" ${ isProcessing ? 'disabled' : '' }>
 						<span class="devhub-delivery-method__option-title">${ escapeHtml( messages.deliveryLabel || 'Home Delivery' ) }</span>
 						<span class="devhub-delivery-method__option-copy">${ escapeHtml( messages.deliveryHint || 'Delivery via courier to the billing address.' ) }</span>
 					</button>
@@ -484,7 +453,7 @@
 					<div class="devhub-delivery-method__store-list">
 						${ ! locations.length ? `<p class="devhub-delivery-method__empty">${ escapeHtml( messages.pickupUnavailable || 'Pickup is currently unavailable.' ) }</p>` : '' }
 						${ locations.map( ( location ) => `
-							<button type="button" class="devhub-delivery-method__store ${ pickupStore === location.value ? 'is-active' : '' } ${ isProcessing ? 'is-disabled' : '' }" data-store="${ escapeHtml( location.value ) }" aria-pressed="${ pickupStore === location.value }" ${ isProcessing ? 'disabled aria-disabled="true"' : '' }>
+							<button type="button" class="devhub-delivery-method__store ${ pickupStore === location.value ? 'is-active' : '' } ${ isProcessing ? 'is-disabled' : '' }" data-store="${ escapeHtml( location.value ) }" aria-pressed="${ pickupStore === location.value }" ${ isProcessing ? 'disabled' : '' }>
 								<span class="devhub-delivery-method__store-indicator" aria-hidden="true"></span>
 								<span class="devhub-delivery-method__store-content">
 									<span class="devhub-delivery-method__store-name">${ escapeHtml( location.name ) }</span>
@@ -503,7 +472,7 @@
 
 		mountNode.querySelectorAll( '[data-method]' ).forEach( ( button ) => {
 			button.addEventListener( 'click', () => {
-				if ( isProcessing || button.disabled ) {
+				if ( button.disabled ) {
 					return;
 				}
 
@@ -521,7 +490,7 @@
 
 		mountNode.querySelectorAll( '[data-store]' ).forEach( ( button ) => {
 			button.addEventListener( 'click', () => {
-				if ( isProcessing || button.disabled ) {
+				if ( button.disabled ) {
 					return;
 				}
 
