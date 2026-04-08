@@ -7,21 +7,34 @@
 (function () {
     'use strict';
 
+    var mobileMediaQuery = window.matchMedia('(max-width: 768px)');
+
+    function setGroupExpanded(btn, shouldExpand) {
+        var group = btn.closest('.devhub-filter-group');
+        var list = group ? group.querySelector('.devhub-filter-group__list') : null;
+        var icon = btn.querySelector('.fas');
+
+        if (!group || !list) {
+            return;
+        }
+
+        btn.setAttribute('aria-expanded', shouldExpand ? 'true' : 'false');
+        list.classList.toggle('devhub-filter-group__list--collapsed', !shouldExpand);
+
+        if (icon) {
+            icon.classList.toggle('fa-chevron-up', shouldExpand);
+            icon.classList.toggle('fa-chevron-down', !shouldExpand);
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', function () {
         document.querySelectorAll('.devhub-filter-group__toggle').forEach(function (btn) {
+            setGroupExpanded(btn, !mobileMediaQuery.matches);
+
             btn.addEventListener('click', function () {
-                var group      = btn.closest('.devhub-filter-group');
-                var list       = group.querySelector('.devhub-filter-group__list');
-                var icon       = btn.querySelector('.fas');
                 var isExpanded = btn.getAttribute('aria-expanded') === 'true';
 
-                btn.setAttribute('aria-expanded', isExpanded ? 'false' : 'true');
-                list.classList.toggle('devhub-filter-group__list--collapsed', isExpanded);
-
-                if (icon) {
-                    icon.classList.toggle('fa-chevron-up', !isExpanded);
-                    icon.classList.toggle('fa-chevron-down', isExpanded);
-                }
+                setGroupExpanded(btn, !isExpanded);
             });
         });
     });
