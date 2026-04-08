@@ -13,8 +13,9 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 18px 0 20px;
+  padding: 0 0 20px;
   border-bottom: 1px solid rgba(228, 231, 236, 0.9);
+  margin-top: 0;
   margin-bottom: 34px;
   flex-wrap: wrap;
 }

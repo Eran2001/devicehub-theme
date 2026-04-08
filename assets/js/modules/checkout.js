@@ -28,6 +28,7 @@
 	const ADDRESS_LINE_2_TOGGLE_SELECTOR = '.wc-block-components-address-form__address_2-toggle';
 	const NATIVE_DELIVERY_STEP_SELECTOR = '.wc-block-checkout__shipping-method, #shipping-method';
 	const NATIVE_DELIVERY_OPTION_SELECTOR = `${ NATIVE_DELIVERY_STEP_SELECTOR } .wc-block-components-radio-control__option`;
+	const NATIVE_DELIVERY_CARD_SELECTOR = `${ NATIVE_DELIVERY_STEP_SELECTOR } .wc-block-checkout__shipping-method-option`;
 	const NATIVE_PICKUP_STEP_SELECTOR = '.wc-block-checkout__pickup-options';
 	const NATIVE_PICKUP_OPTION_SELECTOR = '.wc-block-checkout__pickup-options .wc-block-components-radio-control__option';
 	const NATIVE_PICKUP_INPUT_SELECTOR = '.wc-block-checkout__pickup-options input[type="radio"]';
@@ -93,10 +94,25 @@
 	}
 
 	function getNativeDeliveryOptions() {
+		const cardOptions = Array.from( document.querySelectorAll( NATIVE_DELIVERY_CARD_SELECTOR ) );
+
+		if ( cardOptions.length ) {
+			return cardOptions.map( ( option ) => ( {
+				option,
+				input: null,
+				text: normalizeText( option.textContent ),
+				selected:
+					option.classList.contains( 'wc-block-checkout__shipping-method-option--selected' ) ||
+					option.getAttribute( 'aria-checked' ) === 'true' ||
+					option.getAttribute( 'aria-pressed' ) === 'true',
+			} ) );
+		}
+
 		return Array.from( document.querySelectorAll( NATIVE_DELIVERY_OPTION_SELECTOR ) ).map( ( option ) => ( {
 			option,
 			input: option.querySelector( 'input[type="radio"]' ),
 			text: normalizeText( option.textContent ),
+			selected: !! option.querySelector( 'input[type="radio"]:checked' ),
 		} ) );
 	}
 
@@ -195,6 +211,14 @@
 		targetOption.input.dispatchEvent( new Event( 'change', { bubbles: true } ) );
 	}
 
+	function getSelectedNativeDeliveryMethod() {
+		const selectedOption = getNativeDeliveryOptions().find(
+			( option ) => option.input?.checked || option.selected
+		);
+
+		return selectedOption ? getMethodFromNativeOption( selectedOption ) : '';
+	}
+
 	function getOrderSummaryDeliveryLabel( method, pickupStore ) {
 		if ( method === 'pickup' ) {
 			const selectedLocation = getLocationMap()[ pickupStore ] || null;
@@ -210,6 +234,10 @@
 	}
 
 	function syncOrderSummaryDeliveryLabel( method, pickupStore ) {
+		if ( document.querySelector( NATIVE_DELIVERY_STEP_SELECTOR ) ) {
+			return;
+		}
+
 		const orderSummary = document.querySelector( ORDER_SUMMARY_SELECTOR );
 
 		if ( ! orderSummary ) {
@@ -314,6 +342,7 @@
 					return;
 				}
 
+				setPrefersCollection( nextMethod );
 				patchAdditionalFields( {
 					[ DELIVERY_FIELD ]: nextMethod,
 					[ PICKUP_FIELD ]: nextMethod === 'pickup' ? getAdditionalFields()[ PICKUP_FIELD ] || '' : '',
@@ -324,25 +353,54 @@
 
 	function bindNativeDeliveryListeners() {
 		getNativeDeliveryOptions().forEach( ( option ) => {
-			if ( ! option.input || option.input.dataset.devhubDeliveryBound === 'true' ) {
+			if ( option.input ) {
+				if ( option.input.dataset.devhubDeliveryBound === 'true' ) {
+					return;
+				}
+
+				option.input.dataset.devhubDeliveryBound = 'true';
+				option.input.addEventListener( 'change', () => {
+					if ( ! option.input?.checked ) {
+						return;
+					}
+
+					const nextMethod = getMethodFromNativeOption( option );
+
+					if ( ! isValidMethod( nextMethod ) || getAdditionalFields()[ DELIVERY_FIELD ] === nextMethod ) {
+						return;
+					}
+
+					patchAdditionalFields( {
+						[ DELIVERY_FIELD ]: nextMethod,
+						[ PICKUP_FIELD ]: nextMethod === 'pickup' ? getAdditionalFields()[ PICKUP_FIELD ] || '' : '',
+					} );
+				} );
 				return;
 			}
 
-			option.input.dataset.devhubDeliveryBound = 'true';
-			option.input.addEventListener( 'change', () => {
-				if ( ! option.input?.checked ) {
-					return;
-				}
+			if ( ! option.option || option.option.dataset.devhubDeliveryBound === 'true' ) {
+				return;
+			}
 
+			option.option.dataset.devhubDeliveryBound = 'true';
+			option.option.addEventListener( 'click', () => {
 				const nextMethod = getMethodFromNativeOption( option );
 
-				if ( ! isValidMethod( nextMethod ) || getAdditionalFields()[ DELIVERY_FIELD ] === nextMethod ) {
+				if ( ! isValidMethod( nextMethod ) ) {
 					return;
 				}
 
-				patchAdditionalFields( {
-					[ DELIVERY_FIELD ]: nextMethod,
-					[ PICKUP_FIELD ]: nextMethod === 'pickup' ? getAdditionalFields()[ PICKUP_FIELD ] || '' : '',
+				window.requestAnimationFrame( () => {
+					const currentFields = getAdditionalFields();
+
+					if ( currentFields[ DELIVERY_FIELD ] === nextMethod && ( nextMethod === 'pickup' || ! currentFields[ PICKUP_FIELD ] ) ) {
+						return;
+					}
+
+					patchAdditionalFields( {
+						[ DELIVERY_FIELD ]: nextMethod,
+						[ PICKUP_FIELD ]: nextMethod === 'pickup' ? currentFields[ PICKUP_FIELD ] || '' : '',
+					} );
 				} );
 			} );
 		} );
@@ -386,6 +444,7 @@
 		const additionalFields = getAdditionalFields();
 		const patch = {};
 		const currentMethod = additionalFields[ DELIVERY_FIELD ];
+		const nativeStepExists = !! document.querySelector( NATIVE_DELIVERY_STEP_SELECTOR );
 
 		if ( ! isValidMethod( currentMethod ) ) {
 			patch[ DELIVERY_FIELD ] = locations.length ? 'home_delivery' : 'home_delivery';
@@ -400,8 +459,20 @@
 			return false;
 		}
 
-		setPrefersCollection( additionalFields[ DELIVERY_FIELD ] );
-		syncNativeDeliverySelection( additionalFields[ DELIVERY_FIELD ] );
+		const nativeMethod = getSelectedNativeDeliveryMethod();
+
+		if ( nativeStepExists ) {
+			if ( isValidMethod( nativeMethod ) && nativeMethod !== additionalFields[ DELIVERY_FIELD ] ) {
+				patchAdditionalFields( {
+					[ DELIVERY_FIELD ]: nativeMethod,
+					[ PICKUP_FIELD ]: nativeMethod === 'pickup' ? additionalFields[ PICKUP_FIELD ] || '' : '',
+				} );
+				return false;
+			}
+		} else {
+			setPrefersCollection( additionalFields[ DELIVERY_FIELD ] );
+			syncNativeDeliverySelection( additionalFields[ DELIVERY_FIELD ] );
+		}
 
 		if ( additionalFields[ DELIVERY_FIELD ] === 'pickup' && additionalFields[ PICKUP_FIELD ] ) {
 			syncNativePickupSelection( additionalFields[ PICKUP_FIELD ] );
@@ -765,6 +836,7 @@
 		if ( signature === lastSignature ) {
 			syncProcessingState( isProcessing );
 			syncOrderSummaryDeliveryLabel( method, pickupStore );
+			syncBillingTitleForPickup( method );
 			return;
 		}
 
@@ -772,6 +844,7 @@
 		setValidationState( method, pickupStore );
 		syncProcessingState( isProcessing );
 		syncOrderSummaryDeliveryLabel( method, pickupStore );
+		syncBillingTitleForPickup( method );
 		renderFallbackDeliveryStep( method, isProcessing );
 
 		enhancePlaceOrderButton();
@@ -784,7 +857,29 @@
 		movePaymentStep();
 	}
 
+	function syncBillingTitleForPickup( method ) {
+		const billingTitle = document.querySelector(
+			'.wc-block-checkout__billing-address .wc-block-components-checkout-step__title, ' +
+			'.wp-block-woocommerce-checkout-billing-address-block .wc-block-components-checkout-step__title'
+		);
+
+		if ( ! billingTitle ) {
+			return;
+		}
+
+		const targetTitle = method === 'pickup' ? 'Billing address' : 'Shipping address';
+
+		if ( billingTitle.textContent.trim() !== targetTitle ) {
+			billingTitle.textContent = targetTitle;
+		}
+	}
+
 	function relabelAddressBlocks() {
+		const additionalFields = getAdditionalFields();
+		const nativeMethod = getSelectedNativeDeliveryMethod();
+		const method = isValidMethod( nativeMethod )
+			? nativeMethod
+			: ( isValidMethod( additionalFields[ DELIVERY_FIELD ] ) ? additionalFields[ DELIVERY_FIELD ] : 'home_delivery' );
 		// Shipping-fields block is always visible and shown first → call it "Billing address"
 		const shippingTitle = document.querySelector(
 			'.wc-block-checkout__shipping-fields .wc-block-components-checkout-step__title'
@@ -798,8 +893,11 @@
 			'.wc-block-checkout__billing-address .wc-block-components-checkout-step__title, ' +
 			'.wp-block-woocommerce-checkout-billing-address-block .wc-block-components-checkout-step__title'
 		);
-		if ( billingTitle && billingTitle.textContent.trim() !== 'Shipping address' ) {
-			billingTitle.textContent = 'Shipping address';
+		if ( billingTitle ) {
+			const targetTitle = method === 'pickup' ? 'Billing address' : 'Shipping address';
+			if ( billingTitle.textContent.trim() !== targetTitle ) {
+				billingTitle.textContent = targetTitle;
+			}
 		}
 
 		// Change checkbox label from "Use same address for billing" → "Use same address for shipping"
