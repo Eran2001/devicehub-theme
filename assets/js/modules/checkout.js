@@ -17,6 +17,7 @@
 	const ORDER_NOTE_PLACEHOLDER_SELECTOR = '.devhub-checkout-order-note-placeholder';
 	const PAYMENT_STEP_SELECTOR = '.wp-block-woocommerce-checkout-payment-block';
 	const PAYMENT_PLACEHOLDER_SELECTOR = '.devhub-checkout-payment-placeholder';
+	const FALLBACK_DELIVERY_STEP_SELECTOR = '.devhub-checkout-delivery-fallback';
 	const SIDEBAR_RELOCATION_CLASS = 'devhub-checkout--sidebar-relocation';
 	const EMPTY_CHECKOUT_BUTTON_SELECTOR = '.wc-block-checkout-empty .wp-block-button__link';
 	const COUPON_BUTTON_SELECTOR = '.wp-block-woocommerce-checkout-order-summary-coupon-form-block .wc-block-components-totals-coupon__button';
@@ -25,6 +26,8 @@
 	const CONTACT_EMAIL_INPUT_SELECTOR = '.wc-block-checkout__contact-fields .wc-block-components-text-input input[type="email"]';
 	const CONTACT_EMAIL_LABEL_SELECTOR = '.wc-block-checkout__contact-fields .wc-block-components-text-input label';
 	const ADDRESS_LINE_2_TOGGLE_SELECTOR = '.wc-block-components-address-form__address_2-toggle';
+	const NATIVE_DELIVERY_STEP_SELECTOR = '.wc-block-checkout__shipping-method, #shipping-method';
+	const NATIVE_DELIVERY_OPTION_SELECTOR = `${ NATIVE_DELIVERY_STEP_SELECTOR } .wc-block-components-radio-control__option`;
 	const NATIVE_PICKUP_STEP_SELECTOR = '.wc-block-checkout__pickup-options';
 	const NATIVE_PICKUP_OPTION_SELECTOR = '.wc-block-checkout__pickup-options .wc-block-components-radio-control__option';
 	const NATIVE_PICKUP_INPUT_SELECTOR = '.wc-block-checkout__pickup-options input[type="radio"]';
@@ -32,7 +35,6 @@
 
 	const state = {};
 
-	let root = null;
 	let unsubscribe = null;
 	let lastSignature = '';
 	let hasBoundViewportListener = false;
@@ -72,15 +74,6 @@
 		}
 	}
 
-	function escapeHtml( value ) {
-		return String( value ?? '' )
-			.replace( /&/g, '&amp;' )
-			.replace( /</g, '&lt;' )
-			.replace( />/g, '&gt;' )
-			.replace( /"/g, '&quot;' )
-			.replace( /'/g, '&#039;' );
-	}
-
 	function normalizeText( value ) {
 		return String( value ?? '' )
 			.replace( /\s+/g, ' ' )
@@ -97,6 +90,32 @@
 			carry[ location.value ] = location;
 			return carry;
 		}, {} );
+	}
+
+	function getNativeDeliveryOptions() {
+		return Array.from( document.querySelectorAll( NATIVE_DELIVERY_OPTION_SELECTOR ) ).map( ( option ) => ( {
+			option,
+			input: option.querySelector( 'input[type="radio"]' ),
+			text: normalizeText( option.textContent ),
+		} ) );
+	}
+
+	function getMethodFromNativeOption( option ) {
+		const text = normalizeText( option?.text );
+
+		if ( ! text ) {
+			return '';
+		}
+
+		if ( text.includes( 'pickup' ) || text.includes( 'collect' ) ) {
+			return 'pickup';
+		}
+
+		if ( text.includes( 'ship' ) || text.includes( 'delivery' ) || text.includes( 'home' ) ) {
+			return 'home_delivery';
+		}
+
+		return '';
 	}
 
 	function getNativePickupOptions() {
@@ -163,13 +182,207 @@
 		targetOption.input.dispatchEvent( new Event( 'change', { bubbles: true } ) );
 	}
 
-	function syncDefaults() {
-		document.body.classList.add( 'devhub-checkout--custom-pickup' );
+	function syncNativeDeliverySelection( method ) {
+		const targetOption = getNativeDeliveryOptions().find(
+			( option ) => getMethodFromNativeOption( option ) === method
+		);
 
-		if ( syncPickupStoreFromNativeSelection() ) {
-			return false;
+		if ( ! targetOption?.input || targetOption.input.checked ) {
+			return;
 		}
 
+		targetOption.input.checked = true;
+		targetOption.input.dispatchEvent( new Event( 'change', { bubbles: true } ) );
+	}
+
+	function getOrderSummaryDeliveryLabel( method, pickupStore ) {
+		if ( method === 'pickup' ) {
+			const selectedLocation = getLocationMap()[ pickupStore ] || null;
+
+			if ( selectedLocation?.name ) {
+				return `Pickup (${ selectedLocation.name })`;
+			}
+
+			return 'Store Pickup';
+		}
+
+		return 'Home Delivery';
+	}
+
+	function syncOrderSummaryDeliveryLabel( method, pickupStore ) {
+		const orderSummary = document.querySelector( ORDER_SUMMARY_SELECTOR );
+
+		if ( ! orderSummary ) {
+			return;
+		}
+
+		const targetLabel = getOrderSummaryDeliveryLabel( method, pickupStore );
+		const candidates = orderSummary.querySelectorAll(
+			'.wc-block-components-totals-item__label, .wc-block-components-totals-shipping__via'
+		);
+
+		Array.from( candidates ).forEach( ( candidate ) => {
+			const text = normalizeText( candidate.textContent );
+
+			if (
+				! text ||
+				( ! text.includes( 'pickup' ) &&
+					! text.includes( 'shipping' ) &&
+					! text.includes( 'delivery' ) &&
+					! text.includes( 'ship' ) &&
+					! text.includes( 'collect' ) )
+			) {
+				return;
+			}
+
+			candidate.textContent = targetLabel;
+		} );
+	}
+
+	function ensureFallbackDeliveryStep() {
+		const contactStep = document.querySelector( '.wc-block-checkout__contact-fields' );
+
+		if ( ! contactStep ) {
+			return null;
+		}
+
+		let fallbackStep = document.querySelector( FALLBACK_DELIVERY_STEP_SELECTOR );
+
+		if ( fallbackStep ) {
+			return fallbackStep;
+		}
+
+		fallbackStep = document.createElement( 'section' );
+		fallbackStep.className = 'wc-block-components-checkout-step devhub-checkout-delivery-fallback';
+		contactStep.insertAdjacentElement( 'afterend', fallbackStep );
+
+		return fallbackStep;
+	}
+
+	function renderFallbackDeliveryStep( method, isProcessing ) {
+		const nativeStepExists = !! document.querySelector( NATIVE_DELIVERY_STEP_SELECTOR );
+		const fallbackStep = document.querySelector( FALLBACK_DELIVERY_STEP_SELECTOR ) || ensureFallbackDeliveryStep();
+
+		if ( ! fallbackStep ) {
+			return;
+		}
+
+		if ( nativeStepExists ) {
+			fallbackStep.hidden = true;
+			fallbackStep.innerHTML = '';
+			return;
+		}
+
+		fallbackStep.hidden = false;
+		fallbackStep.innerHTML = `
+			<div class="wc-block-components-checkout-step__container">
+				<div class="wc-block-components-checkout-step__heading">
+					<h2 class="wc-block-components-checkout-step__title">Delivery</h2>
+				</div>
+				<div class="wc-block-components-radio-control wc-block-components-radio-control--highlight-checked devhub-checkout-delivery-fallback__options">
+					<label class="wc-block-components-radio-control__option ${ method === 'home_delivery' ? 'wc-block-components-radio-control__option--checked-option-highlighted' : '' }">
+						<input type="radio" name="devhub-fallback-delivery" value="home_delivery" ${ method === 'home_delivery' ? 'checked' : '' } ${ isProcessing ? 'disabled' : '' } />
+						<span class="wc-block-components-radio-control__label-group devhub-checkout-delivery-fallback__label-group">
+							<span class="devhub-checkout-delivery-fallback__icon" aria-hidden="true">
+								<i class="fas fa-house"></i>
+							</span>
+							<span class="wc-block-components-radio-control__label">Home Delivery</span>
+						</span>
+					</label>
+					<label class="wc-block-components-radio-control__option ${ method === 'pickup' ? 'wc-block-components-radio-control__option--checked-option-highlighted' : '' }">
+						<input type="radio" name="devhub-fallback-delivery" value="pickup" ${ method === 'pickup' ? 'checked' : '' } ${ isProcessing || ! locations.length ? 'disabled' : '' } />
+						<span class="wc-block-components-radio-control__label-group devhub-checkout-delivery-fallback__label-group">
+							<span class="devhub-checkout-delivery-fallback__icon" aria-hidden="true">
+								<i class="fas fa-truck"></i>
+							</span>
+							<span class="wc-block-components-radio-control__label">Store Pickup</span>
+						</span>
+					</label>
+				</div>
+			</div>
+		`;
+
+		fallbackStep.querySelectorAll( 'input[name="devhub-fallback-delivery"]' ).forEach( ( input ) => {
+			input.addEventListener( 'change', () => {
+				if ( ! input.checked ) {
+					return;
+				}
+
+				const nextMethod = input.value;
+
+				if ( ! isValidMethod( nextMethod ) || getAdditionalFields()[ DELIVERY_FIELD ] === nextMethod ) {
+					return;
+				}
+
+				patchAdditionalFields( {
+					[ DELIVERY_FIELD ]: nextMethod,
+					[ PICKUP_FIELD ]: nextMethod === 'pickup' ? getAdditionalFields()[ PICKUP_FIELD ] || '' : '',
+				} );
+			} );
+		} );
+	}
+
+	function bindNativeDeliveryListeners() {
+		getNativeDeliveryOptions().forEach( ( option ) => {
+			if ( ! option.input || option.input.dataset.devhubDeliveryBound === 'true' ) {
+				return;
+			}
+
+			option.input.dataset.devhubDeliveryBound = 'true';
+			option.input.addEventListener( 'change', () => {
+				if ( ! option.input?.checked ) {
+					return;
+				}
+
+				const nextMethod = getMethodFromNativeOption( option );
+
+				if ( ! isValidMethod( nextMethod ) || getAdditionalFields()[ DELIVERY_FIELD ] === nextMethod ) {
+					return;
+				}
+
+				patchAdditionalFields( {
+					[ DELIVERY_FIELD ]: nextMethod,
+					[ PICKUP_FIELD ]: nextMethod === 'pickup' ? getAdditionalFields()[ PICKUP_FIELD ] || '' : '',
+				} );
+			} );
+		} );
+	}
+
+	function bindNativePickupListeners() {
+		getNativePickupOptions().forEach( ( option ) => {
+			if ( ! option.input || option.input.dataset.devhubPickupBound === 'true' ) {
+				return;
+			}
+
+			option.input.dataset.devhubPickupBound = 'true';
+			option.input.addEventListener( 'change', () => {
+				if ( ! option.input?.checked ) {
+					return;
+				}
+
+				const matchedLocation = findLocationByNativeText( option.text );
+				const currentFields = getAdditionalFields();
+				const nextPatch = {
+					[ DELIVERY_FIELD ]: 'pickup',
+				};
+
+				if ( matchedLocation && currentFields[ PICKUP_FIELD ] !== matchedLocation.value ) {
+					nextPatch[ PICKUP_FIELD ] = matchedLocation.value;
+				}
+
+				if (
+					currentFields[ DELIVERY_FIELD ] === nextPatch[ DELIVERY_FIELD ] &&
+					!( PICKUP_FIELD in nextPatch )
+				) {
+					return;
+				}
+
+				patchAdditionalFields( nextPatch );
+			} );
+		} );
+	}
+
+	function syncDefaults() {
 		const additionalFields = getAdditionalFields();
 		const patch = {};
 		const currentMethod = additionalFields[ DELIVERY_FIELD ];
@@ -187,29 +400,18 @@
 			return false;
 		}
 
+		setPrefersCollection( additionalFields[ DELIVERY_FIELD ] );
+		syncNativeDeliverySelection( additionalFields[ DELIVERY_FIELD ] );
+
 		if ( additionalFields[ DELIVERY_FIELD ] === 'pickup' && additionalFields[ PICKUP_FIELD ] ) {
 			syncNativePickupSelection( additionalFields[ PICKUP_FIELD ] );
 		}
 
+		if ( syncPickupStoreFromNativeSelection() ) {
+			return false;
+		}
+
 		return true;
-	}
-
-	function ensureRoot() {
-		const contactStep = document.querySelector( '.wc-block-checkout__contact-fields' );
-
-		if ( ! contactStep ) {
-			return null;
-		}
-
-		if ( root && root.isConnected ) {
-			return root;
-		}
-
-		root = document.createElement( 'section' );
-		root.className = 'devhub-delivery-method';
-		contactStep.insertAdjacentElement( 'afterend', root );
-
-		return root;
 	}
 
 	function isCheckoutProcessing() {
@@ -217,11 +419,6 @@
 	}
 
 	function syncProcessingState( isProcessing ) {
-		if ( root ) {
-			root.classList.toggle( 'wc-block-components-checkout-step--disabled', isProcessing );
-			root.setAttribute( 'aria-disabled', isProcessing ? 'true' : 'false' );
-		}
-
 		const orderSummary = document.querySelector( ORDER_SUMMARY_SELECTOR );
 
 		if ( ! orderSummary ) {
@@ -437,7 +634,7 @@
 		);
 
 		return candidates.find( ( candidate ) => {
-			if ( ! candidate || candidate === root ) {
+			if ( ! candidate ) {
 				return false;
 			}
 
@@ -550,17 +747,14 @@
 			return;
 		}
 
-		const mountNode = ensureRoot();
-		if ( ! mountNode ) {
-			return;
-		}
-
 		const additionalFields = getAdditionalFields();
 		const method = isValidMethod( additionalFields[ DELIVERY_FIELD ] ) ? additionalFields[ DELIVERY_FIELD ] : 'home_delivery';
 		const pickupStore = additionalFields[ PICKUP_FIELD ] || '';
 		const isProcessing = isCheckoutProcessing();
-		const locationMap = getLocationMap();
-		const selectedLocation = locationMap[ pickupStore ] || null;
+
+		bindNativeDeliveryListeners();
+		bindNativePickupListeners();
+
 		const signature = JSON.stringify( {
 			method,
 			pickupStore,
@@ -574,84 +768,10 @@
 		}
 
 		lastSignature = signature;
-		setPrefersCollection( method );
 		setValidationState( method, pickupStore );
 		syncProcessingState( isProcessing );
-
-		mountNode.innerHTML = `
-			<div class="devhub-delivery-method__inner">
-				<div class="devhub-delivery-method__header">
-					<h2 class="devhub-delivery-method__title">${ escapeHtml( messages.title || 'Your Delivery Method' ) }</h2>
-				</div>
-
-				<div class="devhub-delivery-method__options" role="radiogroup" aria-label="${ escapeHtml( messages.title || 'Your Delivery Method' ) }">
-					<button type="button" class="devhub-delivery-method__option ${ method === 'pickup' ? 'is-active' : '' } ${ ! locations.length || isProcessing ? 'is-disabled' : '' }" data-method="pickup" aria-pressed="${ method === 'pickup' }" ${ ! locations.length || isProcessing ? 'disabled' : '' }>
-						<span class="devhub-delivery-method__option-title">${ escapeHtml( messages.pickupLabel || 'Pick Up at Store' ) }</span>
-						<span class="devhub-delivery-method__option-copy">${ escapeHtml( messages.pickupHint || 'Collect from a Hutch service location.' ) }</span>
-					</button>
-
-					<button type="button" class="devhub-delivery-method__option ${ method === 'home_delivery' ? 'is-active' : '' } ${ isProcessing ? 'is-disabled' : '' }" data-method="home_delivery" aria-pressed="${ method === 'home_delivery' }" ${ isProcessing ? 'disabled' : '' }>
-						<span class="devhub-delivery-method__option-title">${ escapeHtml( messages.deliveryLabel || 'Home Delivery' ) }</span>
-						<span class="devhub-delivery-method__option-copy">${ escapeHtml( messages.deliveryHint || 'Delivery via courier to the billing address.' ) }</span>
-					</button>
-				</div>
-
-				<div class="devhub-delivery-method__pickup ${ method === 'pickup' ? '' : 'is-hidden' }">
-					<h3 class="devhub-delivery-method__pickup-title">${ escapeHtml( messages.pickupTitle || 'Pick up at store' ) }</h3>
-					<p class="devhub-delivery-method__pickup-copy">${ escapeHtml( messages.pickupSubtitle || 'Select the Hutch location for collection.' ) }</p>
-
-					<div class="devhub-delivery-method__store-list">
-						${ ! locations.length ? `<p class="devhub-delivery-method__empty">${ escapeHtml( messages.pickupUnavailable || 'Pickup is currently unavailable.' ) }</p>` : '' }
-						${ locations.map( ( location ) => `
-							<button type="button" class="devhub-delivery-method__store ${ pickupStore === location.value ? 'is-active' : '' } ${ isProcessing ? 'is-disabled' : '' }" data-store="${ escapeHtml( location.value ) }" aria-pressed="${ pickupStore === location.value }" ${ isProcessing ? 'disabled' : '' }>
-								<span class="devhub-delivery-method__store-indicator" aria-hidden="true"></span>
-								<span class="devhub-delivery-method__store-content">
-									<span class="devhub-delivery-method__store-name">${ escapeHtml( location.name ) }</span>
-									${ location.address ? `<span class="devhub-delivery-method__store-address">${ escapeHtml( location.address ) }</span>` : '' }
-									${ location.details ? `<span class="devhub-delivery-method__store-details">${ escapeHtml( location.details ) }</span>` : '' }
-								</span>
-							</button>
-						` ).join( '' ) }
-					</div>
-
-					${ method === 'pickup' && ! pickupStore ? `<p class="devhub-delivery-method__error">${ escapeHtml( messages.pickupRequired || 'Please select a pickup store to continue.' ) }</p>` : '' }
-					${ method === 'pickup' && selectedLocation ? `<p class="devhub-delivery-method__summary">${ escapeHtml( selectedLocation.name ) }</p>` : '' }
-				</div>
-			</div>
-		`;
-
-		mountNode.querySelectorAll( '[data-method]' ).forEach( ( button ) => {
-			button.addEventListener( 'click', () => {
-				if ( button.disabled ) {
-					return;
-				}
-
-				const nextMethod = button.getAttribute( 'data-method' );
-
-				if ( ! isValidMethod( nextMethod ) ) {
-					return;
-				}
-
-				patchAdditionalFields( {
-					[ DELIVERY_FIELD ]: nextMethod,
-				} );
-			} );
-		} );
-
-		mountNode.querySelectorAll( '[data-store]' ).forEach( ( button ) => {
-			button.addEventListener( 'click', () => {
-				if ( button.disabled ) {
-					return;
-				}
-
-				const nextStore = button.getAttribute( 'data-store' ) || '';
-
-				patchAdditionalFields( {
-					[ PICKUP_FIELD ]: nextStore,
-				} );
-				syncNativePickupSelection( nextStore );
-			} );
-		} );
+		syncOrderSummaryDeliveryLabel( method, pickupStore );
+		renderFallbackDeliveryStep( method, isProcessing );
 
 		enhancePlaceOrderButton();
 		enhanceCouponButton();

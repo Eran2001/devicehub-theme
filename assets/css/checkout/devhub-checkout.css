@@ -1134,11 +1134,6 @@
   line-height: 1.4 !important;
 }
 
-.woocommerce-checkout.devhub-checkout--custom-pickup
-  .wc-block-checkout__pickup-options {
-  display: none !important;
-}
-
 .wc-block-checkout__main
   .wc-block-checkout__pickup-options
   .wc-block-components-local-pickup-rates-control
@@ -1195,6 +1190,80 @@
   border-radius: 12px !important;
   background: #fff9f5;
   box-shadow: inset 0 0 0 1px var(--devhub-primary) !important;
+}
+
+.devhub-checkout-delivery-fallback .wc-block-components-checkout-step__heading {
+  margin-bottom: 16px !important;
+}
+
+.wc-block-checkout__main
+  .devhub-checkout-delivery-fallback
+  .wc-block-components-checkout-step__title {
+  color: #2d2d2d !important;
+  font-family: var(--devhub-font) !important;
+  font-size: 20px !important;
+  font-weight: 600 !important;
+  line-height: 1.4 !important;
+}
+
+.devhub-checkout-delivery-fallback__options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.devhub-checkout-delivery-fallback
+  .wc-block-components-radio-control__input,
+.devhub-checkout-delivery-fallback input[type="radio"],
+.devhub-checkout-delivery-fallback
+  .wc-block-components-radio-control__option::after,
+.devhub-checkout-delivery-fallback
+  .wc-block-components-radio-control--highlight-checked::after {
+  display: none !important;
+}
+
+.devhub-checkout-delivery-fallback
+  .wc-block-components-radio-control__option {
+  margin: 0 !important;
+  min-height: 56px;
+  padding: 8px 12px !important;
+  border: 1px solid #e8e8e8;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.devhub-checkout-delivery-fallback
+  .wc-block-components-radio-control__option--checked-option-highlighted {
+  border-color: var(--devhub-primary) !important;
+  border-radius: 12px !important;
+  background: #fff9f5;
+  box-shadow: none !important;
+}
+
+.devhub-checkout-delivery-fallback__label-group {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 10px;
+}
+
+.devhub-checkout-delivery-fallback__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  color: var(--devhub-primary);
+  font-size: 18px;
+  flex: 0 0 34px;
+}
+
+.devhub-checkout-delivery-fallback
+  .wc-block-components-radio-control__label {
+  color: #101828;
+  font-family: var(--devhub-font);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.3;
 }
 
 .devhub-delivery-method__pickup-title {
