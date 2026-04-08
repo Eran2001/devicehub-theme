@@ -149,6 +149,126 @@ function devhub_get_product_placeholder_img(WC_Product $product): string
 }
 
 /**
+ * Build normalized gallery image data for custom single-product galleries.
+ */
+function devhub_build_gallery_image_data(int $attachment_id, string $fallback_alt = '', string $placeholder_img = ''): ?array
+{
+    if ($attachment_id <= 0) {
+        return null;
+    }
+
+    $main_src = wp_get_attachment_image_url($attachment_id, 'woocommerce_single')
+        ?: wp_get_attachment_image_url($attachment_id, 'full')
+        ?: $placeholder_img;
+
+    $thumb_src = wp_get_attachment_image_url($attachment_id, 'woocommerce_thumbnail')
+        ?: $main_src;
+
+    if (!$main_src || !$thumb_src) {
+        return null;
+    }
+
+    $alt = trim((string) get_post_meta($attachment_id, '_wp_attachment_image_alt', true));
+    if ($alt === '') {
+        $alt = trim((string) get_the_title($attachment_id));
+    }
+    if ($alt === '') {
+        $alt = $fallback_alt;
+    }
+
+    return [
+        'id' => $attachment_id,
+        'main_src' => $main_src,
+        'thumb_src' => $thumb_src,
+        'alt' => $alt,
+    ];
+}
+
+/**
+ * Return the parent product gallery for the custom single-product template.
+ */
+function devhub_get_product_gallery_data(WC_Product $product, string $placeholder_img): array
+{
+    $image_ids = array_values(array_unique(array_filter(array_merge(
+        [(int) $product->get_image_id()],
+        array_map('intval', $product->get_gallery_image_ids())
+    ))));
+
+    $gallery = [];
+    foreach ($image_ids as $image_id) {
+        $image = devhub_build_gallery_image_data($image_id, $product->get_name(), $placeholder_img);
+        if ($image) {
+            $gallery[] = $image;
+        }
+    }
+
+    if (!empty($gallery)) {
+        return $gallery;
+    }
+
+    return [[
+        'id' => 0,
+        'main_src' => $placeholder_img,
+        'thumb_src' => $placeholder_img,
+        'alt' => $product->get_name(),
+    ]];
+}
+
+/**
+ * Normalize Woo/variation-gallery plugin image payloads for the custom gallery.
+ */
+function devhub_get_variation_gallery_data(array $variation, string $fallback_alt, string $placeholder_img): array
+{
+    $gallery = [];
+    $seen = [];
+
+    if (!empty($variation['variation_gallery_images']) && is_array($variation['variation_gallery_images'])) {
+        foreach ($variation['variation_gallery_images'] as $image) {
+            if (!is_array($image)) {
+                continue;
+            }
+
+            $id = isset($image['image_id']) ? (int) $image['image_id'] : 0;
+            $main_src = (string) ($image['full_src'] ?? $image['src'] ?? $placeholder_img);
+            $thumb_src = (string) ($image['gallery_thumbnail_src'] ?? $image['src'] ?? $main_src);
+            $alt = trim((string) ($image['alt'] ?? $image['title'] ?? $fallback_alt));
+            $key = $id > 0 ? 'id:' . $id : 'src:' . $main_src;
+
+            if ($main_src === '' || isset($seen[$key])) {
+                continue;
+            }
+
+            $seen[$key] = true;
+            $gallery[] = [
+                'id' => $id,
+                'main_src' => $main_src,
+                'thumb_src' => $thumb_src ?: $main_src,
+                'alt' => $alt,
+            ];
+        }
+    }
+
+    if (!empty($gallery)) {
+        return $gallery;
+    }
+
+    if (!empty($variation['image']) && is_array($variation['image'])) {
+        $image = $variation['image'];
+        $main_src = (string) ($image['full_src'] ?? $image['src'] ?? $placeholder_img);
+        if ($main_src !== '') {
+            return [[
+                'id' => isset($image['id']) ? (int) $image['id'] : 0,
+                'main_src' => $main_src,
+                'thumb_src' => (string) ($image['gallery_thumbnail_src'] ?? $image['thumb_src'] ?? $image['src'] ?? $main_src),
+                'alt' => trim((string) ($image['alt'] ?? $image['title'] ?? $fallback_alt)),
+            ]];
+        }
+    }
+
+    return [];
+}
+
+/**
  * Normalize a raw hex color string from term meta.
  */
 function devhub_normalize_hex_color(string $value, string $fallback = '#cccccc'): string

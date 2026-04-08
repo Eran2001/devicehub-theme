@@ -42,13 +42,14 @@ foreach ($storage_slugs as $slug) {
 // All available variations serialised for JS resolution
 $available_variations = '[]';
 if ($is_variable) {
-    $raw = array_map(function ($v) {
+    $raw = array_map(function ($v) use ($product) {
         return [
             'id' => $v['variation_id'],
             'attributes' => $v['attributes'],
             'price' => $v['display_price'],
             'price_html' => $v['price_html'] ?? wc_price((float) $v['display_price']),
             'in_stock' => $v['is_in_stock'],
+            'gallery_images' => devhub_get_variation_gallery_data($v, $product->get_name(), ''),
         ];
     }, $product->get_available_variations());
     $available_variations = wp_json_encode($raw);
@@ -101,10 +102,8 @@ foreach ($attributes as $attr_key => $attribute) {
 }
 
 $placeholder_img = DEVHUB_URI . '/assets/images/Original-Img.svg';
-$main_img        = get_the_post_thumbnail_url($product->get_id(), 'woocommerce_single') ?: $placeholder_img;
-$gallery_ids     = $product->get_gallery_image_ids();
-$thumb_imgs      = array_map(fn($id) => wp_get_attachment_image_url($id, 'woocommerce_thumbnail'), $gallery_ids);
-if (empty($thumb_imgs)) $thumb_imgs = [$placeholder_img, $placeholder_img, $placeholder_img];
+$default_gallery = devhub_get_product_gallery_data($product, $placeholder_img);
+$main_img        = $default_gallery[0]['main_src'];
 $payment_methods = function_exists('devhub_get_payment_method_display_data') ? devhub_get_payment_method_display_data() : [];
 
 $has_feature_content = static function (string $html): bool {
@@ -153,7 +152,9 @@ $specs_is_active = !$has_features_tab && $has_specs_tab;
 // ── 2. Markup ─────────────────────────────────────────────────────────────────
 ?>
 
-<div class="devhub-single" data-variations="<?php echo esc_attr($available_variations); ?>">
+<div class="devhub-single"
+    data-variations="<?php echo esc_attr($available_variations); ?>"
+    data-default-gallery="<?php echo esc_attr(wp_json_encode($default_gallery)); ?>">
     <div class="wf-container">
 
         <div class="devhub-page-bar">
@@ -168,7 +169,7 @@ $specs_is_active = !$has_features_tab && $has_specs_tab;
 
                 <div class="devhub-single__main-image">
                     <img src="<?php echo esc_url($main_img); ?>"
-                        alt="<?php echo esc_attr($product->get_name()); ?>">
+                        alt="<?php echo esc_attr($default_gallery[0]['alt']); ?>">
                 </div>
 
                 <div class="devhub-single__thumbnails-slider" id="devhubGallerySlider">
@@ -179,11 +180,13 @@ $specs_is_active = !$has_features_tab && $has_specs_tab;
                     </button>
                     <div class="devhub-single__thumbnails-viewport" id="devhubGalleryViewport">
                         <div class="devhub-single__thumbnails" id="devhubGalleryTrack">
-                            <?php foreach ($thumb_imgs as $i => $thumb): ?>
+                            <?php foreach ($default_gallery as $i => $gallery_image): ?>
                                 <button class="devhub-single__thumb<?php echo $i === 0 ? ' devhub-single__thumb--active' : ''; ?>"
                                     type="button"
+                                    data-main-src="<?php echo esc_url($gallery_image['main_src']); ?>"
+                                    data-alt="<?php echo esc_attr($gallery_image['alt']); ?>"
                                     aria-label="<?php echo esc_attr(sprintf(__('View image %d', 'devicehub-theme'), $i + 1)); ?>">
-                                    <img src="<?php echo esc_url($thumb); ?>" alt="">
+                                    <img src="<?php echo esc_url($gallery_image['thumb_src']); ?>" alt="">
                                 </button>
                             <?php endforeach; ?>
                         </div>

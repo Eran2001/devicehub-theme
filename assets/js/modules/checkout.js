@@ -22,9 +22,7 @@
 	const NATIVE_PICKUP_OPTION_SELECTOR = '.wc-block-checkout__pickup-options .wc-block-components-radio-control__option';
 	const NATIVE_PICKUP_INPUT_SELECTOR = '.wc-block-checkout__pickup-options input[type="radio"]';
 
-	const state = {
-		search: '',
-	};
+	const state = {};
 
 	let root = null;
 	let unsubscribe = null;
@@ -374,27 +372,9 @@
 		const pickupStore = additionalFields[ PICKUP_FIELD ] || '';
 		const locationMap = getLocationMap();
 		const selectedLocation = locationMap[ pickupStore ] || null;
-		const search = state.search.trim().toLowerCase();
-		const filteredLocations = locations.filter( ( location ) => {
-			if ( ! search ) {
-				return true;
-			}
-
-			const haystack = [
-				location.name,
-				location.address,
-				location.details,
-			]
-				.join( ' ' )
-				.toLowerCase();
-
-			return haystack.includes( search );
-		} );
-
 		const signature = JSON.stringify( {
 			method,
 			pickupStore,
-			search,
 			locationCount: locations.length,
 		} );
 
@@ -428,21 +408,9 @@
 					<h3 class="devhub-delivery-method__pickup-title">${ escapeHtml( messages.pickupTitle || 'Pick up at store' ) }</h3>
 					<p class="devhub-delivery-method__pickup-copy">${ escapeHtml( messages.pickupSubtitle || 'Select the Hutch location for collection.' ) }</p>
 
-					<div class="devhub-delivery-method__search">
-						<input
-							type="search"
-							class="devhub-delivery-method__search-input"
-							placeholder="${ escapeHtml( messages.searchPlaceholder || 'Search stores' ) }"
-							value="${ escapeHtml( state.search ) }"
-							autocomplete="off"
-						/>
-						<p class="devhub-delivery-method__search-copy">${ escapeHtml( messages.searchHelp || 'Search for your nearest Hutch store.' ) }</p>
-					</div>
-
 					<div class="devhub-delivery-method__store-list">
 						${ ! locations.length ? `<p class="devhub-delivery-method__empty">${ escapeHtml( messages.pickupUnavailable || 'Pickup is currently unavailable.' ) }</p>` : '' }
-						${ locations.length && ! filteredLocations.length ? `<p class="devhub-delivery-method__empty">${ escapeHtml( messages.emptySearch || 'No stores match your search.' ) }</p>` : '' }
-						${ filteredLocations.map( ( location ) => `
+						${ locations.map( ( location ) => `
 							<button type="button" class="devhub-delivery-method__store ${ pickupStore === location.value ? 'is-active' : '' }" data-store="${ escapeHtml( location.value ) }" aria-pressed="${ pickupStore === location.value }">
 								<span class="devhub-delivery-method__store-indicator" aria-hidden="true"></span>
 								<span class="devhub-delivery-method__store-content">
@@ -484,15 +452,6 @@
 				syncNativePickupSelection( nextStore );
 			} );
 		} );
-
-		const searchInput = mountNode.querySelector( '.devhub-delivery-method__search-input' );
-		if ( searchInput ) {
-			searchInput.addEventListener( 'input', ( event ) => {
-				state.search = event.target.value || '';
-				lastSignature = '';
-				render();
-			} );
-		}
 
 		enhancePlaceOrderButton();
 		enhanceCouponButton();
