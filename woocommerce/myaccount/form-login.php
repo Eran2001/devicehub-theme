@@ -319,12 +319,13 @@ do_action( 'woocommerce_before_customer_login_form' );
 						<?php esc_html_e( 'Register', 'woocommerce' ); ?>
 					</h2>
 					<p class="devhub-auth__subtitle">
-						<?php esc_html_e( 'Create an account with the existing WooCommerce registration flow.', 'devicehub-theme' ); ?>
+						<?php esc_html_e( 'Enter your email address, verify it with a one-time code, then create your account.', 'devicehub-theme' ); ?>
 					</p>
 
 					<div class="devhub-auth__form">
-						<form method="post" class="woocommerce-form woocommerce-form-register register" <?php do_action( 'woocommerce_register_form_tag' ); ?>>
+						<form method="post" class="woocommerce-form woocommerce-form-register register" data-devhub-register-form <?php do_action( 'woocommerce_register_form_tag' ); ?>>
 							<input type="hidden" name="devhub_auth_panel" value="register" />
+							<input type="hidden" name="devhub_email_otp_nonce" value="<?php echo esc_attr( wp_create_nonce( 'devhub_email_registration_otp' ) ); ?>" />
 
 							<?php do_action( 'woocommerce_register_form_start' ); ?>
 
@@ -348,6 +349,31 @@ do_action( 'woocommerce_before_customer_login_form' );
 								<input type="email" class="woocommerce-Input woocommerce-Input--text input-text"
 									name="email" id="reg_email" autocomplete="email"
 									value="<?php echo ( ! empty( $_POST['email'] ) && is_string( $_POST['email'] ) ) ? esc_attr( wp_unslash( $_POST['email'] ) ) : ''; ?>"
+									required aria-required="true" />
+							</p>
+
+							<p class="devhub-auth__subtitle devhub-auth__subtitle--register-otp">
+								<?php esc_html_e( 'We will email a 6-digit verification code to this address before your account is created.', 'devicehub-theme' ); ?>
+							</p>
+
+							<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+								<button type="button"
+									class="button devhub-auth__secondary-button"
+									data-devhub-email-otp-send>
+									<?php esc_html_e( 'Send OTP', 'devicehub-theme' ); ?>
+								</button>
+							</p>
+
+							<p class="devhub-auth__status" data-devhub-email-otp-status hidden></p>
+
+							<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+								<label for="reg_email_otp"><?php esc_html_e( 'Email verification code', 'devicehub-theme' ); ?>&nbsp;<span
+										class="required" aria-hidden="true">*</span><span
+										class="screen-reader-text"><?php esc_html_e( 'Required', 'woocommerce' ); ?></span></label>
+								<input type="text" class="woocommerce-Input woocommerce-Input--text input-text"
+									name="devhub_email_otp" id="reg_email_otp" autocomplete="one-time-code" inputmode="numeric"
+									pattern="[0-9]*" maxlength="6"
+									value="<?php echo ( ! empty( $_POST['devhub_email_otp'] ) && is_string( $_POST['devhub_email_otp'] ) ) ? esc_attr( wp_unslash( $_POST['devhub_email_otp'] ) ) : ''; ?>"
 									required aria-required="true" />
 							</p>
 

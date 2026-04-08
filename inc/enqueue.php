@@ -321,6 +321,11 @@ function devhub_localize_login_script(): void
         'messages'    => [
             'requestError' => __('We could not send your OTP right now. Please try again.', 'devicehub-theme'),
             'verifyError'  => __('We could not verify that OTP. Please try again.', 'devicehub-theme'),
+            'sendEmailOtp' => __('Send OTP', 'devicehub-theme'),
+            'resendEmailOtp' => __('Resend OTP', 'devicehub-theme'),
+            'emailOtpInvalidEmail' => __('Enter a valid email address first.', 'devicehub-theme'),
+            'emailOtpSent' => __('Verification code sent. Check your email.', 'devicehub-theme'),
+            'emailOtpRequestError' => __('We could not send your verification email right now. Please try again.', 'devicehub-theme'),
         ],
     ]);
 }

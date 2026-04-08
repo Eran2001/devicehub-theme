@@ -19,7 +19,11 @@
         var debugStatus = root.querySelector('[data-devhub-mobile-debug]');
         var verifyCopy = root.querySelector('[data-devhub-mobile-verify-copy]');
         var resendButton = root.querySelector('[data-devhub-mobile-resend]');
+        var registerForm = root.querySelector('[data-devhub-register-form]');
+        var emailOtpStatus = root.querySelector('[data-devhub-email-otp-status]');
+        var emailOtpSendButton = root.querySelector('[data-devhub-email-otp-send]');
         var currentMobilePhone = '';
+        var currentRegisterEmail = '';
 
         function focusPanel(panel) {
             var target = panel.querySelector('input, button, a, select, textarea');
@@ -125,6 +129,36 @@
             }).then(function (payload) {
                 if (!payload || payload.success !== true) {
                     var message = payload && payload.data && payload.data.message ? payload.data.message : 'Request failed.';
+                    throw new Error(message);
+                }
+
+                return payload.data || {};
+            });
+        }
+
+        function postPayload(payload, fallbackMessage) {
+            var ajaxUrl = getAjaxUrl();
+
+            if (!ajaxUrl) {
+                return Promise.reject(new Error(fallbackMessage || 'Request failed.'));
+            }
+
+            return fetch(ajaxUrl, {
+                method: 'POST',
+                credentials: 'same-origin',
+                body: payload
+            }).then(function (response) {
+                return response.json().catch(function () {
+                    return {
+                        success: false,
+                        data: {
+                            message: 'Unexpected server response.'
+                        }
+                    };
+                });
+            }).then(function (payload) {
+                if (!payload || payload.success !== true) {
+                    var message = payload && payload.data && payload.data.message ? payload.data.message : (fallbackMessage || 'Request failed.');
                     throw new Error(message);
                 }
 
@@ -261,6 +295,81 @@
                 }
 
                 sendOtp(requestForm, verifyStatus);
+            });
+        }
+
+        if (registerForm && emailOtpSendButton) {
+            var registerEmailInput = registerForm.querySelector('input[name="email"]');
+            var registerOtpInput = registerForm.querySelector('input[name="devhub_email_otp"]');
+            var registerNonceInput = registerForm.querySelector('input[name="devhub_email_otp_nonce"]');
+
+            function normalizeRegisterOtp() {
+                normalizeOtpInput(registerOtpInput);
+            }
+
+            function resetRegisterOtpStatusIfEmailChanged() {
+                if (!registerEmailInput) return;
+
+                var nextEmail = (registerEmailInput.value || '').trim().toLowerCase();
+
+                if (nextEmail === currentRegisterEmail) return;
+
+                currentRegisterEmail = '';
+                clearStatus(emailOtpStatus);
+                emailOtpSendButton.textContent = getMessage('sendEmailOtp', 'Send OTP');
+            }
+
+            if (registerEmailInput) {
+                registerEmailInput.addEventListener('input', resetRegisterOtpStatusIfEmailChanged);
+            }
+
+            if (registerOtpInput) {
+                registerOtpInput.addEventListener('input', normalizeRegisterOtp);
+            }
+
+            emailOtpSendButton.addEventListener('click', function (event) {
+                event.preventDefault();
+
+                if (!registerEmailInput) return;
+
+                if (!registerEmailInput.value || !registerEmailInput.checkValidity()) {
+                    setStatus(emailOtpStatus, getMessage('emailOtpInvalidEmail', 'Enter a valid email address first.'), 'error');
+                    registerEmailInput.focus();
+                    return;
+                }
+
+                clearStatus(emailOtpStatus);
+                setSubmitting(registerForm, true);
+
+                var payload = new FormData();
+                payload.append('action', 'devhub_send_email_registration_otp');
+                payload.append('nonce', registerNonceInput ? registerNonceInput.value : '');
+                payload.append('email', registerEmailInput.value);
+
+                postPayload(payload, getMessage('emailOtpRequestError', 'We could not send your verification email right now. Please try again.'))
+                    .then(function (data) {
+                        currentRegisterEmail = data && data.email ? data.email : (registerEmailInput.value || '').trim().toLowerCase();
+                        setStatus(
+                            emailOtpStatus,
+                            data && data.message ? data.message : getMessage('emailOtpSent', 'Verification code sent. Check your email.'),
+                            'success'
+                        );
+                        emailOtpSendButton.textContent = getMessage('resendEmailOtp', 'Resend OTP');
+
+                        if (registerOtpInput) {
+                            registerOtpInput.focus();
+                        }
+                    })
+                    .catch(function (error) {
+                        setStatus(
+                            emailOtpStatus,
+                            error.message || getMessage('emailOtpRequestError', 'We could not send your verification email right now. Please try again.'),
+                            'error'
+                        );
+                    })
+                    .finally(function () {
+                        setSubmitting(registerForm, false);
+                    });
             });
         }
     }
