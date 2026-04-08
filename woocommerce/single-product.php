@@ -107,6 +107,23 @@ $has_feature_content = static function (string $html): bool {
     return trim(wp_strip_all_tags($html)) !== '';
 };
 
+$format_feature_content = static function (string $html): string {
+    $html = trim($html);
+    if ($html === '') {
+        return '';
+    }
+
+    if (function_exists('do_blocks')) {
+        $html = do_blocks($html);
+    }
+
+    $html = wpautop($html);
+    $html = shortcode_unautop($html);
+    $html = do_shortcode($html);
+
+    return wp_kses_post($html);
+};
+
 $features_sections = [];
 $description_html = (string) $product->get_description();
 $terms_html = (string) get_post_meta($product->get_id(), 'dh_terms', true);
@@ -116,28 +133,28 @@ $returns_html = (string) get_post_meta($product->get_id(), 'dh_returns', true);
 if ($has_feature_content($description_html)) {
     $features_sections[] = [
         'title' => __('Description', 'devicehub-theme'),
-        'content' => $description_html,
+        'content' => $format_feature_content($description_html),
     ];
 }
 
 if ($has_feature_content($terms_html)) {
     $features_sections[] = [
         'title' => __('Terms & Conditions', 'devicehub-theme'),
-        'content' => $terms_html,
+        'content' => $format_feature_content($terms_html),
     ];
 }
 
 if ($has_feature_content($warranty_html)) {
     $features_sections[] = [
         'title' => __('Warranty Information', 'devicehub-theme'),
-        'content' => $warranty_html,
+        'content' => $format_feature_content($warranty_html),
     ];
 }
 
 if ($has_feature_content($returns_html)) {
     $features_sections[] = [
         'title' => __('Return Policy / Support / Service Info', 'devicehub-theme'),
-        'content' => $returns_html,
+        'content' => $format_feature_content($returns_html),
     ];
 }
 
@@ -394,7 +411,7 @@ $specs_is_active = !$has_features_tab && $has_specs_tab;
                                 <div class="devhub-single__desc-card devhub-single__feature-card">
                                     <h3 class="devhub-single__feature-title"><?php echo esc_html($section['title']); ?></h3>
                                     <div class="devhub-single__features-content">
-                                        <?php echo wp_kses_post($section['content']); ?>
+                                        <?php echo $section['content']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                                     </div>
                                 </div>
                             <?php endforeach; ?>

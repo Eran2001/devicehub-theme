@@ -777,8 +777,26 @@
   line-height: 1.8;
 }
 
+.devhub-single__features-content > *:first-child {
+  margin-top: 0;
+}
+
 .devhub-single__features-content p + p {
   margin-top: 10px;
+}
+
+.devhub-single__features-content p,
+.devhub-single__features-content ul,
+.devhub-single__features-content ol,
+.devhub-single__features-content table,
+.devhub-single__features-content blockquote {
+  color: inherit;
+}
+
+.devhub-single__features-content em,
+.devhub-single__features-content cite,
+.devhub-single__features-content q {
+  color: inherit;
 }
 
 .devhub-single__features-content ul,
@@ -787,8 +805,88 @@
   padding: 0;
 }
 
+.devhub-single__features-content ul {
+  list-style: disc;
+}
+
+.devhub-single__features-content ol {
+  list-style: decimal;
+}
+
+.devhub-single__features-content li {
+  display: list-item;
+}
+
 .devhub-single__features-content li + li {
   margin-top: 8px;
+}
+
+.devhub-single__features-content table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 16px;
+  border: 1px solid var(--devhub-border);
+  border-radius: var(--devhub-radius-md);
+  overflow: hidden;
+  background: var(--devhub-white);
+  box-shadow: var(--devhub-shadow-card);
+}
+
+.devhub-single__features-content th,
+.devhub-single__features-content td {
+  padding: 14px 20px;
+  text-align: left;
+  vertical-align: top;
+  border: 0;
+  border-top: 1px solid var(--devhub-border);
+  font-size: var(--devhub-text-2xl);
+  color: var(--devhub-dark);
+}
+
+.devhub-single__features-content th {
+  background: var(--devhub-bg) !important;
+  color: var(--devhub-black) !important;
+  font-weight: 600;
+}
+
+.devhub-single__features-content thead th {
+  background: var(--devhub-bg) !important;
+  color: var(--devhub-black) !important;
+  font-weight: 700;
+  border-top: 0;
+}
+
+.devhub-single__features-content tr:first-child th,
+.devhub-single__features-content tr:first-child td {
+  border-top: 0;
+}
+
+.devhub-single__features-content tbody tr:nth-child(odd) {
+  background: var(--devhub-bg);
+}
+
+.devhub-single__features-content tbody tr:nth-child(even) {
+  background: var(--devhub-white);
+}
+
+.devhub-single__features-content tr:nth-child(odd) {
+  background: var(--devhub-bg);
+}
+
+.devhub-single__features-content tr:nth-child(even) {
+  background: var(--devhub-white);
+}
+
+.devhub-single__features-content tr > * + * {
+  border-left: 1px solid var(--devhub-border);
+}
+
+.devhub-single__features-content tbody td:first-child,
+.devhub-single__features-content tbody th:first-child {
+  width: 240px;
+  color: var(--devhub-mid);
+  font-weight: 500;
 }
 
 /* Quick stats */
