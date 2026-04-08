@@ -71,6 +71,62 @@ function devhub_enqueue_styles(): void
     devhub_style('devhub-header', '/components/header.css', ['devhub-style']);
     devhub_style('devhub-footer', '/components/footer.css', ['devhub-style']);
     devhub_style('devhub-product-card', '/components/product-card.css', ['devhub-style']);
+    wp_add_inline_style('devhub-header', '
+        #wf_header .product-categories .wf_navbar-nav .wf_navbar-mainmenu > li > a,
+        #wf_header .product-categories .wf_navbar-nav .wf_navbar-mainmenu .dropdown-menu li > a {
+            position: relative;
+            min-height: 54px;
+            line-height: 1.3 !important;
+            padding-top: 14px !important;
+            padding-bottom: 14px !important;
+            font-size: var(--devhub-text-md) !important;
+            font-weight: 600 !important;
+            color: var(--devhub-dark) !important;
+            background: var(--devhub-white) !important;
+        }
+        #wf_header .product-categories .wf_navbar-nav .wf_navbar-mainmenu > li.menu-item-has-children > a,
+        #wf_header .product-categories .wf_navbar-nav .wf_navbar-mainmenu .dropdown-menu li.menu-item-has-children > a {
+            padding-right: 44px !important;
+        }
+        #wf_header .product-categories .wf_navbar-nav .wf_navbar-mainmenu > li.menu-item-has-children > a::after,
+        #wf_header .product-categories .wf_navbar-nav .wf_navbar-mainmenu .dropdown-menu li.menu-item-has-children > a::after {
+            right: 18px !important;
+            top: 50% !important;
+            padding: 4px !important;
+            border-width: 0 2px 2px 0 !important;
+            border-color: var(--devhub-primary) !important;
+            transform: translateY(-50%) rotate(-45deg) !important;
+        }
+        #wf_header .product-categories .wf_navbar-nav .wf_navbar-mainmenu > li:hover > a,
+        #wf_header .product-categories .wf_navbar-nav .wf_navbar-mainmenu > li:focus-within > a,
+        #wf_header .product-categories .wf_navbar-nav .wf_navbar-mainmenu .dropdown-menu li:hover > a,
+        #wf_header .product-categories .wf_navbar-nav .wf_navbar-mainmenu .dropdown-menu li:focus-within > a {
+            color: var(--devhub-primary) !important;
+            background: rgba(255, 107, 0, 0.08) !important;
+        }
+        #wf_header .product-categories .wf_navbar-nav .wf_navbar-mainmenu .dropdown-menu {
+            min-width: 220px !important;
+            padding: 10px !important;
+            border: 1px solid rgba(228, 231, 236, 0.95) !important;
+            border-radius: 0 !important;
+            background: var(--devhub-white) !important;
+            box-shadow: 0 18px 40px rgba(16, 24, 40, 0.12) !important;
+        }
+        #wf_header .product-categories .wf_navbar-nav .wf_navbar-mainmenu .dropdown-menu::before {
+            top: 20px !important;
+            left: -8px !important;
+            width: 16px !important;
+            height: 16px !important;
+            border-left: 1px solid rgba(228, 231, 236, 0.95) !important;
+            border-bottom: 1px solid rgba(228, 231, 236, 0.95) !important;
+            background: var(--devhub-white) !important;
+        }
+        #wf_header .product-categories .wf_navbar-nav .wf_navbar-mainmenu .dropdown-menu li,
+        #wf_header .product-categories .wf_navbar-nav .wf_navbar-mainmenu .dropdown-menu li > a {
+            margin: 0 !important;
+            border-bottom: 0 !important;
+        }
+    ');
 
     // ── Home page ─────────────────────────────────────────────────────────────
     if (is_front_page()) {
