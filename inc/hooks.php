@@ -138,13 +138,30 @@ function devhub_filter_archive_by_brand(WP_Query $query): void
     $slugs = array_values(array_filter(array_map('sanitize_title', explode(',', $raw))));
     if (empty($slugs)) return;
 
+    $brand_tax_query = ['relation' => 'OR'];
+
+    if (taxonomy_exists('pwb-brand')) {
+        $brand_tax_query[] = [
+            'taxonomy' => 'pwb-brand',
+            'field' => 'slug',
+            'terms' => $slugs,
+            'operator' => 'IN',
+        ];
+    }
+
+    if (taxonomy_exists('pa_brand')) {
+        $brand_tax_query[] = [
+            'taxonomy' => 'pa_brand',
+            'field' => 'slug',
+            'terms' => $slugs,
+            'operator' => 'IN',
+        ];
+    }
+
+    if (count($brand_tax_query) === 1) return;
+
     $tax_query   = (array) $query->get('tax_query');
-    $tax_query[] = [
-        'taxonomy' => 'pwb-brand',
-        'field'    => 'slug',
-        'terms'    => $slugs,
-        'operator' => 'IN',
-    ];
+    $tax_query[] = $brand_tax_query;
     $query->set('tax_query', $tax_query);
 }
 

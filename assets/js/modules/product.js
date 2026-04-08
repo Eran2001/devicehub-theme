@@ -313,9 +313,23 @@
     var priceBox = document.querySelector(".devhub-single__price");
     var stockBox = document.querySelector(".devhub-single__stock");
     var cartForm = document.querySelector(".devhub-single__cart-form");
+    var cartBtn = cartForm ? cartForm.querySelector('button[name="add-to-cart"]') : null;
+    var buyBtn = cartForm ? cartForm.querySelector(".devhub-single__btn--buy") : null;
 
     var selectedColor = colorInput ? colorInput.value : "";
     var selectedStorage = storageInput ? storageInput.value : "";
+
+    function syncPurchaseButtons(isAvailable) {
+      if (cartBtn) {
+        cartBtn.disabled = !isAvailable;
+        cartBtn.setAttribute("aria-disabled", isAvailable ? "false" : "true");
+      }
+
+      if (buyBtn) {
+        buyBtn.disabled = !isAvailable;
+        buyBtn.setAttribute("aria-disabled", isAvailable ? "false" : "true");
+      }
+    }
 
     function normalizePriceHtml(html) {
       if (!html) return html;
@@ -340,6 +354,10 @@
     }
     if (stockBox && !el.dataset.baseStockHtml) {
       el.dataset.baseStockHtml = stockBox.innerHTML;
+    }
+    if (!el.dataset.baseIsPurchasable) {
+      el.dataset.baseIsPurchasable =
+        stockBox && stockBox.classList.contains("devhub-single__stock--out") ? "0" : "1";
     }
 
     devhubUpdateOptionAvailability(variations, selectedColor, selectedStorage);
@@ -375,6 +393,7 @@
           '<span class="devhub-single__stock-dot" aria-hidden="true"></span>' +
           (match.in_stock ? "In stock" : "Out of stock");
       }
+      syncPurchaseButtons(!!match.in_stock);
       return;
     }
 
@@ -387,11 +406,12 @@
       stockBox.classList.remove("devhub-single__stock--in", "devhub-single__stock--out");
       stockBox.classList.add(el.dataset.baseStockHtml.indexOf("Out of stock") !== -1 ? "devhub-single__stock--out" : "devhub-single__stock--in");
     }
+    syncPurchaseButtons(el.dataset.baseIsPurchasable === "1");
 
     if (cartForm && !cartForm.dataset.devhubVariationGuardBound) {
       cartForm.dataset.devhubVariationGuardBound = "true";
       cartForm.addEventListener("submit", function (event) {
-        if (!varIdInput || varIdInput.value) return;
+        if ((cartBtn && cartBtn.disabled) || !varIdInput || varIdInput.value) return;
         event.preventDefault();
         window.alert("Please select an available color and storage combination.");
       });
@@ -568,6 +588,7 @@
     if (!buyBtn || !form || !submitBtn) return;
 
     buyBtn.addEventListener("click", function () {
+      if (buyBtn.disabled || submitBtn.disabled) return;
       if (!form.querySelector('[name="devhub_buy_now"]')) {
         var flag = document.createElement("input");
         flag.type = "hidden";

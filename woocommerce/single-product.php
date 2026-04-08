@@ -343,10 +343,12 @@ $specs_is_active = !$has_features_tab && $has_specs_tab;
 
                     <div class="devhub-single__actions">
                         <button type="submit" name="add-to-cart" value="<?php echo esc_attr($product->get_id()); ?>"
-                            class="devhub-single__btn devhub-single__btn--cart">
+                            class="devhub-single__btn devhub-single__btn--cart"
+                            <?php disabled(!$product->is_in_stock()); ?>>
                             <?php esc_html_e('Add to Cart', 'devicehub-theme'); ?>
                         </button>
-                        <button type="button" class="devhub-single__btn devhub-single__btn--buy">
+                        <button type="button" class="devhub-single__btn devhub-single__btn--buy"
+                            <?php disabled(!$product->is_in_stock()); ?>>
                             <?php esc_html_e('Buy Now', 'devicehub-theme'); ?>
                         </button>
                     </div>

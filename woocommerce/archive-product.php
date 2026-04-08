@@ -134,6 +134,173 @@ function devhub_archive_filter_group(string $label, string $taxonomy, string $ur
     </div>
     <?php
 }
+
+/**
+ * Return product IDs for the current archive scope.
+ *
+ * Brand filters should reflect the current shop/category/tag view rather than
+ * unrelated products elsewhere in the catalog.
+ *
+ * @return int[]
+ */
+function devhub_get_archive_scope_product_ids(): array
+{
+    static $product_ids = null;
+
+    if (is_array($product_ids)) {
+        return $product_ids;
+    }
+
+    $tax_query = [];
+
+    if (is_product_category()) {
+        $current_term = get_queried_object();
+
+        if ($current_term instanceof WP_Term) {
+            $tax_query[] = [
+                'taxonomy' => 'product_cat',
+                'field' => 'term_id',
+                'terms' => [$current_term->term_id],
+            ];
+        }
+    } elseif (is_product_tag()) {
+        $current_term = get_queried_object();
+
+        if ($current_term instanceof WP_Term) {
+            $tax_query[] = [
+                'taxonomy' => 'product_tag',
+                'field' => 'term_id',
+                'terms' => [$current_term->term_id],
+            ];
+        }
+    }
+
+    $query = new WP_Query([
+        'post_type' => 'product',
+        'post_status' => 'publish',
+        'posts_per_page' => -1,
+        'fields' => 'ids',
+        'no_found_rows' => true,
+        'tax_query' => $tax_query,
+    ]);
+
+    $product_ids = array_map('intval', (array) $query->posts);
+
+    return $product_ids;
+}
+
+/**
+ * Return archive-scoped filter terms with counts limited to the current view.
+ *
+ * @return array<int, array{name: string, slug: string, count: int}>
+ */
+function devhub_get_scoped_archive_terms(string $taxonomy): array
+{
+    if (!taxonomy_exists($taxonomy)) {
+        return [];
+    }
+
+    $product_ids = devhub_get_archive_scope_product_ids();
+
+    if (empty($product_ids)) {
+        return [];
+    }
+
+    $object_terms = wp_get_object_terms($product_ids, $taxonomy, [
+        'fields' => 'all_with_object_id',
+    ]);
+
+    if (is_wp_error($object_terms) || empty($object_terms)) {
+        return [];
+    }
+
+    $terms = [];
+
+    foreach ($object_terms as $term) {
+        if (!$term instanceof WP_Term) {
+            continue;
+        }
+
+        $term_id = (int) $term->term_id;
+
+        if (!isset($terms[$term_id])) {
+            $terms[$term_id] = [
+                'name' => $term->name,
+                'slug' => $term->slug,
+                'count' => 0,
+                'object_ids' => [],
+            ];
+        }
+
+        $terms[$term_id]['object_ids'][(int) $term->object_id] = true;
+    }
+
+    foreach ($terms as $term_id => $term_data) {
+        $terms[$term_id]['count'] = count($term_data['object_ids']);
+        unset($terms[$term_id]['object_ids']);
+    }
+
+    uasort($terms, static function (array $left, array $right): int {
+        return strcasecmp($left['name'], $right['name']);
+    });
+
+    return array_values($terms);
+}
+
+/**
+ * Render the Brand filter from whichever brand taxonomy is actually populated
+ * in the current archive scope.
+ */
+function devhub_archive_brand_filter_group(): void
+{
+    $brand_terms = [];
+
+    foreach (['pwb-brand', 'pa_brand'] as $taxonomy) {
+        $brand_terms = devhub_get_scoped_archive_terms($taxonomy);
+
+        if (!empty($brand_terms)) {
+            break;
+        }
+    }
+
+    if (empty($brand_terms)) {
+        return;
+    }
+
+    $raw = sanitize_text_field(wp_unslash($_GET['filter_brand'] ?? ''));
+    $active = $raw !== '' ? array_filter(array_map('sanitize_title', explode(',', $raw))) : [];
+    ?>
+    <div class="devhub-filter-group">
+        <button class="devhub-filter-group__toggle" type="button" aria-expanded="true">
+            Brand
+            <i class="fas fa-chevron-up" aria-hidden="true"></i>
+        </button>
+        <ul class="devhub-filter-group__list">
+            <?php foreach ($brand_terms as $term):
+                $is_active = in_array($term['slug'], $active, true);
+                $new_vals = $is_active
+                    ? array_values(array_diff($active, [$term['slug']]))
+                    : array_merge($active, [$term['slug']]);
+                $base = remove_query_arg('paged');
+                $href = $new_vals
+                    ? add_query_arg('filter_brand', implode(',', $new_vals), $base)
+                    : remove_query_arg('filter_brand', $base);
+                ?>
+                <li>
+                    <a href="<?php echo esc_url($href); ?>"
+                        class="devhub-filter-option<?php echo $is_active ? ' devhub-filter-option--active' : ''; ?>">
+                        <span class="devhub-filter-option__check" aria-hidden="true">
+                            <?php if ($is_active): ?><i class="fas fa-check"></i><?php endif; ?>
+                        </span>
+                        <span class="devhub-filter-option__name"><?php echo esc_html($term['name']); ?></span>
+                        <span class="devhub-filter-option__count"><?php echo esc_html((string) $term['count']); ?></span>
+                    </a>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+    <?php
+}
 ?>
 
 <div class="devhub-archive">
@@ -156,7 +323,7 @@ function devhub_archive_filter_group(string $label, string $taxonomy, string $ur
                     <?php devhub_archive_category_group(); ?>
 
                     <!-- Brand (always shown — applies to all categories) -->
-                    <?php devhub_archive_filter_group('Brand', 'pwb-brand', 'filter_brand'); ?>
+                    <?php devhub_archive_brand_filter_group(); ?>
 
                     <!-- Category-specific attribute filters -->
                     <?php
