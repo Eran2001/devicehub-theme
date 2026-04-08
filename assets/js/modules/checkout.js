@@ -764,6 +764,7 @@
 
 		if ( signature === lastSignature ) {
 			syncProcessingState( isProcessing );
+			syncOrderSummaryDeliveryLabel( method, pickupStore );
 			return;
 		}
 
