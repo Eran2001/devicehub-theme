@@ -22,7 +22,7 @@ function devhub_archive_category_group(): void
 {
     // Slugs that are utility/internal categories, not browsable sections.
     // Add to this list whenever you create a category that shouldn't appear in the filter.
-    $excluded_slugs = ['flash-sale', 'new-arrivals', 'test'];
+    $excluded_slugs = ['new-arrivals', 'test'];
 
     $terms = get_terms([
         'taxonomy' => 'product_cat',
