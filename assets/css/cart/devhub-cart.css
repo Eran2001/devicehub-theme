@@ -270,13 +270,56 @@
     border-color 0.2s ease !important;
 }
 
+.wc-block-cart
+  .wc-block-components-product-button__button.devhub-cart-product-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  vertical-align: middle !important;
+  overflow: hidden !important;
+  position: relative !important;
+  z-index: 0 !important;
+  min-height: 44px !important;
+  padding: 10px 24px !important;
+  border: 0.1rem solid var(--wf-main-color) !important;
+  border-radius: 10rem !important;
+  background-color: var(--wf-main-color) !important;
+  color: #fff !important;
+  font-size: 1.5rem !important;
+  font-weight: 600 !important;
+  line-height: 1.134 !important;
+  letter-spacing: 0.03rem !important;
+  font-family: inherit !important;
+  white-space: nowrap !important;
+  text-decoration: none !important;
+  text-transform: initial !important;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease !important;
+}
+
 .wc-block-cart__submit-button.wc-block-components-button i.fa-arrow-right {
   margin-left: 0.4rem;
   margin-right: 0;
   flex: 0 0 auto;
 }
 
+.wc-block-cart
+  .wc-block-components-product-button__button.devhub-cart-product-button
+  i.fa-arrow-right {
+  margin-left: 0.4rem;
+  margin-right: 0;
+  flex: 0 0 auto;
+}
+
 .wc-block-cart__submit-button.wc-block-components-button:hover {
+  background-color: rgba(var(--wf-main-rgb), 0.9) !important;
+  border-color: rgba(var(--wf-main-rgb), 0.9) !important;
+  color: #fff !important;
+}
+
+.wc-block-cart
+  .wc-block-components-product-button__button.devhub-cart-product-button:hover {
   background-color: rgba(var(--wf-main-rgb), 0.9) !important;
   border-color: rgba(var(--wf-main-rgb), 0.9) !important;
   color: #fff !important;
@@ -296,6 +339,22 @@
 
 .btn--effect-six
   .wc-block-cart__submit-button.wc-block-components-button
+  span.text-spin {
+  -webkit-animation: text-spin 0.5s 1;
+  animation: text-spin 0.5s 1;
+}
+
+.btn--effect-six
+  .wc-block-cart
+  .wc-block-components-product-button__button.devhub-cart-product-button
+  span {
+  display: inline-block;
+  pointer-events: none;
+}
+
+.btn--effect-six
+  .wc-block-cart
+  .wc-block-components-product-button__button.devhub-cart-product-button
   span.text-spin {
   -webkit-animation: text-spin 0.5s 1;
   animation: text-spin 0.5s 1;

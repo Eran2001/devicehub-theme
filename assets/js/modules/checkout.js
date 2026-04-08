@@ -12,6 +12,8 @@
 	const VALIDATION_STORE_KEY = window.wc?.wcBlocksData?.VALIDATION_STORE_KEY || 'wc/store/validation';
 	const DELIVERY_ERROR_KEY = 'devhub-pickup-store';
 	const PLACE_ORDER_SELECTOR = '.wc-block-components-checkout-place-order-button';
+	const ORDER_SUMMARY_SELECTOR = '.wc-block-checkout__sidebar .wp-block-woocommerce-checkout-order-summary-block';
+	const EMPTY_CHECKOUT_BUTTON_SELECTOR = '.wc-block-checkout-empty .wp-block-button__link';
 	const COUPON_BUTTON_SELECTOR = '.wp-block-woocommerce-checkout-order-summary-coupon-form-block .wc-block-components-totals-coupon__button';
 	const COUPON_INPUT_SELECTOR = '.wp-block-woocommerce-checkout-order-summary-coupon-form-block .wc-block-components-totals-coupon__input input';
 	const COUPON_INPUT_LABEL_SELECTOR = '.wp-block-woocommerce-checkout-order-summary-coupon-form-block .wc-block-components-totals-coupon__input label';
@@ -203,6 +205,56 @@
 		return root;
 	}
 
+	function isCheckoutProcessing() {
+		const checkoutStore = getCheckoutStore();
+
+		if ( checkoutStore ) {
+			if (
+				checkoutStore.isBeforeProcessing?.() ||
+				checkoutStore.isProcessing?.() ||
+				checkoutStore.isAfterProcessing?.()
+			) {
+				return true;
+			}
+		}
+
+		const placeOrderButton = document.querySelector( PLACE_ORDER_SELECTOR );
+
+		return !! placeOrderButton && (
+			placeOrderButton.disabled ||
+			placeOrderButton.getAttribute( 'aria-disabled' ) === 'true' ||
+			placeOrderButton.className.includes( '--loading' )
+		);
+	}
+
+	function syncProcessingState( isProcessing ) {
+		if ( root ) {
+			root.classList.toggle( 'devhub-delivery-method--disabled', isProcessing );
+			root.setAttribute( 'aria-disabled', isProcessing ? 'true' : 'false' );
+
+			if ( isProcessing ) {
+				root.setAttribute( 'aria-busy', 'true' );
+			} else {
+				root.removeAttribute( 'aria-busy' );
+			}
+		}
+
+		const orderSummary = document.querySelector( ORDER_SUMMARY_SELECTOR );
+
+		if ( ! orderSummary ) {
+			return;
+		}
+
+		orderSummary.classList.toggle( 'devhub-checkout-card--disabled', isProcessing );
+		orderSummary.setAttribute( 'aria-disabled', isProcessing ? 'true' : 'false' );
+
+		if ( isProcessing ) {
+			orderSummary.setAttribute( 'aria-busy', 'true' );
+		} else {
+			orderSummary.removeAttribute( 'aria-busy' );
+		}
+	}
+
 	function setValidationState( method, pickupStore ) {
 		const validation = getValidationDispatch();
 
@@ -319,6 +371,22 @@
 		);
 	}
 
+	function enhanceEmptyCheckoutButton() {
+		const button = document.querySelector( EMPTY_CHECKOUT_BUTTON_SELECTOR );
+
+		if ( ! button ) {
+			return;
+		}
+
+		button.closest( '.wp-block-button' )?.classList.add( 'btn--effect-six' );
+
+		enhanceActionButton(
+			button,
+			'devhub-empty-checkout-button',
+			'Browse store'
+		);
+	}
+
 	function enhanceCouponInput() {
 		const input = document.querySelector( COUPON_INPUT_SELECTOR );
 		const label = document.querySelector( COUPON_INPUT_LABEL_SELECTOR );
@@ -370,21 +438,26 @@
 		const additionalFields = getAdditionalFields();
 		const method = isValidMethod( additionalFields[ DELIVERY_FIELD ] ) ? additionalFields[ DELIVERY_FIELD ] : 'home_delivery';
 		const pickupStore = additionalFields[ PICKUP_FIELD ] || '';
+		const isProcessing = isCheckoutProcessing();
 		const locationMap = getLocationMap();
 		const selectedLocation = locationMap[ pickupStore ] || null;
+		const pickupDisabled = ! locations.length || isProcessing;
 		const signature = JSON.stringify( {
 			method,
 			pickupStore,
 			locationCount: locations.length,
+			isProcessing,
 		} );
 
 		if ( signature === lastSignature ) {
+			syncProcessingState( isProcessing );
 			return;
 		}
 
 		lastSignature = signature;
 		setPrefersCollection( method );
 		setValidationState( method, pickupStore );
+		syncProcessingState( isProcessing );
 
 		mountNode.innerHTML = `
 			<div class="devhub-delivery-method__inner">
@@ -393,12 +466,12 @@
 				</div>
 
 				<div class="devhub-delivery-method__options" role="radiogroup" aria-label="${ escapeHtml( messages.title || 'Your Delivery Method' ) }">
-					<button type="button" class="devhub-delivery-method__option ${ method === 'pickup' ? 'is-active' : '' } ${ ! locations.length ? 'is-disabled' : '' }" data-method="pickup" aria-pressed="${ method === 'pickup' }" ${ ! locations.length ? 'disabled' : '' }>
+					<button type="button" class="devhub-delivery-method__option ${ method === 'pickup' ? 'is-active' : '' } ${ pickupDisabled ? 'is-disabled' : '' }" data-method="pickup" aria-pressed="${ method === 'pickup' }" ${ pickupDisabled ? 'disabled aria-disabled="true"' : '' }>
 						<span class="devhub-delivery-method__option-title">${ escapeHtml( messages.pickupLabel || 'Pick Up at Store' ) }</span>
 						<span class="devhub-delivery-method__option-copy">${ escapeHtml( messages.pickupHint || 'Collect from a Hutch service location.' ) }</span>
 					</button>
 
-					<button type="button" class="devhub-delivery-method__option ${ method === 'home_delivery' ? 'is-active' : '' }" data-method="home_delivery" aria-pressed="${ method === 'home_delivery' }">
+					<button type="button" class="devhub-delivery-method__option ${ method === 'home_delivery' ? 'is-active' : '' } ${ isProcessing ? 'is-disabled' : '' }" data-method="home_delivery" aria-pressed="${ method === 'home_delivery' }" ${ isProcessing ? 'disabled aria-disabled="true"' : '' }>
 						<span class="devhub-delivery-method__option-title">${ escapeHtml( messages.deliveryLabel || 'Home Delivery' ) }</span>
 						<span class="devhub-delivery-method__option-copy">${ escapeHtml( messages.deliveryHint || 'Delivery via courier to the billing address.' ) }</span>
 					</button>
@@ -411,7 +484,7 @@
 					<div class="devhub-delivery-method__store-list">
 						${ ! locations.length ? `<p class="devhub-delivery-method__empty">${ escapeHtml( messages.pickupUnavailable || 'Pickup is currently unavailable.' ) }</p>` : '' }
 						${ locations.map( ( location ) => `
-							<button type="button" class="devhub-delivery-method__store ${ pickupStore === location.value ? 'is-active' : '' }" data-store="${ escapeHtml( location.value ) }" aria-pressed="${ pickupStore === location.value }">
+							<button type="button" class="devhub-delivery-method__store ${ pickupStore === location.value ? 'is-active' : '' } ${ isProcessing ? 'is-disabled' : '' }" data-store="${ escapeHtml( location.value ) }" aria-pressed="${ pickupStore === location.value }" ${ isProcessing ? 'disabled aria-disabled="true"' : '' }>
 								<span class="devhub-delivery-method__store-indicator" aria-hidden="true"></span>
 								<span class="devhub-delivery-method__store-content">
 									<span class="devhub-delivery-method__store-name">${ escapeHtml( location.name ) }</span>
@@ -430,6 +503,10 @@
 
 		mountNode.querySelectorAll( '[data-method]' ).forEach( ( button ) => {
 			button.addEventListener( 'click', () => {
+				if ( isProcessing || button.disabled ) {
+					return;
+				}
+
 				const nextMethod = button.getAttribute( 'data-method' );
 
 				if ( ! isValidMethod( nextMethod ) ) {
@@ -444,6 +521,10 @@
 
 		mountNode.querySelectorAll( '[data-store]' ).forEach( ( button ) => {
 			button.addEventListener( 'click', () => {
+				if ( isProcessing || button.disabled ) {
+					return;
+				}
+
 				const nextStore = button.getAttribute( 'data-store' ) || '';
 
 				patchAdditionalFields( {
@@ -455,6 +536,7 @@
 
 		enhancePlaceOrderButton();
 		enhanceCouponButton();
+		enhanceEmptyCheckoutButton();
 		enhanceCouponInput();
 		enhanceContactInput();
 		expandAddressLineTwo();
@@ -514,6 +596,7 @@
 			render();
 			enhancePlaceOrderButton();
 			enhanceCouponButton();
+			enhanceEmptyCheckoutButton();
 			enhanceCouponInput();
 			enhanceContactInput();
 			expandAddressLineTwo();

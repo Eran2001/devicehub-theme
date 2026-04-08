@@ -633,6 +633,33 @@
   overflow: hidden;
 }
 
+.wc-block-checkout__sidebar
+  .wp-block-woocommerce-checkout-order-summary-block.devhub-checkout-card--disabled
+  .wc-block-components-checkout-order-summary,
+.wc-block-checkout__sidebar
+  .wp-block-woocommerce-checkout-order-summary-block.devhub-checkout-card--disabled
+  .wc-block-components-totals-wrapper,
+.wc-block-checkout__sidebar
+  .wp-block-woocommerce-checkout-order-summary-block.devhub-checkout-card--disabled
+  .wc-block-components-panel {
+  opacity: 0.6;
+}
+
+.wc-block-checkout__sidebar
+  .wp-block-woocommerce-checkout-order-summary-block.devhub-checkout-card--disabled
+  .wc-block-components-checkout-order-summary
+  *,
+.wc-block-checkout__sidebar
+  .wp-block-woocommerce-checkout-order-summary-block.devhub-checkout-card--disabled
+  .wc-block-components-totals-wrapper
+  *,
+.wc-block-checkout__sidebar
+  .wp-block-woocommerce-checkout-order-summary-block.devhub-checkout-card--disabled
+  .wc-block-components-panel
+  * {
+  pointer-events: none;
+}
+
 .wc-block-checkout__sidebar .wc-block-components-checkout-order-summary,
 .wc-block-checkout__sidebar .wc-block-components-totals-wrapper,
 .wc-block-checkout__sidebar .wc-block-components-panel {
@@ -724,8 +751,19 @@
   outline: none !important;
 }
 
+.wc-block-checkout-empty .wc-block-checkout-empty__description {
+  max-width: 68rem;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.wc-block-checkout-empty .wp-block-button {
+  margin-top: 0.5rem;
+}
+
 /* Place Order button */
-.wc-block-components-checkout-place-order-button.wc-block-components-button {
+.wc-block-components-checkout-place-order-button.wc-block-components-button,
+.wc-block-checkout-empty .wp-block-button__link.devhub-empty-checkout-button {
   display: inline-block !important;
   vertical-align: middle !important;
   overflow: hidden !important;
@@ -789,6 +827,12 @@
   margin-right: 0;
 }
 
+.wc-block-checkout-empty .wp-block-button__link.devhub-empty-checkout-button
+  i.fa-arrow-right {
+  margin-left: 0.4rem;
+  margin-right: 0;
+}
+
 .wp-block-woocommerce-checkout-order-summary-coupon-form-block
   .wc-block-components-totals-coupon__button
   i.fa-arrow-right {
@@ -796,7 +840,9 @@
   margin-right: 0;
 }
 
-.wc-block-components-checkout-place-order-button.wc-block-components-button:hover {
+.wc-block-components-checkout-place-order-button.wc-block-components-button:hover,
+.wc-block-checkout-empty
+  .wp-block-button__link.devhub-empty-checkout-button:hover {
   background-color: rgba(var(--wf-main-rgb), 0.9) !important;
   border-color: rgba(var(--wf-main-rgb), 0.9) !important;
   color: #fff !important;
@@ -842,7 +888,13 @@
 
 .wc-block-components-checkout-place-order-button.wc-block-components-button:focus,
 .wc-block-components-checkout-place-order-button.wc-block-components-button:focus-visible,
-.wc-block-components-checkout-place-order-button.wc-block-components-button:active {
+.wc-block-components-checkout-place-order-button.wc-block-components-button:active,
+.wc-block-checkout-empty
+  .wp-block-button__link.devhub-empty-checkout-button:focus,
+.wc-block-checkout-empty
+  .wp-block-button__link.devhub-empty-checkout-button:focus-visible,
+.wc-block-checkout-empty
+  .wp-block-button__link.devhub-empty-checkout-button:active {
   outline: none !important;
   box-shadow: none !important;
 }
@@ -859,6 +911,10 @@
 
 .btn--effect-six
   .wc-block-components-checkout-place-order-button.wc-block-components-button
+  span,
+.btn--effect-six
+  .wc-block-checkout-empty
+  .wp-block-button__link.devhub-empty-checkout-button
   span {
   display: inline-block;
   pointer-events: none;
@@ -866,6 +922,10 @@
 
 .btn--effect-six
   .wc-block-components-checkout-place-order-button.wc-block-components-button
+  span.text-spin,
+.btn--effect-six
+  .wc-block-checkout-empty
+  .wp-block-button__link.devhub-empty-checkout-button
   span.text-spin {
   -webkit-animation: text-spin 0.5s 1;
   animation: text-spin 0.5s 1;
@@ -893,6 +953,14 @@
   border: 1px solid #e8e8e8;
   border-radius: 12px;
   background: #fff;
+}
+
+.devhub-delivery-method.devhub-delivery-method--disabled .devhub-delivery-method__inner {
+  opacity: 0.6;
+}
+
+.devhub-delivery-method.devhub-delivery-method--disabled .devhub-delivery-method__inner * {
+  pointer-events: none;
 }
 
 .devhub-delivery-method__title,
@@ -1194,6 +1262,11 @@
   border-color: var(--devhub-primary);
   background: #fff9f5;
   box-shadow: inset 0 0 0 1px var(--devhub-primary);
+}
+
+.devhub-delivery-method__store.is-disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
 }
 
 .devhub-delivery-method__store-indicator {

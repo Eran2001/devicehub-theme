@@ -4,6 +4,7 @@
 	const COUPON_BUTTON_SELECTOR = '.wc-block-cart__sidebar .wc-block-components-totals-coupon__button';
 	const COUPON_INPUT_SELECTOR = '.wc-block-cart__sidebar .wc-block-components-totals-coupon__input input';
 	const CHECKOUT_BUTTON_SELECTOR = '.wc-block-cart__submit-button.wc-block-components-button';
+	const PRODUCT_CARD_BUTTON_SELECTOR = '.wc-block-cart .wc-block-components-product-button__button.add_to_cart_button';
 
 	function bindEffectSixButton( button ) {
 		if ( ! button || button.dataset.devhubEffectSixBound === 'true' ) {
@@ -67,20 +68,7 @@
 			return;
 		}
 
-		const text = ( button.textContent || button.getAttribute( 'aria-label' ) || 'Apply' ).trim();
-		const desiredHtml = `${ text }<i class="fas fa-arrow-right" aria-hidden="true"></i>`;
-
-		button.classList.add( 'wf-btn', 'wf-btn-primary', 'devhub-cart-coupon-button' );
-
-		if ( button.dataset.devhubOriginalHtml !== desiredHtml ) {
-			button.dataset.devhubOriginalHtml = desiredHtml;
-		}
-
-		if ( ! button.classList.contains( 'mouseover' ) && button.innerHTML !== desiredHtml ) {
-			button.innerHTML = desiredHtml;
-		}
-
-		bindEffectSixButton( button );
+		enhanceActionButton( button, 'devhub-cart-coupon-button', 'Apply' );
 	}
 
 	function enhanceCheckoutButton() {
@@ -90,27 +78,48 @@
 			return;
 		}
 
-		const text = ( button.textContent || button.getAttribute( 'aria-label' ) || 'Proceed to Checkout' ).trim();
+		enhanceActionButton( button, 'devhub-cart-submit-button', 'Proceed to Checkout' );
+	}
+
+	function enhanceActionButton( button, customClass, fallbackText ) {
+		if ( ! button ) {
+			return;
+		}
+
+		const text = ( button.textContent || button.getAttribute( 'aria-label' ) || fallbackText ).trim();
 		const desiredHtml = `${ text }<i class="fas fa-arrow-right" aria-hidden="true"></i>`;
 
-		button.classList.add( 'wf-btn', 'wf-btn-primary', 'devhub-cart-submit-button' );
+		button.classList.add( 'wf-btn', 'wf-btn-primary', customClass );
 
 		if ( button.dataset.devhubOriginalHtml !== desiredHtml ) {
 			button.dataset.devhubOriginalHtml = desiredHtml;
 		}
 
-		if ( ! button.classList.contains( 'mouseover' ) && button.innerHTML !== desiredHtml ) {
+		if (
+			! button.classList.contains( 'mouseover' ) &&
+			! button.className.includes( 'loading' ) &&
+			button.innerHTML !== desiredHtml
+		) {
 			button.innerHTML = desiredHtml;
 		}
 
 		bindEffectSixButton( button );
 	}
 
+	function enhanceProductCardButtons() {
+		document.querySelectorAll( PRODUCT_CARD_BUTTON_SELECTOR ).forEach( ( button ) => {
+			button.closest( '.wp-block-button' )?.classList.add( 'btn--effect-six' );
+			enhanceActionButton( button, 'devhub-cart-product-button', 'Add to cart' );
+		} );
+	}
+
 	function scheduleEnhance() {
 		window.setTimeout( enhanceCouponButton, 0 );
 		window.setTimeout( enhanceCheckoutButton, 0 );
+		window.setTimeout( enhanceProductCardButtons, 0 );
 		window.setTimeout( enhanceCouponButton, 120 );
 		window.setTimeout( enhanceCheckoutButton, 120 );
+		window.setTimeout( enhanceProductCardButtons, 120 );
 	}
 
 	if ( document.readyState === 'loading' ) {
@@ -122,7 +131,8 @@
 	document.addEventListener( 'click', ( event ) => {
 		if (
 			event.target.closest( '.wc-block-components-panel__button' ) ||
-			event.target.closest( COUPON_BUTTON_SELECTOR )
+			event.target.closest( COUPON_BUTTON_SELECTOR ) ||
+			event.target.closest( PRODUCT_CARD_BUTTON_SELECTOR )
 		) {
 			scheduleEnhance();
 		}
