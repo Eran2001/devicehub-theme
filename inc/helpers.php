@@ -189,7 +189,8 @@ function devhub_get_product_color_options(WC_Product $product): array
         return [];
     }
 
-    $color_slugs = wc_get_product_terms($product->get_id(), 'pa_color', ['fields' => 'slugs']);
+    $variation_attributes = $product->get_variation_attributes();
+    $color_slugs = $variation_attributes['pa_color'] ?? [];
     if (empty($color_slugs) || is_wp_error($color_slugs)) {
         return [];
     }

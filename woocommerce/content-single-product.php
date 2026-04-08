@@ -27,9 +27,7 @@ if (!$product)
 $is_variable = $product->is_type('variable');
 $attributes = $product->get_attributes();
 $variation_attributes = $is_variable ? $product->get_variation_attributes() : [];
-$storage_slugs = ($is_variable && isset($attributes['pa_storage']))
-    ? wc_get_product_terms($product->get_id(), 'pa_storage', ['fields' => 'slugs'])
-    : [];
+$storage_slugs = $variation_attributes['pa_storage'] ?? [];
 
 $colors = devhub_get_product_color_options($product);
 
@@ -49,6 +47,7 @@ if ($is_variable) {
             'id' => $v['variation_id'],
             'attributes' => $v['attributes'],
             'price' => $v['display_price'],
+            'price_html' => $v['price_html'] ?? wc_price((float) $v['display_price']),
             'in_stock' => $v['is_in_stock'],
         ];
     }, $product->get_available_variations());

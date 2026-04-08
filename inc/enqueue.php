@@ -108,7 +108,10 @@ function devhub_enqueue_styles(): void
             .devhub-single__price--range .woocommerce-Price-amount,
             .devhub-single__price--range .woocommerce-Price-amount bdi,
             .devhub-single__price--range .woocommerce-Price-amount bdi * { font-size: var(--devhub-text-4xl) !important; font-weight: 800 !important; }
-            .devhub-single__price .price del { font-size: 30px !important; font-weight: 600 !important; opacity: 0.75; text-decoration: line-through !important; }
+            .devhub-single__price del,
+            .devhub-single__price del .woocommerce-Price-amount,
+            .devhub-single__price del .woocommerce-Price-amount bdi,
+            .devhub-single__price del .woocommerce-Price-amount bdi * { font-size: 1.6rem !important; font-weight: 600 !important; opacity: 0.75; text-decoration: line-through !important; }
             .devhub-single__price > .woocommerce-Price-amount,
             .devhub-single__price > .woocommerce-Price-amount bdi,
             .devhub-single__price > .woocommerce-Price-amount bdi * { font-size: var(--devhub-text-4xl) !important; font-weight: 800 !important; }

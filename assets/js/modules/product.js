@@ -12,6 +12,7 @@
     devhubInitGallery();
     devhubInitColorSwatches();
     devhubInitStorageOptions();
+    devhubResolveVariation();
     devhubInitBundleCarousel();
     devhubInitPaymentCarousel();
     devhubInitBuyNow();
@@ -178,12 +179,25 @@
 
     swatches.forEach(function (swatch) {
       swatch.addEventListener("click", function () {
+        if (swatch.disabled || swatch.classList.contains("devhub-single__color-swatch--disabled")) {
+          return;
+        }
+
+        var isActive = swatch.classList.contains("devhub-single__color-swatch--active");
+        var input = document.getElementById("devhubAttr_pa_color");
+
+        if (isActive) {
+          swatch.classList.remove("devhub-single__color-swatch--active");
+          if (input) input.value = "";
+          devhubResolveVariation();
+          return;
+        }
+
         swatches.forEach(function (s) {
           s.classList.remove("devhub-single__color-swatch--active");
         });
         swatch.classList.add("devhub-single__color-swatch--active");
 
-        var input = document.getElementById("devhubAttr_pa_color");
         if (input) input.value = swatch.getAttribute("data-value");
 
         devhubResolveVariation();
@@ -204,12 +218,25 @@
 
     btns.forEach(function (btn) {
       btn.addEventListener("click", function () {
+        if (btn.disabled || btn.classList.contains("devhub-single__storage-btn--disabled")) {
+          return;
+        }
+
+        var isActive = btn.classList.contains("devhub-single__storage-btn--active");
+        var input = document.getElementById("devhubAttr_pa_storage");
+
+        if (isActive) {
+          btn.classList.remove("devhub-single__storage-btn--active");
+          if (input) input.value = "";
+          devhubResolveVariation();
+          return;
+        }
+
         btns.forEach(function (b) {
           b.classList.remove("devhub-single__storage-btn--active");
         });
         btn.classList.add("devhub-single__storage-btn--active");
 
-        var input = document.getElementById("devhubAttr_pa_storage");
         if (input) input.value = btn.getAttribute("data-value");
 
         devhubResolveVariation();
@@ -220,6 +247,50 @@
     if (btns.length === 1) {
       btns[0].click();
     }
+  }
+
+  function devhubUpdateOptionAvailability(variations, selectedColor, selectedStorage) {
+    var swatches = document.querySelectorAll(".devhub-single__color-swatch");
+    var storageBtns = document.querySelectorAll(".devhub-single__storage-btn");
+    var colorInput = document.getElementById("devhubAttr_pa_color");
+    var storageInput = document.getElementById("devhubAttr_pa_storage");
+
+    function hasMatchingVariation(color, storage) {
+      for (var i = 0; i < variations.length; i++) {
+        var v = variations[i];
+        var attr = v.attributes || {};
+        var colorOk = !color || attr["attribute_pa_color"] === color;
+        var storageOk = !storage || attr["attribute_pa_storage"] === storage;
+        if (colorOk && storageOk) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    swatches.forEach(function (swatch) {
+      var swatchColor = swatch.getAttribute("data-value");
+      var enabled = hasMatchingVariation(swatchColor, selectedStorage);
+      swatch.disabled = !enabled;
+      swatch.classList.toggle("devhub-single__color-swatch--disabled", !enabled);
+
+      if (!enabled && swatch.classList.contains("devhub-single__color-swatch--active")) {
+        swatch.classList.remove("devhub-single__color-swatch--active");
+        if (colorInput) colorInput.value = "";
+      }
+    });
+
+    storageBtns.forEach(function (btn) {
+      var storageValue = btn.getAttribute("data-value");
+      var enabled = hasMatchingVariation(selectedColor, storageValue);
+      btn.disabled = !enabled;
+      btn.classList.toggle("devhub-single__storage-btn--disabled", !enabled);
+
+      if (!enabled && btn.classList.contains("devhub-single__storage-btn--active")) {
+        btn.classList.remove("devhub-single__storage-btn--active");
+        if (storageInput) storageInput.value = "";
+      }
+    });
   }
 
   // ── Variation resolver ────────────────────────────────────────────────────
@@ -239,9 +310,42 @@
     var colorInput = document.getElementById("devhubAttr_pa_color");
     var storageInput = document.getElementById("devhubAttr_pa_storage");
     var varIdInput = document.getElementById("devhubVariationId");
+    var priceBox = document.querySelector(".devhub-single__price");
+    var stockBox = document.querySelector(".devhub-single__stock");
+    var cartForm = document.querySelector(".devhub-single__cart-form");
 
     var selectedColor = colorInput ? colorInput.value : "";
     var selectedStorage = storageInput ? storageInput.value : "";
+
+    function normalizePriceHtml(html) {
+      if (!html) return html;
+
+      var temp = document.createElement("div");
+      temp.innerHTML = html;
+
+      if (
+        temp.childElementCount === 1 &&
+        temp.firstElementChild &&
+        temp.firstElementChild.classList &&
+        temp.firstElementChild.classList.contains("price")
+      ) {
+        return temp.firstElementChild.innerHTML;
+      }
+
+      return html;
+    }
+
+    if (priceBox && !el.dataset.basePriceHtml) {
+      el.dataset.basePriceHtml = priceBox.innerHTML;
+    }
+    if (stockBox && !el.dataset.baseStockHtml) {
+      el.dataset.baseStockHtml = stockBox.innerHTML;
+    }
+
+    devhubUpdateOptionAvailability(variations, selectedColor, selectedStorage);
+
+    selectedColor = colorInput ? colorInput.value : "";
+    selectedStorage = storageInput ? storageInput.value : "";
 
     var match = null;
     for (var i = 0; i < variations.length; i++) {
@@ -259,7 +363,39 @@
       }
     }
 
-    if (match && varIdInput) varIdInput.value = match.id;
+    if (match) {
+      if (varIdInput) varIdInput.value = match.id;
+      if (priceBox && match.price_html) {
+        priceBox.innerHTML = normalizePriceHtml(match.price_html);
+      }
+      if (stockBox) {
+        stockBox.classList.remove("devhub-single__stock--in", "devhub-single__stock--out");
+        stockBox.classList.add(match.in_stock ? "devhub-single__stock--in" : "devhub-single__stock--out");
+        stockBox.innerHTML =
+          '<span class="devhub-single__stock-dot" aria-hidden="true"></span>' +
+          (match.in_stock ? "In stock" : "Out of stock");
+      }
+      return;
+    }
+
+    if (varIdInput) varIdInput.value = "";
+    if (priceBox && el.dataset.basePriceHtml) {
+      priceBox.innerHTML = el.dataset.basePriceHtml;
+    }
+    if (stockBox && el.dataset.baseStockHtml) {
+      stockBox.innerHTML = el.dataset.baseStockHtml;
+      stockBox.classList.remove("devhub-single__stock--in", "devhub-single__stock--out");
+      stockBox.classList.add(el.dataset.baseStockHtml.indexOf("Out of stock") !== -1 ? "devhub-single__stock--out" : "devhub-single__stock--in");
+    }
+
+    if (cartForm && !cartForm.dataset.devhubVariationGuardBound) {
+      cartForm.dataset.devhubVariationGuardBound = "true";
+      cartForm.addEventListener("submit", function (event) {
+        if (!varIdInput || varIdInput.value) return;
+        event.preventDefault();
+        window.alert("Please select an available color and storage combination.");
+      });
+    }
   }
 
   // ── Bundle carousel ───────────────────────────────────────────────────────

@@ -221,10 +221,12 @@
 }
 
 .devhub-single__price .price {
-  display: flex;
-  align-items: baseline;
+  display: inline-flex;
+  align-items: center;
   gap: 12px;
   flex-wrap: wrap;
+  margin: 0;
+  line-height: 1;
 }
 
 .devhub-single__price ins {
@@ -252,16 +254,19 @@
   color: var(--devhub-primary) !important;
 }
 
-.devhub-single__price .price del {
-  font-size: 1.9rem !important;
+.devhub-single__price del {
+  font-size: 1.6rem !important;
   font-weight: 600;
   color: var(--devhub-mid);
   opacity: 0.8;
   text-decoration: line-through;
 }
 
-.devhub-single__price .price del .woocommerce-Price-amount {
-  font-size: 1.9rem !important;
+.devhub-single__price del .woocommerce-Price-amount,
+.devhub-single__price del .woocommerce-Price-amount bdi,
+.devhub-single__price del .woocommerce-Price-amount bdi * {
+  font-size: 1.6rem !important;
+  line-height: 1;
 }
 
 /* Non-sale price (no del/ins wrapper) */
@@ -271,6 +276,12 @@
   font-size: var(--devhub-text-4xl) !important;
   font-weight: 800 !important;
   color: var(--devhub-primary) !important;
+}
+
+.devhub-single__price .price .woocommerce-Price-amount,
+.devhub-single__price .price .woocommerce-Price-amount bdi,
+.devhub-single__price .price .woocommerce-Price-amount bdi * {
+  line-height: 1;
 }
 
 .devhub-single__stock {
@@ -363,6 +374,12 @@
   color: var(--devhub-white);
 }
 
+.devhub-single__color-swatch--disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  outline-color: transparent;
+}
+
 /* Storage */
 .devhub-single__storage-options {
   display: flex;
@@ -388,6 +405,13 @@
 .devhub-single__storage-btn--active {
   border-color: var(--devhub-primary);
   color: var(--devhub-primary);
+}
+
+.devhub-single__storage-btn--disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  border-color: rgba(228, 231, 236, 0.95);
+  color: var(--devhub-light);
 }
 
 /* Bundle carousel */

@@ -43,6 +43,7 @@ if ($is_variable) {
             'id' => $v['variation_id'],
             'attributes' => $v['attributes'],
             'price' => $v['display_price'],
+            'price_html' => $v['price_html'] ?? wc_price((float) $v['display_price']),
             'in_stock' => $v['is_in_stock'],
         ];
     }, $product->get_available_variations());
