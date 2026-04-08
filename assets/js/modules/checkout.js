@@ -13,6 +13,11 @@
 	const DELIVERY_ERROR_KEY = 'devhub-pickup-store';
 	const PLACE_ORDER_SELECTOR = '.wc-block-components-checkout-place-order-button';
 	const ORDER_SUMMARY_SELECTOR = '.wc-block-checkout__sidebar .wp-block-woocommerce-checkout-order-summary-block';
+	const CHECKOUT_SIDEBAR_SELECTOR = '.wc-block-checkout__sidebar';
+	const ORDER_NOTE_PLACEHOLDER_SELECTOR = '.devhub-checkout-order-note-placeholder';
+	const PAYMENT_STEP_SELECTOR = '.wp-block-woocommerce-checkout-payment-block';
+	const PAYMENT_PLACEHOLDER_SELECTOR = '.devhub-checkout-payment-placeholder';
+	const SIDEBAR_RELOCATION_CLASS = 'devhub-checkout--sidebar-relocation';
 	const EMPTY_CHECKOUT_BUTTON_SELECTOR = '.wc-block-checkout-empty .wp-block-button__link';
 	const COUPON_BUTTON_SELECTOR = '.wp-block-woocommerce-checkout-order-summary-coupon-form-block .wc-block-components-totals-coupon__button';
 	const COUPON_INPUT_SELECTOR = '.wp-block-woocommerce-checkout-order-summary-coupon-form-block .wc-block-components-totals-coupon__input input';
@@ -23,12 +28,14 @@
 	const NATIVE_PICKUP_STEP_SELECTOR = '.wc-block-checkout__pickup-options';
 	const NATIVE_PICKUP_OPTION_SELECTOR = '.wc-block-checkout__pickup-options .wc-block-components-radio-control__option';
 	const NATIVE_PICKUP_INPUT_SELECTOR = '.wc-block-checkout__pickup-options input[type="radio"]';
+	const DESKTOP_SIDEBAR_MEDIA = '(min-width: 782px)';
 
 	const state = {};
 
 	let root = null;
 	let unsubscribe = null;
 	let lastSignature = '';
+	let hasBoundViewportListener = false;
 
 	function getCheckoutStore() {
 		return window.wp?.data?.select?.( CHECKOUT_STORE_KEY ) || null;
@@ -395,7 +402,150 @@
 		} );
 	}
 
+	function shouldUseCheckoutSidebar() {
+		return typeof window.matchMedia !== 'function' || window.matchMedia( DESKTOP_SIDEBAR_MEDIA ).matches;
+	}
+
+	function isElementVisible( element ) {
+		return !! ( element && ( element.offsetParent !== null || element.getClientRects().length ) );
+	}
+
+	function getVisibleOrderSummaryBlock() {
+		const blocks = Array.from(
+			document.querySelectorAll( '.wp-block-woocommerce-checkout-order-summary-block' )
+		);
+
+		return blocks.find( ( block ) => isElementVisible( block ) ) || blocks[ 0 ] || null;
+	}
+
+	function syncSidebarRelocationState() {
+		if ( ! document.body ) {
+			return;
+		}
+
+		document.body.classList.toggle(
+			SIDEBAR_RELOCATION_CLASS,
+			!! document.querySelector( '.wc-block-checkout, .wp-block-woocommerce-checkout' ) && shouldUseCheckoutSidebar()
+		);
+	}
+
+	function findOrderNoteStep() {
+		const candidates = Array.from(
+			document.querySelectorAll(
+				'.wc-block-components-checkout-step, .wp-block-woocommerce-checkout-order-note-block, .wc-block-checkout__additional-fields'
+			)
+		);
+
+		return candidates.find( ( candidate ) => {
+			if ( ! candidate || candidate === root ) {
+				return false;
+			}
+
+			const headingText = normalizeText(
+				candidate.querySelector( '.wc-block-components-checkout-step__title, .wc-block-components-checkbox__label' )?.textContent || ''
+			);
+			const textarea = candidate.querySelector( 'textarea' );
+			const placeholderText = normalizeText( textarea?.getAttribute( 'placeholder' ) || '' );
+
+			return (
+				headingText.includes( 'add a note to your order' ) ||
+				placeholderText.includes( 'notes about your order' )
+			);
+		} ) || null;
+	}
+
+	function ensureOrderNotePlaceholder( noteStep ) {
+		if ( ! noteStep || ! noteStep.parentElement ) {
+			return null;
+		}
+
+		let placeholder = document.querySelector( ORDER_NOTE_PLACEHOLDER_SELECTOR );
+
+		if ( placeholder ) {
+			return placeholder;
+		}
+
+		placeholder = document.createElement( 'div' );
+		placeholder.className = 'devhub-checkout-order-note-placeholder';
+		placeholder.hidden = true;
+		noteStep.parentElement.insertBefore( placeholder, noteStep );
+
+		return placeholder;
+	}
+
+	function ensurePaymentPlaceholder( paymentStep ) {
+		if ( ! paymentStep || ! paymentStep.parentElement ) {
+			return null;
+		}
+
+		let placeholder = document.querySelector( PAYMENT_PLACEHOLDER_SELECTOR );
+
+		if ( placeholder ) {
+			return placeholder;
+		}
+
+		placeholder = document.createElement( 'div' );
+		placeholder.className = 'devhub-checkout-payment-placeholder';
+		placeholder.hidden = true;
+		paymentStep.parentElement.insertBefore( placeholder, paymentStep );
+
+		return placeholder;
+	}
+
+	function moveOrderNoteStep() {
+		const noteStep = findOrderNoteStep();
+		if ( ! noteStep ) {
+			return;
+		}
+
+		const placeholder = ensureOrderNotePlaceholder( noteStep );
+		const orderSummary = getVisibleOrderSummaryBlock();
+		const targetParent = orderSummary?.parentElement || null;
+
+		noteStep.classList.add( 'devhub-checkout-order-note-step' );
+
+		if ( orderSummary && targetParent ) {
+			if ( noteStep.parentElement !== targetParent || noteStep.previousElementSibling !== orderSummary ) {
+				orderSummary.insertAdjacentElement( 'afterend', noteStep );
+			}
+			return;
+		}
+
+		if ( placeholder?.parentElement && noteStep.previousElementSibling !== placeholder ) {
+			placeholder.insertAdjacentElement( 'afterend', noteStep );
+		}
+	}
+
+	function movePaymentStep() {
+		const paymentStep = document.querySelector( PAYMENT_STEP_SELECTOR );
+		if ( ! paymentStep ) {
+			return;
+		}
+
+		const placeholder = ensurePaymentPlaceholder( paymentStep );
+		const orderSummary = getVisibleOrderSummaryBlock();
+		const noteStep = document.querySelector( '.devhub-checkout-order-note-step' );
+		const targetParent = orderSummary?.parentElement || null;
+
+		paymentStep.classList.add( 'devhub-checkout-payment-step' );
+
+		if ( orderSummary && targetParent ) {
+			const anchor = noteStep || orderSummary;
+
+			if ( anchor && ( paymentStep.parentElement !== targetParent || paymentStep.previousElementSibling !== anchor ) ) {
+				anchor.insertAdjacentElement( 'afterend', paymentStep );
+			}
+			return;
+		}
+
+		if ( placeholder?.parentElement && paymentStep.previousElementSibling !== placeholder ) {
+			placeholder.insertAdjacentElement( 'afterend', paymentStep );
+		}
+	}
+
 	function render() {
+		syncSidebarRelocationState();
+
 		if ( ! syncDefaults() ) {
 			return;
 		}
@@ -509,6 +659,8 @@
 		enhanceCouponInput();
 		enhanceContactInput();
 		expandAddressLineTwo();
+		moveOrderNoteStep();
+		movePaymentStep();
 	}
 
 	function relabelAddressBlocks() {
@@ -549,6 +701,7 @@
 			return;
 		}
 
+		syncSidebarRelocationState();
 		render();
 		enhancePlaceOrderButton();
 		enhanceCouponButton();
@@ -556,6 +709,17 @@
 		enhanceContactInput();
 		expandAddressLineTwo();
 		relabelAddressBlocks();
+		moveOrderNoteStep();
+		movePaymentStep();
+
+		if ( ! hasBoundViewportListener ) {
+			hasBoundViewportListener = true;
+			window.addEventListener( 'resize', () => {
+				syncSidebarRelocationState();
+				moveOrderNoteStep();
+				movePaymentStep();
+			}, { passive: true } );
+		}
 
 		if ( unsubscribe ) {
 			return;
@@ -570,8 +734,12 @@
 			enhanceContactInput();
 			expandAddressLineTwo();
 			relabelAddressBlocks();
+			moveOrderNoteStep();
+			movePaymentStep();
 		} );
 	}
+
+	syncSidebarRelocationState();
 
 	if ( document.readyState === 'loading' ) {
 		document.addEventListener( 'DOMContentLoaded', boot );
