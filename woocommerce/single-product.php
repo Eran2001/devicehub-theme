@@ -104,6 +104,49 @@ if (empty($thumb_imgs))
     $thumb_imgs = [$placeholder_img, $placeholder_img, $placeholder_img];
 $payment_methods = function_exists('devhub_get_payment_method_display_data') ? devhub_get_payment_method_display_data() : [];
 
+$has_feature_content = static function (string $html): bool {
+    return trim(wp_strip_all_tags($html)) !== '';
+};
+
+$features_sections = [];
+$description_html = (string) $product->get_description();
+$terms_html = (string) get_post_meta($product->get_id(), 'dh_terms', true);
+$warranty_html = (string) get_post_meta($product->get_id(), 'dh_warranty', true);
+$returns_html = (string) get_post_meta($product->get_id(), 'dh_returns', true);
+
+if ($has_feature_content($description_html)) {
+    $features_sections[] = [
+        'title' => __('Description', 'devicehub-theme'),
+        'content' => $description_html,
+    ];
+}
+
+if ($has_feature_content($terms_html)) {
+    $features_sections[] = [
+        'title' => __('Terms & Conditions', 'devicehub-theme'),
+        'content' => $terms_html,
+    ];
+}
+
+if ($has_feature_content($warranty_html)) {
+    $features_sections[] = [
+        'title' => __('Warranty Information', 'devicehub-theme'),
+        'content' => $warranty_html,
+    ];
+}
+
+if ($has_feature_content($returns_html)) {
+    $features_sections[] = [
+        'title' => __('Return Policy / Support / Service Info', 'devicehub-theme'),
+        'content' => $returns_html,
+    ];
+}
+
+$has_features_tab = !empty($features_sections);
+$has_specs_tab = !empty($quick_stats) || !empty($specs);
+$features_is_active = $has_features_tab;
+$specs_is_active = !$has_features_tab && $has_specs_tab;
+
 // ── 2. Markup ─────────────────────────────────────────────────────────────────
 ?>
 
@@ -316,59 +359,82 @@ $payment_methods = function_exists('devhub_get_payment_method_display_data') ? d
         </div><!-- /.devhub-single__layout -->
 
         <!-- ── Tabs ──────────────────────────────────────────────────────── -->
-        <div class="devhub-single__tabs">
+        <?php if ($has_features_tab || $has_specs_tab): ?>
+            <div class="devhub-single__tabs">
 
-            <div class="devhub-single__tab-nav" role="tablist">
-                <button class="devhub-single__tab-btn" role="tab" aria-selected="false"
-                    aria-controls="devhubTabFeatures" data-tab="features">
-                    <?php esc_html_e('Features', 'devicehub-theme'); ?>
-                </button>
-                <button class="devhub-single__tab-btn devhub-single__tab-btn--active" role="tab" aria-selected="true"
-                    aria-controls="devhubTabSpecs" data-tab="specs">
-                    <?php esc_html_e('Specifications', 'devicehub-theme'); ?>
-                </button>
-            </div>
-
-            <div class="devhub-single__tab-panel" id="devhubTabFeatures" role="tabpanel" hidden>
-                <div class="devhub-single__features-content">
-                    <?php echo wp_kses_post($product->get_description()); ?>
+                <div class="devhub-single__tab-nav" role="tablist">
+                    <?php if ($has_features_tab): ?>
+                        <button class="devhub-single__tab-btn<?php echo $features_is_active ? ' devhub-single__tab-btn--active' : ''; ?>"
+                            role="tab"
+                            aria-selected="<?php echo $features_is_active ? 'true' : 'false'; ?>"
+                            aria-controls="devhubTabFeatures" data-tab="features">
+                            <?php esc_html_e('Features', 'devicehub-theme'); ?>
+                        </button>
+                    <?php endif; ?>
+                    <?php if ($has_specs_tab): ?>
+                        <button class="devhub-single__tab-btn<?php echo $specs_is_active ? ' devhub-single__tab-btn--active' : ''; ?>"
+                            role="tab"
+                            aria-selected="<?php echo $specs_is_active ? 'true' : 'false'; ?>"
+                            aria-controls="devhubTabSpecs" data-tab="specs">
+                            <?php esc_html_e('Specifications', 'devicehub-theme'); ?>
+                        </button>
+                    <?php endif; ?>
                 </div>
-            </div>
 
-            <div class="devhub-single__tab-panel devhub-single__tab-panel--active" id="devhubTabSpecs" role="tabpanel">
-
-                <?php if (!empty($quick_stats)): ?>
-                    <div class="devhub-single__quick-stats">
-                        <?php foreach ($quick_stats as $stat): ?>
-                            <div class="devhub-single__quick-stat">
-                                <span class="devhub-single__quick-stat-icon">
-                                    <i class="<?php echo esc_attr($stat['icon']); ?>" aria-hidden="true"></i>
-                                </span>
-                                <div class="devhub-single__quick-stat-text">
-                                    <span class="devhub-single__quick-stat-label"><?php echo esc_html($stat['label']); ?></span>
-                                    <span class="devhub-single__quick-stat-value"><?php echo esc_html($stat['value']); ?></span>
+                <?php if ($has_features_tab): ?>
+                    <div class="devhub-single__tab-panel<?php echo $features_is_active ? ' devhub-single__tab-panel--active' : ''; ?>"
+                        id="devhubTabFeatures" role="tabpanel"<?php echo $features_is_active ? '' : ' hidden'; ?>>
+                        <div class="devhub-single__feature-cards">
+                            <?php foreach ($features_sections as $section): ?>
+                                <div class="devhub-single__desc-card devhub-single__feature-card">
+                                    <h3 class="devhub-single__feature-title"><?php echo esc_html($section['title']); ?></h3>
+                                    <div class="devhub-single__features-content">
+                                        <?php echo wp_kses_post($section['content']); ?>
+                                    </div>
                                 </div>
-                            </div>
-                        <?php endforeach; ?>
+                            <?php endforeach; ?>
+                        </div>
                     </div>
                 <?php endif; ?>
 
-                <?php if (!empty($specs)): ?>
-                    <table class="devhub-single__specs-table">
-                        <tbody>
-                            <?php foreach ($specs as $spec): ?>
-                                <tr>
-                                    <td class="devhub-single__spec-label"><?php echo esc_html($spec['label']); ?></td>
-                                    <td class="devhub-single__spec-value"><?php echo esc_html($spec['value']); ?></td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
+                <?php if ($has_specs_tab): ?>
+                    <div class="devhub-single__tab-panel<?php echo $specs_is_active ? ' devhub-single__tab-panel--active' : ''; ?>"
+                        id="devhubTabSpecs" role="tabpanel"<?php echo $specs_is_active ? '' : ' hidden'; ?>>
+
+                        <?php if (!empty($quick_stats)): ?>
+                            <div class="devhub-single__quick-stats">
+                                <?php foreach ($quick_stats as $stat): ?>
+                                    <div class="devhub-single__quick-stat">
+                                        <span class="devhub-single__quick-stat-icon">
+                                            <i class="<?php echo esc_attr($stat['icon']); ?>" aria-hidden="true"></i>
+                                        </span>
+                                        <div class="devhub-single__quick-stat-text">
+                                            <span class="devhub-single__quick-stat-label"><?php echo esc_html($stat['label']); ?></span>
+                                            <span class="devhub-single__quick-stat-value"><?php echo esc_html($stat['value']); ?></span>
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        <?php endif; ?>
+
+                        <?php if (!empty($specs)): ?>
+                            <table class="devhub-single__specs-table">
+                                <tbody>
+                                    <?php foreach ($specs as $spec): ?>
+                                        <tr>
+                                            <td class="devhub-single__spec-label"><?php echo esc_html($spec['label']); ?></td>
+                                            <td class="devhub-single__spec-value"><?php echo esc_html($spec['value']); ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        <?php endif; ?>
+
+                    </div>
                 <?php endif; ?>
 
-            </div>
-
-        </div><!-- /.devhub-single__tabs -->
+            </div><!-- /.devhub-single__tabs -->
+        <?php endif; ?>
 
     </div><!-- /.wf-container -->
 </div><!-- /.devhub-single -->

@@ -51,14 +51,20 @@
 }
 
 @media (min-width: 700px) {
+  .wc-block-components-sidebar-layout.wc-block-checkout {
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+  }
+
   .wc-block-components-sidebar-layout .wc-block-components-main {
-    width: 62.5%;
+    width: 62.5% !important;
     padding-right: 2.1% !important;
   }
 
   .wc-block-components-sidebar-layout .wc-block-components-sidebar {
-    width: 37.5%;
+    width: 37.5% !important;
     padding-left: 0 !important;
+    display: block !important;
   }
 }
 
@@ -121,10 +127,10 @@
 
 /* Main checkout sections — align with account card styling */
 .wc-block-checkout__main .wc-block-components-checkout-step {
-  padding: 22px 24px;
-  border: 1px solid #e8e8e8;
-  border-radius: 12px;
-  background: #fff;
+  padding: 22px 24px !important;
+  border: 1px solid #e8e8e8 !important;
+  border-radius: 12px !important;
+  background: #fff !important;
 }
 
 .wc-block-checkout__main > .wc-block-components-checkout-step:first-child {

@@ -714,6 +714,22 @@
   padding: 2.4rem 2.8rem;
 }
 
+.devhub-single__feature-cards {
+  display: grid;
+  gap: 18px;
+}
+
+.devhub-single__feature-card {
+  background: var(--devhub-surface-elevated);
+}
+
+.devhub-single__feature-title {
+  font-size: var(--devhub-text-2xl);
+  font-weight: 700;
+  color: var(--devhub-black);
+  margin-bottom: 14px;
+}
+
 .devhub-single__features-content {
   font-size: var(--devhub-text-2xl);
   color: var(--devhub-dark);
@@ -722,6 +738,16 @@
 
 .devhub-single__features-content p + p {
   margin-top: 10px;
+}
+
+.devhub-single__features-content ul,
+.devhub-single__features-content ol {
+  margin: 12px 0 0 22px;
+  padding: 0;
+}
+
+.devhub-single__features-content li + li {
+  margin-top: 8px;
 }
 
 /* Quick stats */

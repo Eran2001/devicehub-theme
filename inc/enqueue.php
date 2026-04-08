@@ -122,7 +122,7 @@ function devhub_enqueue_styles(): void
 
     // ── Checkout ──────────────────────────────────────────────────────────────
     if (devhub_is_checkout_page()) {
-        devhub_style('devhub-checkout', '/checkout/devhub-checkout.css', ['devhub-style']);
+        devhub_style('devhub-checkout', '/checkout/devhub-checkout.css', ['devhub-style', 'wc-blocks-style', 'wc-blocks-packages-style']);
         if (!is_user_logged_in()) {
             devhub_style('devhub-account', '/account/devhub-account.css', ['devhub-style']);
         }
