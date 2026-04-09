@@ -293,6 +293,156 @@ function devhub_normalize_hex_color(string $value, string $fallback = '#cccccc')
 }
 
 /**
+ * Temporary fallback map for product color swatches when term meta is missing.
+ *
+ * Uses the color term slug/name so swatches stay testable until real
+ * Woo Variation Swatches data is present.
+ */
+function devhub_guess_color_hex(string $slug, string $name, string $fallback = '#cccccc'): string
+{
+    $normalize = static function (string $value): string {
+        $value = strtolower(trim($value));
+        $value = preg_replace('/[^a-z0-9]+/', ' ', $value) ?? '';
+
+        return trim(preg_replace('/\s+/', ' ', $value) ?? '');
+    };
+
+    $exact_map = [
+        'black' => '#2b2b2b',
+        'white' => '#f5f5f5',
+        'silver' => '#c0c0c0',
+        'gray' => '#9aa0a6',
+        'grey' => '#9aa0a6',
+        'space gray' => '#6e6e73',
+        'space grey' => '#6e6e73',
+        'graphite' => '#54565a',
+        'midnight' => '#2f3640',
+        'starlight' => '#f8e7c9',
+        'blue' => '#5b8def',
+        'sky blue' => '#87ceeb',
+        'navy' => '#274690',
+        'green' => '#6ea77a',
+        'mint' => '#a8d5ba',
+        'pink' => '#f4b6c2',
+        'purple' => '#8e6ccf',
+        'violet' => '#7d5ba6',
+        'cobalt violet' => '#6f63b8',
+        'gold' => '#d4af37',
+        'rose gold' => '#b76e79',
+        'red' => '#d64545',
+        'yellow' => '#f2c94c',
+        'coral' => '#ff7f50',
+        'lavender' => '#b8a9e0',
+        'titanium' => '#8f8f8c',
+        'natural titanium' => '#b8b3a8',
+        'blue titanium' => '#6c7a89',
+        'white titanium' => '#e5e4e2',
+        'black titanium' => '#3c3c3d',
+        'desert titanium' => '#b78b6a',
+    ];
+
+    $candidates = array_values(array_unique(array_filter([
+        $normalize($slug),
+        $normalize($name),
+    ])));
+
+    foreach ($candidates as $candidate) {
+        if (isset($exact_map[$candidate])) {
+            return $exact_map[$candidate];
+        }
+    }
+
+    foreach ($candidates as $candidate) {
+        if (str_contains($candidate, 'rose gold')) {
+            return $exact_map['rose gold'];
+        }
+        if (str_contains($candidate, 'natural titanium')) {
+            return $exact_map['natural titanium'];
+        }
+        if (str_contains($candidate, 'blue titanium')) {
+            return $exact_map['blue titanium'];
+        }
+        if (str_contains($candidate, 'white titanium')) {
+            return $exact_map['white titanium'];
+        }
+        if (str_contains($candidate, 'black titanium')) {
+            return $exact_map['black titanium'];
+        }
+        if (str_contains($candidate, 'desert titanium')) {
+            return $exact_map['desert titanium'];
+        }
+        if (str_contains($candidate, 'space gray') || str_contains($candidate, 'space grey')) {
+            return $exact_map['space gray'];
+        }
+        if (str_contains($candidate, 'cobalt violet')) {
+            return $exact_map['cobalt violet'];
+        }
+        if (str_contains($candidate, 'sky blue')) {
+            return $exact_map['sky blue'];
+        }
+        if (str_contains($candidate, 'graphite')) {
+            return $exact_map['graphite'];
+        }
+        if (str_contains($candidate, 'midnight')) {
+            return $exact_map['midnight'];
+        }
+        if (str_contains($candidate, 'starlight')) {
+            return $exact_map['starlight'];
+        }
+        if (str_contains($candidate, 'black')) {
+            return $exact_map['black'];
+        }
+        if (str_contains($candidate, 'white')) {
+            return $exact_map['white'];
+        }
+        if (str_contains($candidate, 'silver')) {
+            return $exact_map['silver'];
+        }
+        if (str_contains($candidate, 'gray') || str_contains($candidate, 'grey')) {
+            return $exact_map['gray'];
+        }
+        if (str_contains($candidate, 'blue')) {
+            return $exact_map['blue'];
+        }
+        if (str_contains($candidate, 'green')) {
+            return $exact_map['green'];
+        }
+        if (str_contains($candidate, 'mint')) {
+            return $exact_map['mint'];
+        }
+        if (str_contains($candidate, 'pink')) {
+            return $exact_map['pink'];
+        }
+        if (str_contains($candidate, 'purple')) {
+            return $exact_map['purple'];
+        }
+        if (str_contains($candidate, 'violet')) {
+            return $exact_map['violet'];
+        }
+        if (str_contains($candidate, 'gold')) {
+            return $exact_map['gold'];
+        }
+        if (str_contains($candidate, 'red')) {
+            return $exact_map['red'];
+        }
+        if (str_contains($candidate, 'yellow')) {
+            return $exact_map['yellow'];
+        }
+        if (str_contains($candidate, 'coral')) {
+            return $exact_map['coral'];
+        }
+        if (str_contains($candidate, 'lavender')) {
+            return $exact_map['lavender'];
+        }
+        if (str_contains($candidate, 'titanium')) {
+            return $exact_map['titanium'];
+        }
+    }
+
+    return $fallback;
+}
+
+/**
  * Resolve Woo product color terms into swatch-ready UI data.
  *
  * Reads the real color value from term meta saved by Woo Variation Swatches.
@@ -323,11 +473,14 @@ function devhub_get_product_color_options(WC_Product $product): array
         }
 
         $raw_hex = (string) get_term_meta($term->term_id, 'product_attribute_color', true);
+        $hex = trim($raw_hex) !== ''
+            ? devhub_normalize_hex_color($raw_hex)
+            : devhub_guess_color_hex($slug, $term->name);
 
         $colors[] = [
             'slug' => $slug,
             'name' => $term->name,
-            'hex' => devhub_normalize_hex_color($raw_hex),
+            'hex' => $hex,
         ];
     }
 
