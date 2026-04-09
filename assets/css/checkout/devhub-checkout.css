@@ -749,23 +749,55 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  width: 100%;
+  min-width: 0;
 }
 
 .wc-block-checkout__sidebar
   .devhub-checkout-order-note-step
-  .wc-block-components-checkbox .wc-block-components-checkbox__input[type="checkbox"] {
+  .wc-block-components-checkbox
+  .wc-block-components-checkbox__input[type="checkbox"] {
   margin: 0 !important;
-  flex-shrink: 0;
-  position: relative;
-  top: 3px;
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 20px;
+  width: 20px !important;
+  height: 20px;
+  min-width: 20px;
+  min-height: 20px;
+  position: static;
+  line-height: 1;
+}
+
+.wc-block-checkout__sidebar
+  .devhub-checkout-order-note-step
+  .wc-block-components-checkbox
+  .wc-block-components-checkbox__input[type="checkbox"]:checked::before {
+  display: block;
+  width: auto;
+  margin: 0;
+  font-size: 14px;
+  line-height: 1;
+  text-align: center;
+  position: static;
+  top: auto;
 }
 
 .wc-block-checkout__sidebar
   .devhub-checkout-order-note-step
   .wc-block-components-checkbox__label {
   margin: 0 !important;
-  display: inline-flex;
-  align-items: center;
+  display: block;
+  flex: 1 1 auto;
+  width: auto !important;
+  max-width: none !important;
+  min-width: 0;
+  line-height: 1.4 !important;
+  word-break: normal !important;
+  overflow-wrap: normal !important;
+  white-space: normal !important;
+  position: relative;
+  top: -3px;
 }
 
 .wc-block-checkout__sidebar
@@ -970,7 +1002,8 @@
   margin-right: 0;
 }
 
-.wc-block-checkout-empty .wp-block-button__link.devhub-empty-checkout-button
+.wc-block-checkout-empty
+  .wp-block-button__link.devhub-empty-checkout-button
   i.fa-arrow-right {
   margin-left: 0.4rem;
   margin-right: 0;
@@ -1226,9 +1259,7 @@
 .wc-block-checkout__main
   .wc-block-checkout__shipping-method
   .wc-block-components-radio-control,
-.wc-block-checkout__main
-  #shipping-method
-  .wc-block-components-radio-control {
+.wc-block-checkout__main #shipping-method .wc-block-components-radio-control {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
@@ -1240,8 +1271,7 @@
 
 .wc-block-checkout__main
   .wc-block-checkout__shipping-method-container.components-button-group,
-.wc-block-checkout__main
-  #shipping-method.components-button-group {
+.wc-block-checkout__main #shipping-method.components-button-group {
   display: grid !important;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px !important;
@@ -1251,8 +1281,7 @@
   box-shadow: none !important;
 }
 
-.wc-block-checkout__main
-  .wc-block-checkout__shipping-method-option {
+.wc-block-checkout__main .wc-block-checkout__shipping-method-option {
   display: flex !important;
   align-items: center;
   justify-content: center;
@@ -1272,8 +1301,7 @@
     color 0.2s ease;
 }
 
-.wc-block-checkout__main
-  .wc-block-checkout__shipping-method-option:hover,
+.wc-block-checkout__main .wc-block-checkout__shipping-method-option:hover,
 .wc-block-checkout__main
   .wc-block-checkout__shipping-method-option:focus-visible {
   border-color: var(--devhub-primary) !important;
@@ -1281,21 +1309,18 @@
   box-shadow: none !important;
 }
 
-.wc-block-checkout__main
-  .wc-block-checkout__shipping-method-option--selected {
+.wc-block-checkout__main .wc-block-checkout__shipping-method-option--selected {
   border-color: var(--devhub-primary) !important;
   background: #fff9f5 !important;
   color: #101828 !important;
   box-shadow: none !important;
 }
 
-.wc-block-checkout__main
-  .wc-block-checkout__shipping-method-option-icon {
+.wc-block-checkout__main .wc-block-checkout__shipping-method-option-icon {
   color: var(--devhub-primary) !important;
 }
 
-.wc-block-checkout__main
-  .wc-block-checkout__shipping-method-option-title {
+.wc-block-checkout__main .wc-block-checkout__shipping-method-option-title {
   color: #101828 !important;
   font-family: var(--devhub-font) !important;
   font-size: 18px !important;
@@ -1417,8 +1442,7 @@
   gap: 12px;
 }
 
-.devhub-checkout-delivery-fallback
-  .wc-block-components-radio-control__input,
+.devhub-checkout-delivery-fallback .wc-block-components-radio-control__input,
 .devhub-checkout-delivery-fallback input[type="radio"],
 .devhub-checkout-delivery-fallback
   .wc-block-components-radio-control__option::after,
@@ -1427,8 +1451,7 @@
   display: none !important;
 }
 
-.devhub-checkout-delivery-fallback
-  .wc-block-components-radio-control__option {
+.devhub-checkout-delivery-fallback .wc-block-components-radio-control__option {
   margin: 0 !important;
   min-height: 56px;
   padding: 8px 12px !important;
@@ -1462,8 +1485,7 @@
   flex: 0 0 34px;
 }
 
-.devhub-checkout-delivery-fallback
-  .wc-block-components-radio-control__label {
+.devhub-checkout-delivery-fallback .wc-block-components-radio-control__label {
   color: #101828;
   font-family: var(--devhub-font);
   font-size: 18px;
