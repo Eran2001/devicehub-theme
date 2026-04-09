@@ -24,6 +24,9 @@ add_action( 'woocommerce_store_api_checkout_order_processed', 'devhub_clear_ship
 // Ensure payment_method_title is populated and generate a transaction ID for COD.
 add_action( 'woocommerce_store_api_checkout_order_processed', 'devhub_ensure_payment_details', 20, 1 );
 add_filter( 'woocommerce_rest_prepare_shop_order_object', 'devhub_strip_legacy_delivery_meta_from_rest', 10, 3 );
+add_filter( 'option_woocommerce_checkout_phone_field', 'devhub_force_checkout_phone_field_required' );
+add_filter( 'woocommerce_get_country_locale_default', 'devhub_require_checkout_phone_fields' );
+add_filter( 'woocommerce_get_country_locale', 'devhub_require_checkout_phone_fields' );
 
 /**
  * Write delivery_type order meta (HOME_DELIVERY or STORE_PICKUP) for the backend.
@@ -159,6 +162,38 @@ function devhub_register_checkout_delivery_fields(): void {
 			},
 		]
 	);
+}
+
+/**
+ * Force WooCommerce Blocks to treat checkout phone as required.
+ *
+ * @param mixed $value Stored WooCommerce option value.
+ * @return string
+ */
+function devhub_force_checkout_phone_field_required( $value ): string {
+	return 'required';
+}
+
+/**
+ * Mark phone fields as required in WooCommerce locale field definitions.
+ *
+ * @param array $locale_fields Locale-configured checkout fields.
+ * @return array
+ */
+function devhub_require_checkout_phone_fields( array $locale_fields ): array {
+	if ( isset( $locale_fields['phone'] ) && is_array( $locale_fields['phone'] ) ) {
+		$locale_fields['phone']['required'] = true;
+	}
+
+	if ( isset( $locale_fields['billing_phone'] ) && is_array( $locale_fields['billing_phone'] ) ) {
+		$locale_fields['billing_phone']['required'] = true;
+	}
+
+	if ( isset( $locale_fields['shipping_phone'] ) && is_array( $locale_fields['shipping_phone'] ) ) {
+		$locale_fields['shipping_phone']['required'] = true;
+	}
+
+	return $locale_fields;
 }
 
 /**
