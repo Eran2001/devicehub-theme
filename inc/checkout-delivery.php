@@ -9,6 +9,11 @@ defined( 'ABSPATH' ) || exit;
 
 const DEVHUB_CHECKOUT_DELIVERY_METHOD_FIELD = 'devicehub/delivery_method';
 const DEVHUB_CHECKOUT_PICKUP_STORE_FIELD    = 'devicehub/pickup_store';
+const DEVHUB_ORDER_DELIVERY_METHOD_META     = 'delivery_method';
+const DEVHUB_ORDER_DELIVERY_METHOD_LABEL    = 'delivery_method_label';
+const DEVHUB_ORDER_PICKUP_STORE_LABEL       = 'pickup_store_label';
+const DEVHUB_ORDER_PICKUP_STORE_ADDRESS     = 'pickup_store_address';
+const DEVHUB_ORDER_PICKUP_STORE_DETAILS     = 'pickup_store_details';
 
 add_action( 'woocommerce_init', 'devhub_register_checkout_delivery_fields' );
 add_action( 'woocommerce_blocks_validate_location_contact_fields', 'devhub_validate_checkout_delivery_fields', 10, 3 );
@@ -18,6 +23,7 @@ add_action( 'woocommerce_store_api_checkout_update_order_from_request', 'devhub_
 add_action( 'woocommerce_store_api_checkout_order_processed', 'devhub_clear_shipping_for_pickup', 10, 1 );
 // Ensure payment_method_title is populated and generate a transaction ID for COD.
 add_action( 'woocommerce_store_api_checkout_order_processed', 'devhub_ensure_payment_details', 20, 1 );
+add_filter( 'woocommerce_rest_prepare_shop_order_object', 'devhub_strip_legacy_delivery_meta_from_rest', 10, 3 );
 
 /**
  * Write delivery_type order meta (HOME_DELIVERY or STORE_PICKUP) for the backend.
@@ -43,7 +49,7 @@ function devhub_save_delivery_type_meta( WC_Order $order, WP_REST_Request $reque
  * @param WC_Order $order Processed order.
  */
 function devhub_clear_shipping_for_pickup( WC_Order $order ): void {
-	$delivery_method = sanitize_text_field( (string) $order->get_meta( '_devhub_delivery_method', true ) );
+	$delivery_method = devhub_get_order_delivery_method( $order );
 
 	if ( 'pickup' !== $delivery_method ) {
 		return;
@@ -309,19 +315,76 @@ function devhub_update_order_delivery_meta( WC_Order $order, string $delivery_me
 		$location_map[ $location['value'] ] = $location;
 	}
 
-	$order->update_meta_data( '_devhub_delivery_method', $delivery_method );
-	$order->update_meta_data( '_devhub_delivery_method_label', 'pickup' === $delivery_method ? __( 'Pick Up at Store', 'devicehub-theme' ) : __( 'Home Delivery', 'devicehub-theme' ) );
+	$order->update_meta_data( DEVHUB_ORDER_DELIVERY_METHOD_META, $delivery_method );
+	$order->update_meta_data( DEVHUB_ORDER_DELIVERY_METHOD_LABEL, 'pickup' === $delivery_method ? __( 'Pick Up at Store', 'devicehub-theme' ) : __( 'Home Delivery', 'devicehub-theme' ) );
 
 	if ( 'pickup' === $delivery_method && isset( $location_map[ $pickup_store ] ) ) {
 		$location = $location_map[ $pickup_store ];
-		$order->update_meta_data( '_devhub_pickup_store_label', $location['label'] );
-		$order->update_meta_data( '_devhub_pickup_store_address', $location['address'] );
-		$order->update_meta_data( '_devhub_pickup_store_details', $location['details'] );
+		$order->update_meta_data( DEVHUB_ORDER_PICKUP_STORE_LABEL, $location['label'] );
+		$order->update_meta_data( DEVHUB_ORDER_PICKUP_STORE_ADDRESS, $location['address'] );
+		$order->update_meta_data( DEVHUB_ORDER_PICKUP_STORE_DETAILS, $location['details'] );
 	} else {
-		$order->delete_meta_data( '_devhub_pickup_store_label' );
-		$order->delete_meta_data( '_devhub_pickup_store_address' );
-		$order->delete_meta_data( '_devhub_pickup_store_details' );
+		$order->delete_meta_data( DEVHUB_ORDER_PICKUP_STORE_LABEL );
+		$order->delete_meta_data( DEVHUB_ORDER_PICKUP_STORE_ADDRESS );
+		$order->delete_meta_data( DEVHUB_ORDER_PICKUP_STORE_DETAILS );
 	}
+
+	$order->delete_meta_data( '_devhub_delivery_method' );
+	$order->delete_meta_data( '_devhub_delivery_method_label' );
+	$order->delete_meta_data( '_devhub_pickup_store_label' );
+	$order->delete_meta_data( '_devhub_pickup_store_address' );
+	$order->delete_meta_data( '_devhub_pickup_store_details' );
+}
+
+/**
+ * Read the stored delivery method using the current meta key with legacy fallback.
+ *
+ * @param WC_Order $order Order object.
+ * @return string
+ */
+function devhub_get_order_delivery_method( WC_Order $order ): string {
+	$delivery_method = sanitize_text_field( (string) $order->get_meta( DEVHUB_ORDER_DELIVERY_METHOD_META, true ) );
+
+	if ( '' !== $delivery_method ) {
+		return $delivery_method;
+	}
+
+	return sanitize_text_field( (string) $order->get_meta( '_devhub_delivery_method', true ) );
+}
+
+/**
+ * Remove legacy _devhub_* delivery meta from REST order responses.
+ *
+ * @param WP_REST_Response $response REST response.
+ * @param WC_Order         $order    Order object.
+ * @param WP_REST_Request  $request  REST request.
+ * @return WP_REST_Response
+ */
+function devhub_strip_legacy_delivery_meta_from_rest( WP_REST_Response $response, WC_Order $order, WP_REST_Request $request ): WP_REST_Response {
+	$data = $response->get_data();
+
+	if ( empty( $data['meta_data'] ) || ! is_array( $data['meta_data'] ) ) {
+		return $response;
+	}
+
+	$data['meta_data'] = array_values(
+		array_filter(
+			$data['meta_data'],
+			static function ( $meta_item ) {
+				if ( ! is_array( $meta_item ) ) {
+					return true;
+				}
+
+				$key = (string) ( $meta_item['key'] ?? '' );
+
+				return 0 !== strpos( $key, '_devhub_' );
+			}
+		)
+	);
+
+	$response->set_data( $data );
+
+	return $response;
 }
 
 /**

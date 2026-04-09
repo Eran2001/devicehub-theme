@@ -61,7 +61,7 @@ function devhub_is_pickup_order( WC_Order $order ): bool {
 		return true;
 	}
 
-	return '' !== trim( (string) $order->get_meta( '_devhub_pickup_store_label', true ) );
+	return '' !== devhub_get_pickup_store_label( $order );
 }
 
 /**
@@ -83,6 +83,11 @@ function devhub_get_pickup_store_label( WC_Order $order ): string {
 		}
 	}
 
+	$label = sanitize_text_field( (string) $order->get_meta( DEVHUB_ORDER_PICKUP_STORE_LABEL, true ) );
+	if ( '' !== $label ) {
+		return $label;
+	}
+
 	return sanitize_text_field( (string) $order->get_meta( '_devhub_pickup_store_label', true ) );
 }
 
@@ -96,8 +101,13 @@ function devhub_get_pickup_store_label( WC_Order $order ): string {
  * @return string
  */
 function devhub_get_pickup_delivery_method( WC_Order $order ): string {
-	$delivery_method = sanitize_text_field( (string) $order->get_meta( '_devhub_delivery_method', true ) );
+	$delivery_method = sanitize_text_field( (string) $order->get_meta( DEVHUB_ORDER_DELIVERY_METHOD_META, true ) );
 
+	if ( '' !== $delivery_method ) {
+		return $delivery_method;
+	}
+
+	$delivery_method = sanitize_text_field( (string) $order->get_meta( '_devhub_delivery_method', true ) );
 	if ( '' !== $delivery_method ) {
 		return $delivery_method;
 	}
