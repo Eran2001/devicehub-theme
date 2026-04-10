@@ -100,6 +100,7 @@
 			return cardOptions.map( ( option ) => ( {
 				option,
 				input: null,
+				rateId: getNativeOptionRateId( option ),
 				text: normalizeText( option.textContent ),
 				selected:
 					option.classList.contains( 'wc-block-checkout__shipping-method-option--selected' ) ||
@@ -111,12 +112,68 @@
 		return Array.from( document.querySelectorAll( NATIVE_DELIVERY_OPTION_SELECTOR ) ).map( ( option ) => ( {
 			option,
 			input: option.querySelector( 'input[type="radio"]' ),
+			rateId: getNativeOptionRateId( option ),
 			text: normalizeText( option.textContent ),
 			selected: !! option.querySelector( 'input[type="radio"]:checked' ),
 		} ) );
 	}
 
+	function getNativeOptionRateId( option ) {
+		if ( ! option ) {
+			return '';
+		}
+
+		const input =
+			option.matches?.( 'input[type="radio"]' )
+				? option
+				: option.querySelector?.( 'input[type="radio"]' );
+		const candidateValues = [
+			input?.value,
+			option.dataset?.rateId,
+			option.dataset?.shippingRate,
+			option.dataset?.shippingMethodId,
+			option.getAttribute?.( 'data-rate-id' ),
+			option.getAttribute?.( 'data-shipping-rate' ),
+			option.getAttribute?.( 'data-shipping-method-id' ),
+			option.getAttribute?.( 'data-value' ),
+			option.getAttribute?.( 'value' ),
+			option.getAttribute?.( 'id' ),
+		];
+
+		for ( const candidate of candidateValues ) {
+			const normalized = normalizeText( candidate );
+
+			if ( normalized ) {
+				return normalized;
+			}
+		}
+
+		return '';
+	}
+
+	function getMethodFromRateId( rateId ) {
+		const normalizedRateId = normalizeText( rateId );
+
+		if ( ! normalizedRateId ) {
+			return '';
+		}
+
+		const methodId = normalizedRateId.split( ':' )[ 0 ];
+
+		if ( methodId === 'pickup_location' || methodId === 'local_pickup' ) {
+			return 'pickup';
+		}
+
+		return 'home_delivery';
+	}
+
 	function getMethodFromNativeOption( option ) {
+		const methodFromRateId = getMethodFromRateId( option?.rateId );
+
+		if ( methodFromRateId ) {
+			return methodFromRateId;
+		}
+
 		const text = normalizeText( option?.text );
 
 		if ( ! text ) {
