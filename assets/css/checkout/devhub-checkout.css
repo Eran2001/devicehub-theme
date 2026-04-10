@@ -1257,6 +1257,41 @@
 }
 
 .wc-block-checkout__main
+  .wp-block-woocommerce-checkout-shipping-methods-block
+  .wc-block-components-radio-control.wc-block-components-radio-control--highlight-checked {
+  border: 0 !important;
+  border-color: transparent !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.wc-block-checkout__main
+  .wp-block-woocommerce-checkout-shipping-methods-block
+  .wc-block-components-radio-control.wc-block-components-radio-control--highlight-checked::before,
+.wc-block-checkout__main
+  .wp-block-woocommerce-checkout-shipping-methods-block
+  .wc-block-components-radio-control.wc-block-components-radio-control--highlight-checked::after {
+  content: none !important;
+  display: none !important;
+}
+
+.wc-block-checkout__main
+  .wc-block-checkout__shipping-method
+  .wc-block-components-radio-control__option
+  + .wc-block-components-radio-control__option,
+.wc-block-checkout__main
+  #shipping-method
+  .wc-block-components-radio-control__option
+  + .wc-block-components-radio-control__option,
+.wc-block-checkout__main
+  .wp-block-woocommerce-checkout-shipping-methods-block
+  .wc-block-components-radio-control__option
+  + .wc-block-components-radio-control__option {
+  margin-top: 12px !important;
+}
+
+.wc-block-checkout__main
   .wc-block-checkout__shipping-method
   .wc-block-components-radio-control,
 .wc-block-checkout__main #shipping-method .wc-block-components-radio-control {
